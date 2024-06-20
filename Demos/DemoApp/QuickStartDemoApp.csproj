@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>NoeticTools.Net2HassMqtt.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>NoeticTools.Net2HassMqtt.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <ApplicationIcon>Net2HassMqtt_ion_64x64.ico</ApplicationIcon>
+    <UserSecretsId>d978106a-a975-46de-866c-42480afff94e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Net2HassMqtt_ion_64x64.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net2HassMqtt\Net2HassMqtt.csproj" />
+  </ItemGroup>
+
+</Project>

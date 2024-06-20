@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <WriteVersionInfoToBuildLog>true</WriteVersionInfoToBuildLog>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <RootNamespace>NoeticTools.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>.NET to Home Assistant via MQTT bridge with device/entity descovery</Title>
+    <PackageProjectUrl>https://github.com/NoeticTools/Net2HassMqtt</PackageProjectUrl>
+    <Copyright>Copyright (c) RobSmyth 2024</Copyright>
+    <RepositoryUrl>https://github.com/NoeticTools/Net2HassMqtt</RepositoryUrl>
+    <PackageTags>HomeAssistant MQTT .NET NoeticTools HASS</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>NuGet_description.md</PackageReadmeFile>
+    <AssemblyName>NoeticTools.$(MSBuildProjectName)</AssemblyName>
+    <PackageIcon>Net2HassMqtt_icon_32x32.png</PackageIcon>
+    <ApplicationIcon>Net2HassMqtt_icon_64x64.ico</ApplicationIcon>
+    <Authors>RobSmyth</Authors>
+    <Description>Net2HassMqtt adds Home Assistant (HASS) integration to your .NET applications via MQTT. It not a MQTT transport layer but provides an Home Assistant centric fluent configuration interface to map your application's models to Home Assistant devices and entities.
+Through Home Assistant MQTT Discovery your application devices and entities just appear automatically in Home Assistant.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HassDeviceClassesSourceGenerator\HomeAssistantTypesSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="FluentDateTime" Version="3.0.0" />
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.6.1152" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <None Include="..\Documentation\Images\Net2HassMqtt_icon_32x32.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="NuGet_description.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Net2HassMqtt_icon_64x64.ico" />
+  </ItemGroup>
+
+</Project>

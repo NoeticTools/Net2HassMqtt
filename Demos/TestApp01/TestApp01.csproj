@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <PublishSingleFile>true</PublishSingleFile>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NoeticTools.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <Version>0.1.0</Version>
+    <UserSecretsId>ece65c09-4c02-4c52-9a04-273a607dc4a9</UserSecretsId>
+    <ApplicationIcon>Net2HassMqtt_icon_64x64.ico</ApplicationIcon>
+    <Copyright>Copyright (c) RobSmyth 2024</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="IrrigationController.sln.DotSettings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Net2HassMqtt_icon_64x64.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="FluentDateTime" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
+    <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.6.1152" />
+    <PackageReference Include="Quartz" Version="3.9.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Net2HassMqtt\Net2HassMqtt.csproj" />
+  </ItemGroup>
+
+</Project>

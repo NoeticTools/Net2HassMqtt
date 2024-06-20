@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp01", "Demos\TestApp01\TestApp01.csproj", "{F18296C9-A4BE-4BED-A686-7EDC6F1CD5B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net2HassMqtt", "Net2HassMqtt\Net2HassMqtt.csproj", "{95D8F173-C529-445D-8F3D-C896779E29C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{D86453FE-F50C-43FC-9DD1-930B261AA311}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeAssistantTypesSourceGenerator", "HassDeviceClassesSourceGenerator\HomeAssistantTypesSourceGenerator.csproj", "{F352A8DB-47F9-4236-BA88-F60F9051D830}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{166632D1-0E31-460A-9C67-9D336E802FB4}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		gitversion.buildsystem.yml = gitversion.buildsystem.yml
+		gitversion.yml = gitversion.yml
+		gitversion_post_first_release.buildsystem.yml = gitversion_post_first_release.buildsystem.yml
+		gitversion_post_first_release.yml = gitversion_post_first_release.yml
+		license.txt = license.txt
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{9AF4C256-3625-4B22-80CA-518770638FA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickStartDemoApp", "Demos\DemoApp\QuickStartDemoApp.csproj", "{72597EB8-5808-4DAF-95DE-42189885D360}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "Documentation\Documentation.csproj", "{9C88B5A5-84DA-4B4F-BF5B-71C3DE589CC2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples1", "Examples1\Examples1.csproj", "{3CA225CC-9D85-4C51-A760-200FE2B86166}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F18296C9-A4BE-4BED-A686-7EDC6F1CD5B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F18296C9-A4BE-4BED-A686-7EDC6F1CD5B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F18296C9-A4BE-4BED-A686-7EDC6F1CD5B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F18296C9-A4BE-4BED-A686-7EDC6F1CD5B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D8F173-C529-445D-8F3D-C896779E29C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D8F173-C529-445D-8F3D-C896779E29C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D8F173-C529-445D-8F3D-C896779E29C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D8F173-C529-445D-8F3D-C896779E29C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F352A8DB-47F9-4236-BA88-F60F9051D830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F352A8DB-47F9-4236-BA88-F60F9051D830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F352A8DB-47F9-4236-BA88-F60F9051D830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F352A8DB-47F9-4236-BA88-F60F9051D830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72597EB8-5808-4DAF-95DE-42189885D360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72597EB8-5808-4DAF-95DE-42189885D360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72597EB8-5808-4DAF-95DE-42189885D360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72597EB8-5808-4DAF-95DE-42189885D360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C88B5A5-84DA-4B4F-BF5B-71C3DE589CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C88B5A5-84DA-4B4F-BF5B-71C3DE589CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C88B5A5-84DA-4B4F-BF5B-71C3DE589CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C88B5A5-84DA-4B4F-BF5B-71C3DE589CC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CA225CC-9D85-4C51-A760-200FE2B86166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CA225CC-9D85-4C51-A760-200FE2B86166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CA225CC-9D85-4C51-A760-200FE2B86166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CA225CC-9D85-4C51-A760-200FE2B86166}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F18296C9-A4BE-4BED-A686-7EDC6F1CD5B5} = {9AF4C256-3625-4B22-80CA-518770638FA2}
+		{F352A8DB-47F9-4236-BA88-F60F9051D830} = {D86453FE-F50C-43FC-9DD1-930B261AA311}
+		{72597EB8-5808-4DAF-95DE-42189885D360} = {9AF4C256-3625-4B22-80CA-518770638FA2}
+		{3CA225CC-9D85-4C51-A760-200FE2B86166} = {9AF4C256-3625-4B22-80CA-518770638FA2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29587939-061F-4638-AA4A-D78A8EE9F648}
+	EndGlobalSection
+EndGlobal

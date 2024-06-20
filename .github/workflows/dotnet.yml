@@ -1,0 +1,56 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: NuGet Package Release Build
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'releases/**'
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'releases/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Replace gitversion.yml with build system file
+      run: |
+          rm -f GitVersion.yml
+          mv GitVersion.buildsystem.yml GitVersion.yml
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Archive NuGet package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-package
+        path: Net2HassMqtt/bin/**/*.nupkg
+        compression-level: 0
+        if-no-files-found: error
+
+
