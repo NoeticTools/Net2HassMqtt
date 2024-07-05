@@ -11,12 +11,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <VersionSuffix>Uncontrolled</VersionSuffix>
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <RootNamespace>NoeticTools.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Title>.NET to Home Assistant via MQTT bridge with device/entity descovery</Title>
     <PackageProjectUrl>https://github.com/NoeticTools/Net2HassMqtt</PackageProjectUrl>
-    <Copyright>Copyright (c) RobSmyth 2024</Copyright>
+    <Copyright>Copyright (c) RobSmyth $([System.DateTime]::Now.Year)</Copyright>
     <RepositoryUrl>https://github.com/NoeticTools/Net2HassMqtt</RepositoryUrl>
     <PackageTags>HomeAssistant MQTT .NET NoeticTools HASS</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -27,27 +28,15 @@
     <Authors>RobSmyth</Authors>
     <Description>Net2HassMqtt adds Home Assistant (HASS) integration to your .NET applications via MQTT. It not a MQTT transport layer but provides an Home Assistant centric fluent configuration interface to map your application's models to Home Assistant devices and entities.
 Through Home Assistant MQTT Discovery your application devices and entities just appear automatically in Home Assistant.</Description>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HassDeviceClassesSourceGenerator\HomeAssistantTypesSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FluentDateTime" Version="3.0.0" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.6.1152" />

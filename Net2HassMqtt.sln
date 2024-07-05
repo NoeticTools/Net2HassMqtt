@@ -14,10 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{166632D1-0E31-460A-9C67-9D336E802FB4}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
-		gitversion.buildsystem.yml = gitversion.buildsystem.yml
-		gitversion.yml = gitversion.yml
-		gitversion_post_first_release.buildsystem.yml = gitversion_post_first_release.buildsystem.yml
-		gitversion_post_first_release.yml = gitversion_post_first_release.yml
+		GitVersion.yml = GitVersion.yml
 		license.txt = license.txt
 		readme.md = readme.md
 	EndProjectSection

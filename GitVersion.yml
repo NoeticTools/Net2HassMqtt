@@ -1,7 +1,7 @@
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatch
 assembly-versioning-format: '{Major}.{Minor}.{Patch}'
-assembly-informational-format: '{MajorMinorPatch}-{PreReleaseLabel}+{env:BUILD_NUMBER ?? Uncontrolled}.{ShortSha}'
+assembly-informational-format: '{InformationalVersion}'
 mode: ContinuousDelivery
 increment: Inherit
 continuous-delivery-fallback-tag: ci
@@ -19,7 +19,7 @@ ignore:
   sha: []
   commits-before: 2024-01-01T00:00:00
 merge-message-formats: {}
-update-build-number: true
+update-build-number: false
 
 branches:
   main:
@@ -55,7 +55,7 @@ branches:
     track-merge-target: false
     source-branches: [ 'develop', 'main', 'support', 'release' ]
     tracks-release-branches: false
-    is-release-branch: false
+    is-release-branch: true
     is-mainline: false
     pre-release-weight: 30000
   feature:

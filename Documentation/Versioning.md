@@ -1,5 +1,10 @@
 ![](/Documentation/Images/Net2HassMqtt_banner_820x70.png)
 
+> [!NOTE]
+> The information here is mostly aspirational.
+> Version automation is proving to be challenging.
+> The post first release (1.0.0) version formatting is a work in progress.
+
 # Versioning
 
 ## Contents
@@ -44,7 +49,7 @@ So, the project's approach is:
 
 ## Build numbers
 
-The project is built on NuGet's build system which does not provide a build number but one can be constructed from a run count and a count of reruns.
+The project is built on NuGet's build system which does not provide a build number but one can be constructed from a run count (<a href="https://docs.github.com/en/actions/learn-github-actions/contexts#github-context">`github.run_number`</a>) and a rerun count (<a href="https://docs.github.com/en/actions/learn-github-actions/contexts#github-context">`github.run_attempt`</a>).
 This gives a rather unconventional build number format:
 
 ```
@@ -54,14 +59,16 @@ This gives a rather unconventional build number format:
 e.g:
 
 ```
-1234-1
-1234-2
+01234-1
+01234-2
 ```
 
 Typically the rerun count will be "1".
 
 
-## Early development builds
+## Offical (build system) builds
+
+### Early development builds
 
 All builds prior to the first release (1.0.0) are considered unstable and have the pre-release tag `Alpha`
 regardless of branch or if built on the build system or a dev box.
@@ -69,12 +76,10 @@ regardless of branch or if built on the build system or a dev box.
 Formating:
 
 ```
-[major].[minor].[patch]-Alpha			                    // Product version
-[major].[minor].[patch]-Alpha                               // NuGet package version
-[major].[minor].[patch]-Alpha+[BuildNumber].[GitSha1Short]  // informational version
+<major>.<minor>.<patch>-alpha.<BuildNumber>                 // Product version
+<major>.<minor>.<patch>-alpha.<BuildNumber>                 // NuGet package version
+<major>.<minor>.<patch>-alpha+<BuildNumber>.<GitSha1Short>  // informational version
 ```
-
-## Offical (build system) builds
 
 ### Release branch builds
 
@@ -83,10 +88,11 @@ When a RC build is chosen to be the release its commit is tagged.
 The released build may not be most recent build.
 
 RC/release version formating:
+
 ````
-[major].[minor].[patch]                               // Product version
-[major].[minor].[patch]                               // Nuget package version
-[major].[minor].[patch]+[BuildNumber].[GitSha1Short]  // Informational version
+<major>.<minor>.<patch>                               // Product version
+<major>.<minor>.<patch>                               // Nuget package version
+<major>.<minor>.<patch>+<BuildNumber>.<GitSha1Short>  // Informational version
 ````
 
 ### Development/feature branch builds
@@ -94,9 +100,9 @@ RC/release version formating:
 Builds not on a relese branch are pre-release builds with the format:
 
 ````
-[major].[minor].[patch]-Beta.[BuildNumber]                 // Product version
-[major].[minor].[patch]-Beta.[BuildNumber]                 // NuGet package version
-[major].[minor].[patch]-Beta+[BuildNumber].[GitSha1Short]  // informational version
+<major>.<minor>.<patch>-beta.<BuildNumber>                 // Product version
+<major>.<minor>.<patch>-beta.<BuildNumber>                 // NuGet package version
+<major>.<minor>.<patch>-beta+<BuildNumber>.<GitSha1Short>  // Informational version
 ````
 
 ### Uncontrolled builds
@@ -108,24 +114,19 @@ the build number will always be "U".
 Regardless of the branch the version format will be:
 
 ````
-[major].[minor].[patch]-Uncontrolled.<n>                          // Product version
-[major].[minor].[patch]-Uncontrolled.<n>                          // NuGet package version
-[major].[minor].[patch]-Uncontrolled.<n>+U.<branch>.<short-sha>   // informational version
+<major>.<minor>.<patch>-Uncontrolled   // Product version
+<major>.<minor>.<patch>-Uncontrolled   // NuGet package version
+<major>.<minor>.<patch>-Uncontrolled   // informational version
 ````
-
-The `.n` pre-release suffix (e.g: .7) is a number that GitVersion adds.
-It is not reliable and should be ignored.
 
 ## Examples
 
-| Version                            | Build         | Branch      | Use                                   |
-|:---------------------------------- |  :---:        |   :---:     |:-------------------------------------- |
-| `1.2.3`                            | Controlled    | release/... | NuGet package version                  |
-| `1.2.3+567-1.7f32d0`               | Controlled    | release/... | Informational version                  |
-| `1.2.3-Beta.<n>`                   | Controlled    | feature/... | NuGet package version                  |
-| `1.2.3-Beta.n+567-1.7f32d0`        | Controlled    | feature/... | Informational version                  |
-| `1.2.3-Uncontrolled.<n>`           | Uncontrolled  | any         | NuGet package version                  |
-| `1.2.3-Uncontrolled.<n>+U.feature-mybranch.7f32d0` | Uncontrolled | any | Informational version           |
+| Version                    | Build         | Branch      | Use                     |
+|:-------------------------- |  :---:        |   :---:     |:----------------------- |
+| `1.2.3`                    | Controlled    | release/... | NuGet package version   |
+| `1.2.3+567-1.7f32d0`       | Controlled    | release/... | Informational version   |
+| `1.2.3-beta.567-1`         | Controlled    | feature/... | NuGet package version   |
+| `1.2.3-beta+567-1.7f32d0`  | Controlled    | feature/... | Informational version   |
+| `1.2.3-Uncontrolled`       | Uncontrolled  | any         | NuGet package version   |
+| `1.2.3-Uncontrolled`       | Uncontrolled  | any         | Informational version   |
 
-The `.n` pre-release suffix (e.g: .7) is a number that GitVersion adds.
-It is not reliable and should be ignored.
