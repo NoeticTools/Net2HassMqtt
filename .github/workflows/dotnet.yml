@@ -32,13 +32,13 @@ jobs:
       with:
         versionSpec: '5.12.0'
 
-    - name: Generate version json
+    - name: Harvest version variables
       run: |
           echo 'PACKAGE_JSON<<EOF' >> $GITHUB_ENV
           dotnet gitversion /output json >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-    - name: Harvest version variables
+    - name: Build versions
       run: |
           echo 'N2H_BUILD_NUMBER=${{ env.BUILD_NUMBER }}' >> $GITHUB_ENV
           echo 'N2H_MAJOR_MINOR_PATCH=${{ fromJson(env.PACKAGE_JSON).MajorMinorPatch }}' >> $GITHUB_ENV
@@ -57,14 +57,17 @@ jobs:
 
     - name: Build
       run: |
-          dotnet build --no-restore --configuration Release -p:VersionPrefix=${{ env.N2H_MAJOR_MINOR_PATCH }} --version-suffix ${{ env.N2H_PRERELEASE_LABEL }} -p:InformationalVersion=${{ env.N2H_MAJOR_MINOR_PATCH }}-${{ env.N2H_PRERELEASE_LABEL }}+${{ env.N2H_SHORT_SHA }}
+          dotnet build --no-restore --configuration Release \
+                       -p:VersionPrefix=${{ env.N2H_MAJOR_MINOR_PATCH }} --version-suffix ${{ env.N2H_PRERELEASE_LABEL }} \
+                       -p:InformationalVersion=${{ env.N2H_MAJOR_MINOR_PATCH }}-${{ env.N2H_PRERELEASE_LABEL }}+${{ env.N2H_SHORT_SHA }}
 
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
     - name: Pack
       run: |
-          dotnet pack ./Net2HassMqtt/Net2HassMqtt.csproj --no-build --no-restore --configuration Release -p:VersionPrefix=${{ env.N2H_MAJOR_MINOR_PATCH }} --version-suffix ${{ env.N2H_PRERELEASE_LABEL }}
+          dotnet pack ./Net2HassMqtt/Net2HassMqtt.csproj --no-build --no-restore --configuration Release \
+                      -p:VersionPrefix=${{ env.N2H_MAJOR_MINOR_PATCH }} --version-suffix ${{ env.N2H_PRERELEASE_LABEL }}
 
 
     - name: Archive NuGet package
