@@ -1,5 +1,4 @@
-﻿![Current Version](https://img.shields.io/badge/version-v0.1-blue)
-![GitHub contributors](https://img.shields.io/github/contributors/madhur-taneja/README-Template)
+﻿![Current Version](https://img.shields.io/nuget/v/NoeticTools.Net2HassMqtt)
 
 ![](Documentation/Images/Net2HassMqtt_banner_820x70.png)
 
