@@ -689,6 +689,9 @@ The icon name must have a `mdi:` prefex. The name is a Material Design Icon name
 > Many lists of Material Design Icons include aliases. An alias name will not work in Home Assistant. 
 > For example `mdi:done` is an alias for `mdi:check`. `mdi:done` will not work.
 
+## Branching Strategy
+
+The project uses the [GitHub Flow](https://githubflow.github.io/) branching strategy.
 
 ## Versioning
 
