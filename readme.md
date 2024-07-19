@@ -1,4 +1,4 @@
-﻿![Current Version](https://img.shields.io/nuget/v/NoeticTools.Net2HassMqtt)
+﻿[![Current Version](https://img.shields.io/nuget/vpre/NoeticTools.Net2HassMqtt)](https://www.nuget.org/packages/NoeticTools.Net2HassMqtt)
 [![NuGet Package Release Build](https://github.com/NoeticTools/Net2HassMqtt/actions/workflows/dotnet.yml/badge.svg)](https://github.com/NoeticTools/Net2HassMqtt/actions/workflows/dotnet.yml)
 
 ![](Documentation/Images/Net2HassMqtt_banner_820x70.png)
