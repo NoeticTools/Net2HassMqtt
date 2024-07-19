@@ -1,6 +1,5 @@
-﻿![Current Version](https://img.shields.io/badge/version-v0.1-blue)
-[![Release Build](https://github.com/NoeticTools/Net2HassMqtt/actions/workflows/dotnet.yml/badge.svg)](https://github.com/NoeticTools/Net2HassMqtt/actions/workflows/dotnet.yml)
-
+﻿[![Current Version](https://img.shields.io/nuget/vpre/NoeticTools.Net2HassMqtt)](https://www.nuget.org/packages/NoeticTools.Net2HassMqtt)
+[![NuGet Package Release Build](https://github.com/NoeticTools/Net2HassMqtt/actions/workflows/dotnet.yml/badge.svg)](https://github.com/NoeticTools/Net2HassMqtt/actions/workflows/dotnet.yml)
 
 ![](Documentation/Images/Net2HassMqtt_banner_820x70.png)
 
@@ -690,6 +689,9 @@ The icon name must have a `mdi:` prefex. The name is a Material Design Icon name
 > Many lists of Material Design Icons include aliases. An alias name will not work in Home Assistant. 
 > For example `mdi:done` is an alias for `mdi:check`. `mdi:done` will not work.
 
+## Branching Strategy
+
+The project uses the [GitHub Flow](https://githubflow.github.io/) branching strategy.
 
 ## Versioning
 

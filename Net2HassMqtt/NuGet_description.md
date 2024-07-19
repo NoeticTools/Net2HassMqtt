@@ -4,19 +4,18 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/madhur-taneja/README-Template)
 
 > [!NOTE]  
-> This project is currently pre-release with much of the code untested.
+> This project is currently experimental/pre-release with much of the code untested.
 > Early trial and feedback would be great!
 
-Net2HassMqtt adds [Home Assistant](https://www.home-assistant.io/) (HASS) integration to your .NET applications via [MQTT](https://mqtt.org/).
-It not a MQTT transport layer but provides an Home Assistant centric fluent configuration interface to map your application's models to Home Assistant devices and entities.
-Through [Home Assistant MQTT Discovery](https://www.home-assistant.io/integrations/mqtt/#mqtt-discovery) your application devices and entities just appear automatically in Home Assistant.
+Net2HassMqtt provides [Home Assistant](https://www.home-assistant.io/) (HASS) integration to .NET applications via [MQTT](https://mqtt.org/).
+It not a MQTT transport layer. It provides a Home Assistant centric fluent configuration interface to map your application's models to Home Assistant entities.
 
-You configure entities within your app and they appear fully configured in Home Assistant.
-Configure once, use twice & no Yaml! :-)
+The devices and entities you configure automatically appear fully configured in Home Assistant ([Home Assistant MQTT Discovery](https://www.home-assistant.io/integrations/mqtt/#mqtt-discovery)).
+Configure once, use twice & no YAML! :-)
 
-You do not need to code any MQTT publish calls, value conversions, or connection monitoring. 
-It all just happens. Net2HassMqtt layers over [MQTT](https://mqtt.org/) so you do not have to. 
-It is designed to let you work with the "what" (Home Assistant) not the "how" (MQTT).
+You do not need to code any MQTT publish calls, value conversions, subscriptions, or connection management. 
+It just all happens. Net2HassMqtt layers over [MQTT](https://mqtt.org/) so you do not have to. 
+It is designed to let you work with the _"what"_ (Home Assistant) not the _"how"_ (MQTT).
 
 An example:
 ```csharp
