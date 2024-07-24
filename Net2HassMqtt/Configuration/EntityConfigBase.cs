@@ -95,9 +95,9 @@ public abstract class EntityConfigBase
             throw new Net2HassMqttConfigurationException($"An entity model is required. Type: {GetType().Name}");
         }
 
-        var hasGetter = string.IsNullOrWhiteSpace(StatusPropertyName);
-        var hasSetter = string.IsNullOrWhiteSpace(CommandMethodName);
-        if (hasGetter && hasSetter)
+        bool hasGetter = !string.IsNullOrWhiteSpace(StatusPropertyName);
+        bool hasSetter = !string.IsNullOrWhiteSpace(CommandMethodName);
+        if (!hasGetter && !hasSetter)
         {
             throw new Net2HassMqttConfigurationException("One or both of statusPropertyName and commandMethodName is required.");
         }
