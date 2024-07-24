@@ -22,6 +22,7 @@ internal sealed class EntityFactory
         var lookup = new Dictionary<string, Func<EntityConfigBase, string, string, IMqttPublisher>>
         {
             { HassDomains.BinarySensor.HassDomainName, CreateBinarySensor },
+            { HassDomains.Button.HassDomainName, CreateButton },
             { HassDomains.Cover.HassDomainName, CoverButton },
             { HassDomains.Humidifier.HassDomainName, EntityNotSupported }, //todo
             { HassDomains.Number.HassDomainName, CreateNumberEntity },
@@ -48,6 +49,12 @@ internal sealed class EntityFactory
     {
         return new BinarySensorEntity((BinarySensorConfig)config, entityUniqueId, deviceNodeId, _mqttClient,
                                       CreateLogger<BinarySensorEntity>(config));
+    }    
+    
+    private IMqttPublisher CreateButton(EntityConfigBase config, string entityUniqueId, string deviceNodeId)
+    {
+        return new ButtonEntity((ButtonConfig)config, entityUniqueId, deviceNodeId, _mqttClient,
+                                      CreateLogger<ButtonEntity>(config));
     }
 
     private ILogger CreateLogger<T>(EntityConfigBase config)

@@ -171,6 +171,34 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                              ]
                                            },
                                            {
+                                             "name": "button",
+                                             "read_only": false,
+                                             "requires_command_handler": false,
+                                             "additional_options": [],
+                                             "domain_classes": [
+                                               {
+                                                 "name": "None",
+                                                 "description": "Generic button. This is the default and doesn’t need to be set.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "identify",
+                                                 "description": "The button is used to identify a device.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "restart",
+                                                 "description": "The button restarts the device.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "update",
+                                                 "description": "The button updates the software of the device.",
+                                                 "units": []
+                                               },
+                                            ]
+                                           },
+                                           {
                                              "name": "cover",
                                              "read_only": false,
                                              "requires_command_handler": false,
