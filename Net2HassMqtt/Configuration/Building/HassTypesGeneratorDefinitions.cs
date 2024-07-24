@@ -199,6 +199,34 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                             ]
                                            },
                                            {
+                                         "name": "event",
+                                         "read_only": false,
+                                         "requires_command_handler": false,
+                                         "additional_options": [],
+                                         "domain_classes": [
+                                           {
+                                             "name": "None",
+                                             "description": "Generic button. This is the default and doesn’t need to be set.",
+                                             "units": []
+                                           },
+                                           {
+                                             "name": "button",
+                                             "description": "For remote control buttons.",
+                                             "units": []
+                                           },
+                                           {
+                                             "name": "doorbell",
+                                             "description": "Specifically for buttons that are used as a doorbell.",
+                                             "units": []
+                                           },
+                                           {
+                                             "name": "motion",
+                                             "description": "For motion events detected by a motion sensor.",
+                                             "units": []
+                                           },
+                                        ]
+                                       },
+                                           {
                                              "name": "cover",
                                              "read_only": false,
                                              "requires_command_handler": false,
