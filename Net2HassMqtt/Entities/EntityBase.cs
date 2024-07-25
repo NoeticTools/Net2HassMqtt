@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Dynamic;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
@@ -110,8 +111,9 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
         var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
                                       .WithNodeId(_deviceNodeId)
                                       .WithObjectId(Config.EntityNodeId);
-        var payload = new ActionWithDataMqttJson("press");
-        await MqttClient.PublishCommandAsync(topic, payload);
+        dynamic payload = new ExpandoObject();
+        payload.event_type = "press";
+        await MqttClient.PublishStatusAsync(topic, payload);
     }
 
     private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
