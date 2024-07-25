@@ -27,7 +27,7 @@ public interface INet2HassMqttClient : INotifyPropertyChanged
 
     internal Task PublishStatusAsync<T>(TopicBuilder topicBuilder, T status);
     
-    internal Task PublishCommandAsync(TopicBuilder topicBuilder, string payload);
+    internal Task PublishCommandAsync<T>(TopicBuilder topicBuilder, T status);
 
     internal Task SubscribeToSetCommandsAsync(string deviceId, IMqttSubscriber subscriber);
 }

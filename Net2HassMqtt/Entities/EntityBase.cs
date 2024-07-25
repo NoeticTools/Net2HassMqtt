@@ -110,7 +110,8 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
         var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
                                       .WithNodeId(_deviceNodeId)
                                       .WithObjectId(Config.EntityNodeId);
-        await MqttClient.PublishCommandAsync(topic, "press");
+        var payload = new ActionWithDataMqttJson("press");
+        await MqttClient.PublishCommandAsync(topic, payload);
     }
 
     private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
