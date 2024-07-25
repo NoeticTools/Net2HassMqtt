@@ -22,6 +22,7 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             DomainName = domain.DomainName
             IsReadOnly = domain.IsReadOnly
             CommandHandlerIsRequired = domain.CommandHandlerIsRequired
+            AdditionalOptions = domain.AdditionalOptions
         ~}}
         /// <summary>
         ///     Home Assistant {{DomainName}} entity discovery configuration.
