@@ -207,9 +207,9 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                                {
                                                  "name": "EventTypes",
                                                  "mqtt_name": "event_types",
-                                                 "description": "A list of valid event_type strings..",
+                                                 "description": "A list of valid event_type strings.",
                                                  "type": "string[]",
-                                                 "default": "",
+                                                 "default": "[]",
                                                  "is_optional": false
                                                }
                                               ],
