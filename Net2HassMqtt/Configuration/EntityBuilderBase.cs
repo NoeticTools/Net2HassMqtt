@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
+using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
 
 
 namespace NoeticTools.Net2HassMqtt.Configuration;
@@ -37,6 +38,12 @@ public abstract class EntityBuilderBase<T, TC>
     public T WithStatusProperty(string propertyName)
     {
         EntityConfig.StatusPropertyName = propertyName;
+        return (this as T)!;
+    }
+
+    public T WithEventProperty(Action<EventProperty> subscribe, Action<EventProperty> unsubscribe) {
+        EntityConfig.SubscribeEvent = subscribe;
+        EntityConfig.UnsubscribeEvent = unsubscribe;
         return (this as T)!;
     }
 

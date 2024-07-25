@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
+using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
@@ -41,6 +42,9 @@ public abstract class EntityConfigBase
     ///     Name of the property on <a cref="Model"></a> to get the entity's status or attribute value.
     /// </summary>
     public string? StatusPropertyName { get; protected internal set; }
+
+    public Action<EventProperty>? SubscribeEvent { get; internal set; }
+    public Action<EventProperty>? UnsubscribeEvent { get; internal set; }
 
     /// <summary>
     ///     Optional HASS entity icon.
@@ -95,11 +99,12 @@ public abstract class EntityConfigBase
             throw new Net2HassMqttConfigurationException($"An entity model is required. Type: {GetType().Name}");
         }
 
-        var hasGetter = string.IsNullOrWhiteSpace(StatusPropertyName);
-        var hasSetter = string.IsNullOrWhiteSpace(CommandMethodName);
-        if (hasGetter && hasSetter)
+        bool hasGetter = !string.IsNullOrWhiteSpace(StatusPropertyName);
+        bool hasSetter = !string.IsNullOrWhiteSpace(CommandMethodName);
+        bool hasEvent = (SubscribeEvent != null && UnsubscribeEvent != null);
+        if (!hasGetter && !hasSetter && !hasEvent)
         {
-            throw new Net2HassMqttConfigurationException("One or both of statusPropertyName and commandMethodName is required.");
+            throw new Net2HassMqttConfigurationException("One or more of statusPropertyName, commandMethodName, or eventProperty is required.");
         }
 
         if (string.IsNullOrWhiteSpace(EntityNodeId))
