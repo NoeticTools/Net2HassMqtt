@@ -97,6 +97,11 @@ internal sealed partial class Net2HassMqttClient : ObservableObject, INet2HassMq
         var payloadJson = JsonSerializer.Serialize(status, MqttConstants.MqttJsonSerialiseOptions);
         await PublishAsync(topicBuilder.WithBaseTopic(ClientMqttId).BuildStateTopic(), payloadJson);
     }
+    
+    public async Task PublishCommandAsync(TopicBuilder topicBuilder, string status)
+    {
+        await PublishAsync(topicBuilder.WithBaseTopic(ClientMqttId).BuildCommandTopic(), status);
+    }
 
     public async Task StartAsync()
     {
