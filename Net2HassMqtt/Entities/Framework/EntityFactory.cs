@@ -24,6 +24,7 @@ internal sealed class EntityFactory
             { HassDomains.BinarySensor.HassDomainName, CreateBinarySensor },
             { HassDomains.Button.HassDomainName, CreateButton },
             { HassDomains.Cover.HassDomainName, CoverButton },
+            { HassDomains.Event.HassDomainName, CreateEvent },
             { HassDomains.Humidifier.HassDomainName, EntityNotSupported }, //todo
             { HassDomains.Number.HassDomainName, CreateNumberEntity },
             { HassDomains.Sensor.HassDomainName, CreateSensorEntity },
@@ -54,7 +55,13 @@ internal sealed class EntityFactory
     private IMqttPublisher CreateButton(EntityConfigBase config, string entityUniqueId, string deviceNodeId)
     {
         return new ButtonEntity((ButtonConfig)config, entityUniqueId, deviceNodeId, _mqttClient,
-                                      CreateLogger<ButtonEntity>(config));
+                                CreateLogger<ButtonEntity>(config));
+    }
+    
+    private IMqttPublisher CreateEvent(EntityConfigBase config, string entityUniqueId, string deviceNodeId)
+    {
+        return new EventEntity((EventConfig)config, entityUniqueId, deviceNodeId, _mqttClient,
+                                CreateLogger<EventEntity>(config));
     }
 
     private ILogger CreateLogger<T>(EntityConfigBase config)

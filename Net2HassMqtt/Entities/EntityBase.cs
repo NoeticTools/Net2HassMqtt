@@ -78,12 +78,15 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
     public Task StartAsync()
     {
         Config.Model!.PropertyChanged += OnModelPropertyChanged;
+        Config.SubscribeEvent?.Invoke(OnEventActivated);
+
         return Task.CompletedTask;
     }
 
     public Task StopAsync()
     {
         Config.Model!.PropertyChanged -= OnModelPropertyChanged;
+        Config.UnsubscribeEvent?.Invoke(OnEventActivated);
         return Task.CompletedTask;
     }
 
@@ -100,6 +103,14 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
     private Dictionary<string, string> GetAttributeValuesDictionary()
     {
         return Attributes.ToDictionary(attribute => attribute.Name, attribute => attribute.StatusPropertyReader.Read());
+    }
+
+    private async void OnEventActivated() {
+        Console.WriteLine("OnEventActivated");
+        var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
+                                      .WithNodeId(_deviceNodeId)
+                                      .WithObjectId(Config.EntityNodeId);
+        await MqttClient.PublishCommandAsync(topic, "press");
     }
 
     private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
