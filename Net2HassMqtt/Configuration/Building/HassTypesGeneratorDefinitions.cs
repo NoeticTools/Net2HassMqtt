@@ -173,7 +173,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                            {
                                              "name": "button",
                                              "read_only": false,
-                                             "requires_command_handler": false,
+                                             "requires_command_handler": true,
                                              "additional_options": [],
                                              "domain_classes": [
                                                {
