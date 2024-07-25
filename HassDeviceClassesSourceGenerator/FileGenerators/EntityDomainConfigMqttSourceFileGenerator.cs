@@ -49,6 +49,9 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 {{~ if IsReadOnly == false ~}}
                 CommandTopic = config.CommandTopic;
                 {{~ end ~}}
+                {{~ for option in domain.AdditionalOptions ~}}
+                {{option.Name}} = config.{{option.Name}};
+                {{~ end ~}}
             }
             
             {{~ if IsReadOnly == false ~}}
@@ -108,7 +111,7 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                                          {
                                              domain
                                          },
-                                         $"Mqtt/{generatedClassName}Mqtt.g.cs",
+                                         $"Mqtt/{generatedClassName}Json.g.cs",
                                          ContentTemplate!);
         }
     }
