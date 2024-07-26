@@ -44,6 +44,7 @@ public abstract class EntityConfigBase
     public string? StatusPropertyName { get; protected internal set; }
 
     public Action<EventProperty>? SubscribeEvent { get; internal set; }
+
     public Action<EventProperty>? UnsubscribeEvent { get; internal set; }
 
     /// <summary>

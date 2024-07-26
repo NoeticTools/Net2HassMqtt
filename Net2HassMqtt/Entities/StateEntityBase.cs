@@ -14,6 +14,7 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 namespace NoeticTools.Net2HassMqtt.Entities;
 
+
 /// <summary>
 ///     State entity base class.
 /// </summary>
