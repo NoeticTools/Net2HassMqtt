@@ -35,6 +35,12 @@ internal class Program
                                                               .WithFriendlyName("Battery Charging Status")
                                                               .WithNodeId("battery_1_charging"));
 
+        device.HasEvent(config => config.OnModel(model)
+                                        .WithEventProperty(model.SubscribeTestButtonPressed, model.UnsubscribeTestButtonPressed)
+                                        .WithEventTypes(["press"])
+                                        .WithFriendlyName("Test Event")
+                                        .WithNodeId("test_event"));
+
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);
         var bridge = new BridgeConfiguration()
                      .WithMqttOptions(mqttOptions)
@@ -64,6 +70,11 @@ internal class Program
                 if (key.KeyChar == '1')
                 {
                     model.BatteryCharging = !model.BatteryCharging;
+                }
+
+                if (key.KeyChar == '2')
+                {
+                    model.FireTestButtonPressed();
                 }
             }
         }
