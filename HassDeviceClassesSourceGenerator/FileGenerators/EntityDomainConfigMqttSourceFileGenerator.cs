@@ -22,6 +22,9 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             DomainName = domain.DomainName
             IsReadOnly = domain.IsReadOnly
             CommandHandlerIsRequired = domain.CommandHandlerIsRequired
+            AdditionalOptions = domain.AdditionalOptions
+            OverrideValueTemplate = domain.OverrideValueTemplate
+            ValueTemplate = domain.ValueTemplate
         ~}}
         /// <summary>
         ///     Home Assistant {{DomainName}} entity discovery configuration.
@@ -48,6 +51,16 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 {{~ if IsReadOnly == false ~}}
                 CommandTopic = config.CommandTopic;
                 {{~ end ~}}
+                {{~ for option in AdditionalOptions ~}}
+                {{option.Name}} = config.{{option.Name}};
+                {{~ end ~}}
+                {{~ if OverrideValueTemplate == true ~}}
+                    {{~ if ValueTemplate == null ~}}
+                ValueTemplate = null;
+                    {{~ else ~}}
+                ValueTemplate = "{{ ValueTemplate }}";
+                    {{~ end ~}}
+                {{~ end ~}}
             }
             
             {{~ if IsReadOnly == false ~}}
@@ -60,7 +73,7 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             /// </summary>
             [JsonPropertyName("device_class")]
             public string DeviceClass { get; set; }
-            {{~ for option in domain.AdditionalOptions ~}}
+            {{~ for option in AdditionalOptions ~}}
             
             /// <summary>
             ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
@@ -107,7 +120,7 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                                          {
                                              domain
                                          },
-                                         $"Mqtt/{generatedClassName}Mqtt.g.cs",
+                                         $"Mqtt/{generatedClassName}Json.g.cs",
                                          ContentTemplate!);
         }
     }
