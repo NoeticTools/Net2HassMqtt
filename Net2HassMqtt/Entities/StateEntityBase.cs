@@ -27,7 +27,6 @@ internal abstract class StateEntityBase<T> : IMqttPublisher, IMqttSubscriber
     {
         config.Validate();
         Config = config;
-        Model = config.Model!;
         Logger = logger;
         EntityUniqueId = entityUniqueId;
         _deviceNodeId = deviceNodeId;
@@ -63,8 +62,6 @@ internal abstract class StateEntityBase<T> : IMqttPublisher, IMqttSubscriber
     ///     Attribute values to read and sent when MQTT publishing an entity value.
     /// </summary>
     private List<EntityAttribute> Attributes { get; } = [];
-
-    protected INotifyPropertyChanged Model { get; }
 
     public IStatusPropertyReader StatusPropertyReader { get; }
 
