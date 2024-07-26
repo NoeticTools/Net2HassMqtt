@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
@@ -19,12 +20,7 @@ public class QuickStartDemoModel : ObservableObject
         }
     }
 
-    public event EventHandler TestEvent;
-
-    public void FireTestEvent()
-    {
-        TestEvent(this, EventArgs.Empty);
-    }
+    public HaEvent TestEvent = new("test_event_type");
 }
 
 // A Better way of doing the same thing as above ...

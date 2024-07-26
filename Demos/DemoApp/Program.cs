@@ -37,7 +37,6 @@ internal class Program
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.TestEvent))
-                                        .WithEventTypes(["press"])
                                         .WithFriendlyName("Test Event")
                                         .WithNodeId("test_event"));
 
@@ -74,7 +73,7 @@ internal class Program
 
                 if (key.KeyChar == '2')
                 {
-                    model.FireTestEvent();
+                    model.TestEvent.Fire("test_event_type");
                 }
             }
         }
