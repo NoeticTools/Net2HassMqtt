@@ -10,11 +10,6 @@ internal interface IMqttPublisher
     /// </summary>
     bool CanCommand { get; }
 
-    /// <summary>
-    ///     Can read entity value from the model.
-    /// </summary>
-    bool CanRead { get; }
-
     Task PublishConfigAsync(DeviceConfig deviceConfig);
     Task PublishStateAsync();
     Task StartAsync();

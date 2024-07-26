@@ -3,6 +3,7 @@ using System.Dynamic;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
@@ -13,28 +14,38 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 namespace NoeticTools.Net2HassMqtt.Entities;
 
-internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqttSubscriber
+/// <summary>
+///     State entity base class.
+/// </summary>
+internal abstract class StateEntityBase<T> : IMqttPublisher, IMqttSubscriber
     where T : EntityConfigBase
 {
     private readonly string _deviceNodeId;
 
-    protected EntityBase(T config, string entityUniqueId, string deviceNodeId,
-                         INet2HassMqttClient mqttClient, ILogger logger)
-        : base(config, logger)
+    protected StateEntityBase(T config, string entityUniqueId, string deviceNodeId,
+                              INet2HassMqttClient mqttClient, ILogger logger)
     {
         config.Validate();
         Config = config;
+        Model = config.Model!;
+        Logger = logger;
         EntityUniqueId = entityUniqueId;
         _deviceNodeId = deviceNodeId;
         MqttClient = mqttClient;
-        CommandHandler = new EntityCommandHandler(Model,
+        StatusPropertyReader = new StatusPropertyReader(config.Model!,
+                                                        config.StatusPropertyName,
+                                                        config.Domain.HassDomainName,
+                                                        config.HassDeviceClassName,
+                                                        config.UnitOfMeasurement!.HassUnitOfMeasurement,
+                                                        logger);
+
+        CommandHandler = new EntityCommandHandler(config.Model!,
                                                   config.CommandMethodName,
                                                   config.UnitOfMeasurement!.HassUnitOfMeasurement,
                                                   logger);
-        foreach (var configuration in config.Attributes)
-        {
-            Attributes.Add(new EntityAttribute(configuration, logger));
-        }
+        CanCommand = CommandHandler.CanCommand;
+
+        foreach (var configuration in config.Attributes) Attributes.Add(new EntityAttribute(configuration, logger));
     }
 
     protected string EntityUniqueId { get; }
@@ -53,16 +64,17 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
     /// </summary>
     private List<EntityAttribute> Attributes { get; } = [];
 
+    protected INotifyPropertyChanged Model { get; }
+
+    public IStatusPropertyReader StatusPropertyReader { get; }
+
+    protected ILogger Logger { get; }
+
     /// <summary>
     ///     Can write received MQTT entity values to the model.
     ///     Always false for entity attributes.
     /// </summary>
-    public bool CanCommand => CommandHandler.CanCommand;
-
-    /// <summary>
-    ///     Can read entity status from the model.
-    /// </summary>
-    public bool CanRead => StatusPropertyReader.CanRead;
+    public bool CanCommand { get; }
 
     public async Task PublishConfigAsync(DeviceConfig deviceConfig)
     {
@@ -106,7 +118,8 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
         return Attributes.ToDictionary(attribute => attribute.Name, attribute => attribute.StatusPropertyReader.Read());
     }
 
-    private async void OnEventActivated() {
+    private async void OnEventActivated()
+    {
         Console.WriteLine("OnEventActivated");
         var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
                                       .WithNodeId(_deviceNodeId)

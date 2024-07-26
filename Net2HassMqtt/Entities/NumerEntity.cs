@@ -6,7 +6,7 @@ using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
 namespace NoeticTools.Net2HassMqtt.Entities;
 
-internal sealed class NumberEntity : EntityBase<NumberConfig>
+internal sealed class NumberEntity : StateEntityBase<NumberConfig>
 {
     public NumberEntity(NumberConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
         base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
