@@ -203,16 +203,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                              "read_only": true,
                                              "requires_command_handler": false,
                                              "value_template": null,
-                                             "additional_options": [
-                                               {
-                                                 "name": "EventTypes",
-                                                 "mqtt_name": "event_types",
-                                                 "description": "A list of valid event_type strings.",
-                                                 "type": "string[]",
-                                                 "default": "[]",
-                                                 "is_optional": false
-                                               }
-                                              ],
+                                             "additional_options": [],
                                              "domain_classes": [
                                                {
                                                  "name": "None",
