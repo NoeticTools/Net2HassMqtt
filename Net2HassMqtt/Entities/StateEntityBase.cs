@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Dynamic;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
@@ -19,7 +18,6 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqttSubscriber
     where T : EntityConfigBase
 {
-
     protected StateEntityBase(T config, string entityUniqueId, string deviceNodeId,
                               INet2HassMqttClient mqttClient, ILogger logger)
         : base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
@@ -38,6 +36,16 @@ internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqt
         CanCommand = CommandHandler.CanCommand;
     }
 
+    public EntityCommandHandler CommandHandler { get; set; }
+
+    public IStatusPropertyReader StatusPropertyReader { get; }
+
+    public async Task PublishStateAsync()
+    {
+        var payload = new StateWithDataMqttJson(StatusPropertyReader.Read(), GetAttributeValuesDictionary());
+        await PublishStatusAsync(payload);
+    }
+
     public override Task StartAsync()
     {
         Config.Model!.PropertyChanged += OnModelPropertyChanged;
@@ -50,14 +58,13 @@ internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqt
         return Task.CompletedTask;
     }
 
-    public EntityCommandHandler CommandHandler { get; set; }
-
-    public IStatusPropertyReader StatusPropertyReader { get; }
-
-    public async Task PublishStateAsync()
+    private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        var payload = new StateWithDataMqttJson(StatusPropertyReader.Read(), GetAttributeValuesDictionary());
-        await PublishStatusAsync(payload);
+        if (e.PropertyName == Config.StatusPropertyName)
+        {
+            // ReSharper disable once UseDiscardAssignment
+            var _ = PublishStateAsync();
+        }
     }
 
     void IMqttSubscriber.OnReceived(ReceivedMqttMessage message)
@@ -65,15 +72,6 @@ internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqt
         if (message.TopicAction == TopicAction.SetCmd)
         {
             CommandHandler.Handle(message.Payload);
-        }
-    }
-
-    private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == Config.StatusPropertyName)
-        {
-            // ReSharper disable once UseDiscardAssignment
-            var _ = PublishStateAsync();
         }
     }
 
