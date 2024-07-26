@@ -27,7 +27,11 @@ internal sealed class Net2MqttBridge : INet2HassMqttBridge
         await _mqttClient.StartAsync();
         if (false == await _mqttClient.WaitForConnection(3.Seconds()))
             return false;
-        await _devices.ForeachAsync(device => device.StartAsync());
+        foreach (var device in _devices)
+        {
+            await device.StartAsync();
+        }
+        //await _devices.ForeachAsync(device => device.StartAsync());
         return true;
     }
 

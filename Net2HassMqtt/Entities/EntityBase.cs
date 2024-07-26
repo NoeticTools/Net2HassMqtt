@@ -51,9 +51,15 @@ internal abstract class EntityBase<T> : IMqttEntity
         await MqttClient.Discovery.PublishEntityConfigAsync(EntityUniqueId, Config, deviceConfig, payloadJson);
     }
 
-    public abstract Task StartAsync();
+    public virtual Task StartAsync()
+    {
+        return Task.CompletedTask;
+    }
 
-    public abstract Task StopAsync();
+    public virtual Task StopAsync()
+    {
+        return Task.CompletedTask;
+    }
 
     protected Dictionary<string, string> GetAttributeValuesDictionary()
     {

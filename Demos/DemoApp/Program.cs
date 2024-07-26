@@ -36,7 +36,7 @@ internal class Program
                                                               .WithNodeId("battery_1_charging"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEventProperty(model.SubscribeTestButtonPressed, model.UnsubscribeTestButtonPressed)
+                                        .WithEvent(nameof(QuickStartDemoModel.TestButtonPressed))
                                         .WithEventTypes(["press"])
                                         .WithFriendlyName("Test Event")
                                         .WithNodeId("test_event"));

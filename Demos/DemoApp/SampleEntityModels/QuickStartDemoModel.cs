@@ -20,22 +20,22 @@ public class QuickStartDemoModel : ObservableObject
         }
     }
 
-    public event EventProperty? TestButtonPressed;
+    public event EventHandler TestButtonPressed;
 
     public void FireTestButtonPressed()
     {
-        TestButtonPressed?.Invoke();
+        TestButtonPressed(this, EventArgs.Empty);
     }
 
-    public void SubscribeTestButtonPressed(EventProperty callback)
-    {
-        TestButtonPressed += callback;
-    }
+    //public void SubscribeTestButtonPressed(EventProperty callback)
+    //{
+    //    TestButtonPressed += callback;
+    //}
 
-    public void UnsubscribeTestButtonPressed(EventProperty callback)
-    {
-        TestButtonPressed -= callback;
-    }
+    //public void UnsubscribeTestButtonPressed(EventProperty callback)
+    //{
+    //    TestButtonPressed -= callback;
+    //}
 }
 
 // A Better way of doing the same thing as above ...
