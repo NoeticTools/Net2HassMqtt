@@ -43,8 +43,10 @@ public abstract class EntityConfigBase
     /// </summary>
     public string? StatusPropertyName { get; protected internal set; }
 
-    public Action<EventProperty>? SubscribeEvent { get; internal set; }
-    public Action<EventProperty>? UnsubscribeEvent { get; internal set; }
+    /// <summary>
+    /// The name of the model's event member. Only applicable to event entities.
+    /// </summary>
+    public string? EventMemberName { get; protected internal set; }
 
     /// <summary>
     ///     Optional HASS entity icon.
@@ -99,9 +101,9 @@ public abstract class EntityConfigBase
             throw new Net2HassMqttConfigurationException($"An entity model is required. Type: {GetType().Name}");
         }
 
-        bool hasGetter = !string.IsNullOrWhiteSpace(StatusPropertyName);
-        bool hasSetter = !string.IsNullOrWhiteSpace(CommandMethodName);
-        bool hasEvent = (SubscribeEvent != null && UnsubscribeEvent != null);
+        var hasGetter = !string.IsNullOrWhiteSpace(StatusPropertyName);
+        var hasSetter = !string.IsNullOrWhiteSpace(CommandMethodName);
+        var hasEvent = !string.IsNullOrWhiteSpace(EventMemberName);
         if (!hasGetter && !hasSetter && !hasEvent)
         {
             throw new Net2HassMqttConfigurationException("One or more of statusPropertyName, commandMethodName, or eventProperty is required.");

@@ -85,7 +85,7 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 ///         </item>
 ///     </list>
 /// </remarks>
-internal sealed class SwitchEntity : EntityBase<SwitchConfig>
+internal sealed class SwitchEntity : StateEntityBase<SwitchConfig>
 {
     public SwitchEntity(SwitchConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
         base(config, entityUniqueId, deviceNodeId, mqttClient, logger)

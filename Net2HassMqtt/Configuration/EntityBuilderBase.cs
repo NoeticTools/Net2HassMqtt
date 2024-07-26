@@ -41,9 +41,12 @@ public abstract class EntityBuilderBase<T, TC>
         return (this as T)!;
     }
 
-    public T WithEventProperty(Action<EventProperty> subscribe, Action<EventProperty> unsubscribe) {
-        EntityConfig.SubscribeEvent = subscribe;
-        EntityConfig.UnsubscribeEvent = unsubscribe;
+    /// <summary>
+    ///     The name of the model's event member. Only applicable to event entities.
+    /// </summary>
+    public T WithEvent(string eventMemberName) 
+    {
+        EntityConfig.EventMemberName = eventMemberName;
         return (this as T)!;
     }
 
