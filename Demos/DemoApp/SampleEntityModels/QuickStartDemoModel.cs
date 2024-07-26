@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
@@ -20,22 +19,12 @@ public class QuickStartDemoModel : ObservableObject
         }
     }
 
-    public event EventHandler TestButtonPressed;
+    public event EventHandler TestEvent;
 
-    public void FireTestButtonPressed()
+    public void FireTestEvent()
     {
-        TestButtonPressed(this, EventArgs.Empty);
+        TestEvent(this, EventArgs.Empty);
     }
-
-    //public void SubscribeTestButtonPressed(EventProperty callback)
-    //{
-    //    TestButtonPressed += callback;
-    //}
-
-    //public void UnsubscribeTestButtonPressed(EventProperty callback)
-    //{
-    //    TestButtonPressed -= callback;
-    //}
 }
 
 // A Better way of doing the same thing as above ...

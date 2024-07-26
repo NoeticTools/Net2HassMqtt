@@ -44,6 +44,7 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
                                       .WithObjectId(Config.EntityNodeId);
         dynamic payload = new ExpandoObject();
         payload.event_type = "press";
+        // ReSharper disable once UseDiscardAssignment
         var _ = MqttClient.PublishStatusAsync(topic, payload);
     }
 

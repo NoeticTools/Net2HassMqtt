@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
-using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
 
 
 namespace NoeticTools.Net2HassMqtt.Configuration;

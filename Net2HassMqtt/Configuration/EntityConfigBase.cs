@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
-using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
@@ -106,7 +105,7 @@ public abstract class EntityConfigBase
         var hasEvent = !string.IsNullOrWhiteSpace(EventMemberName);
         if (!hasGetter && !hasSetter && !hasEvent)
         {
-            throw new Net2HassMqttConfigurationException("One or more of statusPropertyName, commandMethodName, or eventProperty is required.");
+            throw new Net2HassMqttConfigurationException("One or more of statusPropertyName, commandMethodName, or eventMemberName is required.");
         }
 
         if (string.IsNullOrWhiteSpace(EntityNodeId))
