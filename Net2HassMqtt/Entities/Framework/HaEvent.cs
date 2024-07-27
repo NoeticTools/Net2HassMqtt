@@ -4,14 +4,18 @@ public class HaEvent(IEnumerable<string> eventTypes) {
     public event EventHandler<DictEventArgs>? Event;
     public List<string> EventTypes { get; } = eventTypes.ToList();
 
-    public HaEvent(string eventType) : this(new List<string> { eventType }) { }
-    
+    public HaEvent(string eventType) : this(new List<string> { eventType }) {
+        if (eventType.Length == 0) {
+            throw new ArgumentException("Must specify at least one event type.", nameof(eventType));
+        }
+    }
+
     public void Fire(IDictionary<string, string>? args = null) {
         if (EventTypes.Count != 1) {
             throw
                 new InvalidOperationException("Cannot call Fire with default event_type when there are is exactly one event type that can be used.");
         }
-        
+
         Fire(EventTypes[0], args);
     }
 
