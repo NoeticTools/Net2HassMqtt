@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Dynamic;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
@@ -14,63 +14,69 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     where T : EntityConfigBase
 {
     private readonly Delegate _eventHandlerDelegate;
+    private readonly HaEvent _eventPublisher;
     private readonly EventInfo _eventInfo;
 
     protected EventEntityBase(T config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger)
         : base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
     {
-        _eventInfo = GetModelEventInfo();
+        (_eventPublisher, _eventInfo) = GetModelEventInfo();
         var type = _eventInfo.EventHandlerType!;
         _eventHandlerDelegate = Delegate.CreateDelegate(type, this, nameof(OnEvent));
     }
 
     public override Task StartAsync()
     {
-        _eventInfo.AddEventHandler(Config.Model, _eventHandlerDelegate);
+        _eventInfo.AddEventHandler(_eventPublisher, _eventHandlerDelegate);
         return Task.CompletedTask;
-    }
+    }   
 
     public override Task StopAsync()
     {
-        _eventInfo.RemoveEventHandler(Config.Model, _eventHandlerDelegate);
+        _eventInfo.RemoveEventHandler(_eventPublisher, _eventHandlerDelegate);
         return Task.CompletedTask;
     }
 
-    internal void OnEvent(object sender, EventArgs args)
+    internal void OnEvent(object sender, HaEvent.DictEventArgs dictEventArgs)
     {
         Console.WriteLine("OnEventActivated");
         var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
                                       .WithNodeId(DeviceNodeId)
                                       .WithObjectId(Config.EntityNodeId);
-        dynamic payload = new ExpandoObject();
-        payload.event_type = "press";
-        var _ = MqttClient.PublishStatusAsync(topic, payload);
+        // ReSharper disable once UseDiscardAssignment
+        var _ = MqttClient.PublishStatusAsync(topic, dictEventArgs.Arguments);
     }
 
-    private EventInfo GetModelEventInfo()
+    private (HaEvent, EventInfo) GetModelEventInfo()
     {
         if (Config.Model == null)
         {
             ThrowConfigError("An event requires a model.");
         }
 
-        if (string.IsNullOrWhiteSpace(Config.EventMemberName))
+        if (string.IsNullOrWhiteSpace(Config.HaEventMemberName))
         {
-            ThrowConfigError("An event requires a model's event member name.");
+            ThrowConfigError("An event requires a model's HaEvent member name.");
         }
 
         var model = Config.Model;
-        var eventInfo = model.GetType().GetEvent(Config.EventMemberName, BindingFlags.Instance | BindingFlags.Public);
-        if (eventInfo != null)
+        var haEventInstance = model.GetType().GetField(Config.HaEventMemberName, BindingFlags.Instance | BindingFlags.Public)?.GetValue(model) as HaEvent;
+        if (haEventInstance == null)
         {
-            return eventInfo!;
-        }
-
-        {
-            var message = $"Could not find public method '{Config.EventMemberName}' on model of type of type '{model.GetType()}'";
+            var message = $"Could not find public field '{Config.HaEventMemberName}' on model of type '{model.GetType()}'";
             Logger.LogError(message);
             throw new Net2HassMqttConfigurationException(message);
         }
+        
+        var eventInfo = haEventInstance.GetType().GetEvent("Event", BindingFlags.Instance | BindingFlags.Public);
+        if (eventInfo == null)
+        {
+            var message = $"Could not find public event '{Config.HaEventMemberName}.Event' on model of type '{haEventInstance.GetType()}'";
+            Logger.LogError(message);
+            throw new Net2HassMqttConfigurationException(message);
+        }
+        
+        return (haEventInstance, eventInfo);
     }
 
     [DoesNotReturn]

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
-using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
@@ -44,9 +43,14 @@ public abstract class EntityConfigBase
     public string? StatusPropertyName { get; protected internal set; }
 
     /// <summary>
-    /// The name of the model's event member. Only applicable to event entities.
+    /// The name of the model's HaEvent member. Only applicable to event entities.
     /// </summary>
-    public string? EventMemberName { get; protected internal set; }
+    public string? HaEventMemberName { get; protected internal set; }
+
+    /// <summary>
+    ///     The list of allowed event types. Only applicable to event entities.
+    /// </summary>
+    public string[] EventTypes { get; protected internal set; } = [];
 
     /// <summary>
     ///     Optional HASS entity icon.
@@ -103,10 +107,10 @@ public abstract class EntityConfigBase
 
         var hasGetter = !string.IsNullOrWhiteSpace(StatusPropertyName);
         var hasSetter = !string.IsNullOrWhiteSpace(CommandMethodName);
-        var hasEvent = !string.IsNullOrWhiteSpace(EventMemberName);
+        var hasEvent = !string.IsNullOrWhiteSpace(HaEventMemberName);
         if (!hasGetter && !hasSetter && !hasEvent)
         {
-            throw new Net2HassMqttConfigurationException("One or more of statusPropertyName, commandMethodName, or eventProperty is required.");
+            throw new Net2HassMqttConfigurationException("One or more of statusPropertyName, commandMethodName, or eventMemberName is required.");
         }
 
         if (string.IsNullOrWhiteSpace(EntityNodeId))

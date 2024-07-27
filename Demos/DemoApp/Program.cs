@@ -36,8 +36,7 @@ internal class Program
                                                               .WithNodeId("battery_1_charging"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.TestButtonPressed))
-                                        .WithEventTypes(["press"])
+                                        .WithEvent(nameof(QuickStartDemoModel.TestEvent))
                                         .WithFriendlyName("Test Event")
                                         .WithNodeId("test_event"));
 
@@ -74,7 +73,7 @@ internal class Program
 
                 if (key.KeyChar == '2')
                 {
-                    model.FireTestButtonPressed();
+                    model.TestEvent.Fire("test_event_type");
                 }
             }
         }

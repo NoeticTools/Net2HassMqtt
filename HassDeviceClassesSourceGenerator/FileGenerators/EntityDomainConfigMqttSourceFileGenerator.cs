@@ -54,6 +54,9 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 {{~ for option in AdditionalOptions ~}}
                 {{option.Name}} = config.{{option.Name}};
                 {{~ end ~}}
+                {{~ if HassDomainName == "event" ~}}
+                EventTypes = config.EventTypes;
+                {{~ end ~}}
                 {{~ if OverrideValueTemplate == true ~}}
                     {{~ if ValueTemplate == null ~}}
                 ValueTemplate = null;
@@ -87,6 +90,14 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             /// </summary>
             [JsonPropertyName("unit_of_measurement")]
             public string? UnitOfMeasurement { get; set; }
+            
+            {{~ if HassDomainName == "event" ~}}
+            /// <summary>
+            ///    A list of valid event_type strings. (Required, default is '[]')
+            /// </summary>
+            [JsonPropertyName("event_types")]
+            public string[] EventTypes { get; set; } = [];
+            {{~ end ~}}
             
             internal override void Build(TopicBuilder topic)
             {

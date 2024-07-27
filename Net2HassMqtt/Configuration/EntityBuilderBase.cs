@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
-using NoeticTools.Net2HassMqtt.Entities.Framework.EventProperty;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Exceptions;
 
 
 namespace NoeticTools.Net2HassMqtt.Configuration;
@@ -44,9 +46,24 @@ public abstract class EntityBuilderBase<T, TC>
     /// <summary>
     ///     The name of the model's event member. Only applicable to event entities.
     /// </summary>
-    public T WithEvent(string eventMemberName) 
+    public T WithEvent(string haEventMemberName) 
     {
-        EntityConfig.EventMemberName = eventMemberName;
+        EntityConfig.HaEventMemberName = haEventMemberName;
+
+        var model = EntityConfig.Model;
+        if (model == null)
+        {
+            throw new Net2HassMqttConfigurationException("WithEvent requires a model");
+        }
+        var haEventInstance = model.GetType().GetField(haEventMemberName, BindingFlags.Instance | BindingFlags.Public)?.GetValue(model) as HaEvent;
+        if (haEventInstance == null)
+        {
+            var message = $"Could not find public field '{haEventMemberName}' on model of type '{model.GetType()}'";
+            throw new Net2HassMqttConfigurationException(message);
+        }
+
+        EntityConfig.EventTypes = haEventInstance.EventTypes.ToArray();
+        
         return (this as T)!;
     }
 
