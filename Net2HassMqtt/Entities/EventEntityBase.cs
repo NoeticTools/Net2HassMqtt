@@ -60,7 +60,7 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
         }
 
         var model = Config.Model;
-        var haEventInstance = model.GetType().GetField(Config.HaEventMemberName, BindingFlags.Instance | BindingFlags.Public)?.GetValue(model) as HaEvent;
+        var haEventInstance = model.GetType().GetField(Config.HaEventMemberName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(model) as HaEvent;
         if (haEventInstance == null)
         {
             var message = $"Could not find public field '{Config.HaEventMemberName}' on model of type '{model.GetType()}'";

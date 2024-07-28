@@ -55,7 +55,7 @@ public abstract class EntityBuilderBase<T, TC>
         {
             throw new Net2HassMqttConfigurationException("WithEvent requires a model");
         }
-        var haEventInstance = model.GetType().GetField(haEventMemberName, BindingFlags.Instance | BindingFlags.Public)?.GetValue(model) as HaEvent;
+        var haEventInstance = model.GetType().GetField(haEventMemberName, BindingFlags.Instance  | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(model) as HaEvent;
         if (haEventInstance == null)
         {
             var message = $"Could not find public field '{haEventMemberName}' on model of type '{model.GetType()}'";
