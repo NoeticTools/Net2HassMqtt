@@ -8,7 +8,7 @@ patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)'
 commit-message-incrementing: Disabled
 merge-message-formats: {}
-update-build-number: false
+update-build-number: true
 
 branches:
   main:
