@@ -39,7 +39,6 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
 
     internal void OnEvent(object sender, HaEvent.DictEventArgs dictEventArgs)
     {
-        Console.WriteLine("OnEventActivated");
         var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
                                       .WithNodeId(DeviceNodeId)
                                       .WithObjectId(Config.EntityNodeId);
