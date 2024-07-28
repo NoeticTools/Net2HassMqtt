@@ -10,6 +10,19 @@ public class HaEvent(IEnumerable<string> eventTypes) {
         }
     }
 
+    public void Fire(params (string key, string value)[]? args) {
+        var dict = new Dictionary<string, string>();
+        if (args != null) {
+            foreach (var kvp in args) {
+                if (!dict.TryAdd(kvp.key, kvp.value)) {
+                    throw new ArgumentException($"Tuples must contain unique keys. Collision found: '{kvp.key}", nameof(args));
+                }
+            }
+        }
+
+        Fire(dict);
+    }
+
     public void Fire(IDictionary<string, string>? args = null) {
         if (EventTypes.Count != 1) {
             throw
@@ -17,6 +30,19 @@ public class HaEvent(IEnumerable<string> eventTypes) {
         }
 
         Fire(EventTypes[0], args);
+    }
+    
+    public void Fire(string eventType, params (string key, string value)[]? args) {
+        var dict = new Dictionary<string, string>();
+        if (args != null) {
+            foreach (var kvp in args) {
+                if (!dict.TryAdd(kvp.key, kvp.value)) {
+                    throw new ArgumentException($"Tuples must contain unique keys. Collision found: '{kvp.key}", nameof(args));
+                }
+            }
+        }
+
+        Fire(eventType, dict);
     }
 
     public void Fire(string eventType, IDictionary<string, string>? args = null) {
