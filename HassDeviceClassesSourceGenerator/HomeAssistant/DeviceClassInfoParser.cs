@@ -20,11 +20,12 @@ internal static class DeviceClassInfoParser
             var jsonDomain = domainJson.AsJsonObject;
             var hassDomainName = jsonDomain["name"].AsString;
             var isReadOnly = jsonDomain["read_only"].AsBoolean;
+            var hasRetainOption = !jsonDomain["no_retain_option"].AsBoolean;
             var requiresCommandHandler = jsonDomain.ContainsKey("requires_command_handler") && jsonDomain["requires_command_handler"].AsBoolean;
             var domainDeviceClasses = GetHassDeviceClassInfos(jsonDomain, hassDomainName, isReadOnly, allDeviceClasses);
             var additionalOptions = GetAdditionalOptions(jsonDomain);
 
-            var domainInfo = new HassDomainInfo(hassDomainName, isReadOnly, requiresCommandHandler, domainDeviceClasses, additionalOptions);
+            var domainInfo = new HassDomainInfo(hassDomainName, isReadOnly, requiresCommandHandler, domainDeviceClasses, hasRetainOption, additionalOptions);
             if (jsonDomain.ContainsKey("value_template")) {
                 domainInfo.OverrideValueTemplate = true;
                 domainInfo.ValueTemplate = jsonDomain["value_template"].AsString;

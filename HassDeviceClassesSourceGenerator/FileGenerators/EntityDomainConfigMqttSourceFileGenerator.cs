@@ -25,6 +25,7 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             AdditionalOptions = domain.AdditionalOptions
             OverrideValueTemplate = domain.OverrideValueTemplate
             ValueTemplate = domain.ValueTemplate
+            HasRetainOption = domain.HasRetainOption
         ~}}
         /// <summary>
         ///     Home Assistant {{DomainName}} entity discovery configuration.
@@ -54,9 +55,6 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 {{~ for option in AdditionalOptions ~}}
                 {{option.Name}} = config.{{option.Name}};
                 {{~ end ~}}
-                {{~ if HassDomainName == "event" ~}}
-                EventTypes = config.EventTypes;
-                {{~ end ~}}
                 {{~ if OverrideValueTemplate == true ~}}
                     {{~ if ValueTemplate == null ~}}
                 ValueTemplate = null;
@@ -65,8 +63,8 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                     {{~ end ~}}
                 {{~ end ~}}
             }
-            
             {{~ if IsReadOnly == false ~}}
+            
             [JsonPropertyName("command_topic")]
             public string{{ CommandHandlerIsRequired ? "" : "?" }} CommandTopic { get; set; }
             {{~ end ~}}
@@ -91,14 +89,11 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             [JsonPropertyName("unit_of_measurement")]
             public string? UnitOfMeasurement { get; set; }
             
-            {{~ if HassDomainName == "event" ~}}
-            /// <summary>
-            ///    A list of valid event_type strings. (Required, default is '[]')
-            /// </summary>
-            [JsonPropertyName("event_types")]
-            public string[] EventTypes { get; set; } = [];
-            {{~ end ~}}
+            {{~ if HasRetainOption == true ~}}
+            [JsonPropertyName("retain")]
+            public bool Retain { get; set; } = true;
             
+            {{~ end ~}}
             internal override void Build(TopicBuilder topic)
             {
                 if (string.IsNullOrWhiteSpace(StateTopic))
@@ -110,13 +105,13 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 {
                     JsonAttributesTopic = StateTopic;
                 }
-                
                 {{~ if IsReadOnly == false ~}}
+                
                 if (string.IsNullOrWhiteSpace(CommandTopic))
                 {
                     CommandTopic = topic.BuildCommandTopic().ToString();
                 }
-                {{~ end ~}}
+                {{- end ~}}
             }
         }
         """;

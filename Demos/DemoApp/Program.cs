@@ -9,6 +9,8 @@ namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp;
 
 internal class Program
 {
+    private static bool _toggle;
+
     private static async Task Main(string[] args)
     {
         Console.WriteLine("""
@@ -37,6 +39,7 @@ internal class Program
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.TestEvent))
+                                        .WithEventTypes(new[] { "A", "B" })
                                         .WithFriendlyName("Test Event")
                                         .WithNodeId("test_event"));
 
@@ -73,7 +76,8 @@ internal class Program
 
                 if (key.KeyChar == '2')
                 {
-                    model.TestEvent.Fire("test_event_type");
+                    _toggle = !_toggle;
+                    model.TestEvent.Fire(_toggle ? "A" : "B");
                 }
             }
         }

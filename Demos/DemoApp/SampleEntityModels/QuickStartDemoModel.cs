@@ -20,7 +20,7 @@ public class QuickStartDemoModel : ObservableObject
         }
     }
 
-    public HaEvent TestEvent = new("test_event_type");
+    public HaEvent TestEvent = new (new [] {"A", "B"});
 }
 
 // A Better way of doing the same thing as above ...
