@@ -27,4 +27,8 @@ internal sealed class HassDomainInfo
     public IReadOnlyList<HassDeviceClassInfo> DeviceClasses { get; }
 
     public IReadOnlyList<AdditionalOptionInfo> AdditionalOptions { get; }
+    
+    public bool OverrideValueTemplate { get; set; }
+    
+    public string? ValueTemplate { get; set; }
 }

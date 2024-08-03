@@ -1,67 +1,49 @@
-﻿using System.ComponentModel;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
-using NoeticTools.Net2HassMqtt.Entities.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
-using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
-using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
-
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace NoeticTools.Net2HassMqtt.Entities;
 
-internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqttSubscriber
+internal abstract class EntityBase<T> : IMqttEntity
     where T : EntityConfigBase
 {
-    private readonly string _deviceNodeId;
+    private readonly List<EntityAttribute> _attributes = [];
 
     protected EntityBase(T config, string entityUniqueId, string deviceNodeId,
                          INet2HassMqttClient mqttClient, ILogger logger)
-        : base(config, logger)
     {
         config.Validate();
         Config = config;
+        Logger = logger;
         EntityUniqueId = entityUniqueId;
-        _deviceNodeId = deviceNodeId;
+        DeviceNodeId = deviceNodeId;
         MqttClient = mqttClient;
-        CommandHandler = new EntityCommandHandler(Model,
-                                                  config.CommandMethodName,
-                                                  config.UnitOfMeasurement!.HassUnitOfMeasurement,
-                                                  logger);
         foreach (var configuration in config.Attributes)
         {
-            Attributes.Add(new EntityAttribute(configuration, logger));
+            _attributes.Add(new EntityAttribute(configuration, logger));
         }
     }
 
-    protected string EntityUniqueId { get; }
-
-    public EntityCommandHandler CommandHandler { get; set; }
+    /// <summary>
+    ///     Can write received MQTT entity values to the model.
+    ///     Always false for entity attributes.
+    /// </summary>
+    public bool CanCommand { get; protected init; }
 
     /// <summary>
     ///     The entity's configuration.
     /// </summary>
     protected T Config { get; }
 
+    protected string DeviceNodeId { get; }
+
+    protected string EntityUniqueId { get; }
+
+    protected ILogger Logger { get; }
+
     protected INet2HassMqttClient MqttClient { get; }
-
-    /// <summary>
-    ///     Attribute values to read and sent when MQTT publishing an entity value.
-    /// </summary>
-    private List<EntityAttribute> Attributes { get; } = [];
-
-    /// <summary>
-    ///     Can write received MQTT entity values to the model.
-    ///     Always false for entity attributes.
-    /// </summary>
-    public bool CanCommand => CommandHandler.CanCommand;
-
-    /// <summary>
-    ///     Can read entity status from the model.
-    /// </summary>
-    public bool CanRead => StatusPropertyReader.CanRead;
 
     public async Task PublishConfigAsync(DeviceConfig deviceConfig)
     {
@@ -69,53 +51,20 @@ internal abstract class EntityBase<T> : EntityPropertyBase, IMqttPublisher, IMqt
         await MqttClient.Discovery.PublishEntityConfigAsync(EntityUniqueId, Config, deviceConfig, payloadJson);
     }
 
-    public async Task PublishStateAsync()
+    public virtual Task StartAsync()
     {
-        var payload = new StateWithDataMqttJson(StatusPropertyReader.Read(), GetAttributeValuesDictionary());
-        await PublishStatusAsync(payload);
-    }
-
-    public Task StartAsync()
-    {
-        Config.Model!.PropertyChanged += OnModelPropertyChanged;
         return Task.CompletedTask;
     }
 
-    public Task StopAsync()
+    public virtual Task StopAsync()
     {
-        Config.Model!.PropertyChanged -= OnModelPropertyChanged;
         return Task.CompletedTask;
     }
 
-    void IMqttSubscriber.OnReceived(ReceivedMqttMessage message)
+    protected Dictionary<string, string> GetAttributeValuesDictionary()
     {
-        if (message.TopicAction == TopicAction.SetCmd)
-        {
-            CommandHandler.Handle(message.Payload);
-        }
+        return _attributes.ToDictionary(attribute => attribute.Name, attribute => attribute.StatusPropertyReader.Read());
     }
 
     protected abstract EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig);
-
-    private Dictionary<string, string> GetAttributeValuesDictionary()
-    {
-        return Attributes.ToDictionary(attribute => attribute.Name, attribute => attribute.StatusPropertyReader.Read());
-    }
-
-    private void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == Config.StatusPropertyName)
-        {
-            // ReSharper disable once UseDiscardAssignment
-            var _ = PublishStateAsync();
-        }
-    }
-
-    private async Task PublishStatusAsync<T2>(T2 status)
-    {
-        var topicBuilder = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
-                                             .WithNodeId(_deviceNodeId)
-                                             .WithObjectId(Config.EntityNodeId);
-        await MqttClient.PublishStatusAsync(topicBuilder, status);
-    }
 }

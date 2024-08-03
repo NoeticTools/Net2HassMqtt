@@ -106,7 +106,7 @@ public abstract class EntityConfigMqttJsonBase
     public string UniqueId { get; set; }
 
     [JsonPropertyName("value_template")]
-    public string ValueTemplate { get; set; } = "{{ value_json.state }}";
+    public string? ValueTemplate { get; set; } = "{{ value_json.state }}";
 
     internal abstract void Build(TopicBuilder topic);
 }
