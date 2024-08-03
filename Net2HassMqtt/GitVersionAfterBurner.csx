@@ -30,56 +30,33 @@ public class VersionInfoTransform
 
     public void Execute()
     {
-        try
+        var gitVersionInfo = _runner.GitVersion.FileIO.Read();
+
+        var host = _runner.Host;
+
+        var prereleaseLabel =
+            !_runner.Host.IsControlled ? UncontrolledPreReleaseTag :
+            gitVersionInfo.Major == 0 ? gitVersionInfo.PreReleaseLabel :
+            InitialDevPreReleaseTag;
+
+        var preRelease = gitVersionInfo.IsARelease
+            ? SemverIdentifiers.None
+            : new SemverIdentifiers(prereleaseLabel, host.BuildNumber, host.BuildIdentifier);
+
+        var shortMetadata = SemverIdentifiers.None;
+
+        var informationalMetadata = gitVersionInfo.IsARelease
+            ? new SemverIdentifiers(host.BuildNumber, host.BuildIdentifier, gitVersionInfo.BranchName, gitVersionInfo.ShortSha)
+            : new SemverIdentifiers(gitVersionInfo.BranchName, gitVersionInfo.ShortSha);
+
+        gitVersionInfo.Update(preRelease, shortMetadata, informationalMetadata);
+
+        if (_runner.Inputs.UpdateHostBuildLabel)
         {
-            var gitVersionInfo = _runner.GitVersion.FileIO.Read();
-            if (_runner.Logger.HasLoggedErrors)
-            {
-                return;
-            }
-
-            var host = _runner.Host;
-
-            var preRelease = gitVersionInfo.IsARelease
-                ? SemverIdentifiers.None
-                : new SemverIdentifiers(GetPreReleaseLabel(gitVersionInfo), host.BuildNumber, host.BuildIdentifier);
-
-            var shortMetadata = SemverIdentifiers.None;
-
-            var informationalMetadata = gitVersionInfo.IsARelease
-                ? new SemverIdentifiers(host.BuildNumber, host.BuildIdentifier, gitVersionInfo.BranchName, gitVersionInfo.ShortSha)
-                : new SemverIdentifiers(gitVersionInfo.BranchName, gitVersionInfo.ShortSha);
-
-            gitVersionInfo.Update(preRelease, shortMetadata, informationalMetadata);
-
-            if (_runner.Inputs.UpdateHostBuildLabel)
-            {
-                host.SetBuildLabel(gitVersionInfo.FullSemVer);
-            }
-
-            _runner.GitVersion.Validation.ValidateStrict(gitVersionInfo);
-            _runner.GitVersion.FileIO.Write(gitVersionInfo);
-        }
-        catch (Exception exception)
-        {
-            _runner.Logger.LogErrorFromException(exception);
-            throw;
-        }
-    }
-
-    private string GetPreReleaseLabel(GitVersionInfo versionInfo)
-    {
-        if (!_runner.Host.IsControlled)
-        {
-            return UncontrolledPreReleaseTag;
+            host.SetBuildLabel(gitVersionInfo.FullSemVer);
         }
 
-        if (versionInfo.Major == 0)
-        {
-            return versionInfo.PreReleaseLabel;
-        }
-
-        _runner.Logger.LogMessage("Initial development build.");
-        return InitialDevPreReleaseTag;
+        _runner.GitVersion.Validation.ValidateStrict(gitVersionInfo);
+        _runner.GitVersion.FileIO.Write(gitVersionInfo);
     }
 }
