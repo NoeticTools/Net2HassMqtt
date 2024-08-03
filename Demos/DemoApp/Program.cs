@@ -77,7 +77,7 @@ internal class Program
                 if (key.KeyChar == '2')
                 {
                     _toggle = !_toggle;
-                    model.TestEvent.Fire(_toggle ? "A" : "B");
+                    model.FireEvent(_toggle ? "A" : "B");
                 }
             }
         }

@@ -14,68 +14,61 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     where T : EntityConfigBase
 {
     private readonly Delegate _eventHandlerDelegate;
-    private readonly HaEvent _eventPublisher;
+    //private readonly HaEvent _eventPublisher;
     private readonly EventInfo _eventInfo;
 
     protected EventEntityBase(T config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger)
         : base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
     {
-        (_eventPublisher, _eventInfo) = GetModelEventInfo();
+        _eventInfo = GetModelEventInfo();
         var type = _eventInfo.EventHandlerType!;
         _eventHandlerDelegate = Delegate.CreateDelegate(type, this, nameof(OnEvent));
     }
 
     public override Task StartAsync()
     {
-        _eventInfo.AddEventHandler(_eventPublisher, _eventHandlerDelegate);
+        _eventInfo.AddEventHandler(Config.Model, _eventHandlerDelegate);
         return Task.CompletedTask;
     }   
 
     public override Task StopAsync()
     {
-        _eventInfo.RemoveEventHandler(_eventPublisher, _eventHandlerDelegate);
+        _eventInfo.RemoveEventHandler(Config.Model, _eventHandlerDelegate);
         return Task.CompletedTask;
     }
 
-    internal void OnEvent(object sender, HaEvent.DictEventArgs dictEventArgs)
+    internal void OnEvent(object sender, HassEventArgs eventArgs)
     {
         var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
                                       .WithNodeId(DeviceNodeId)
                                       .WithObjectId(Config.EntityNodeId);
         // ReSharper disable once UseDiscardAssignment
-        var _ = MqttClient.PublishStatusAsync(topic, dictEventArgs.Arguments);
+        var _ = MqttClient.PublishStatusAsync(topic, eventArgs.Arguments);
     }
 
-    private (HaEvent, EventInfo) GetModelEventInfo()
+    private EventInfo GetModelEventInfo()
     {
         if (Config.Model == null)
         {
             ThrowConfigError("An event requires a model.");
         }
 
-        if (string.IsNullOrWhiteSpace(Config.HaEventMemberName))
+        if (string.IsNullOrWhiteSpace(Config.EventMemberName))
         {
             ThrowConfigError("An event requires a model's HaEvent member name.");
         }
 
         var model = Config.Model;
-        var haEventInstance = model.GetType().GetField(Config.HaEventMemberName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(model) as HaEvent;
-        if (haEventInstance == null)
-        {
-            var message = $"Could not find public field '{Config.HaEventMemberName}' on model of type '{model.GetType()}'";
-            Logger.LogError(message);
-            throw new Net2HassMqttConfigurationException(message);
-        }
         
-        var eventInfo = haEventInstance.GetType().GetEvent("Event", BindingFlags.Instance | BindingFlags.Public);
+        var eventInfo = model.GetType().GetEvent(Config.EventMemberName, BindingFlags.Instance | BindingFlags.Public);
         if (eventInfo == null)
         {
-            var message = $"Could not find public event '{Config.HaEventMemberName}.Event' on model of type '{haEventInstance.GetType()}'";
+            var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
             Logger.LogError(message);
             throw new Net2HassMqttConfigurationException(message);
         }
         
-        return (haEventInstance, eventInfo);
+        return eventInfo;
     }
 
     [DoesNotReturn]

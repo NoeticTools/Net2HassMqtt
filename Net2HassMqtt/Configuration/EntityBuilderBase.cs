@@ -48,21 +48,13 @@ public abstract class EntityBuilderBase<T, TC>
     /// </summary>
     public T WithEvent(string haEventMemberName) 
     {
-        EntityConfig.HaEventMemberName = haEventMemberName;
+        EntityConfig.EventMemberName = haEventMemberName;
 
         var model = EntityConfig.Model;
         if (model == null)
         {
             throw new Net2HassMqttConfigurationException("WithEvent requires a model");
         }
-        var haEventInstance = model.GetType().GetField(haEventMemberName, BindingFlags.Instance  | BindingFlags.NonPublic | BindingFlags.Public)?.GetValue(model) as HaEvent;
-        if (haEventInstance == null)
-        {
-            var message = $"Could not find public field '{haEventMemberName}' on model of type '{model.GetType()}'";
-            throw new Net2HassMqttConfigurationException(message);
-        }
-
-        EntityConfig.EventTypes = haEventInstance.EventTypes.ToArray();
         
         return (this as T)!;
     }

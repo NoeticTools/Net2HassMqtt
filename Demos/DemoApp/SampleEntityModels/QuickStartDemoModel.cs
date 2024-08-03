@@ -20,7 +20,15 @@ public class QuickStartDemoModel : ObservableObject
         }
     }
 
-    public HaEvent TestEvent = new (new [] {"A", "B"});
+    public event EventHandler<HassEventArgs>? TestEvent;
+
+    /// <summary>
+    /// For testing only. Normally the event would be fired within its owning class based on some domain state/events.
+    /// </summary>
+    public void FireEvent(string eventId)
+    {
+        TestEvent?.Invoke(this, new HassEventArgs(eventId));
+    }
 }
 
 // A Better way of doing the same thing as above ...
