@@ -26,10 +26,6 @@ internal static class DeviceClassInfoParser
             var additionalOptions = GetAdditionalOptions(jsonDomain);
 
             var domainInfo = new HassDomainInfo(hassDomainName, isReadOnly, requiresCommandHandler, domainDeviceClasses, hasRetainOption, additionalOptions);
-            if (jsonDomain.ContainsKey("value_template")) {
-                domainInfo.OverrideValueTemplate = true;
-                domainInfo.ValueTemplate = jsonDomain["value_template"].AsString;
-            }
             domains.Add(hassDomainName, domainInfo);
         }
 

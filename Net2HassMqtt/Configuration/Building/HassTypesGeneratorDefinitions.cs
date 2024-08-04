@@ -202,12 +202,11 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                              "name": "event",
                                              "read_only": true,
                                              "requires_command_handler": false,
-                                             "value_template": null,
                                              "additional_options": [
                                                {
                                                  "name": "EventTypes",
                                                  "mqtt_name": "event_types",
-                                                 "description": "A list of valid event_type strings. (Required, default is '[]')",
+                                                 "description": "A list of valid event_type strings.",
                                                  "type": "string[]",
                                                  "default": "[]",
                                                  "is_optional": false
@@ -217,7 +216,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                              "domain_classes": [
                                                {
                                                  "name": "None",
-                                                 "description": "Generic button. This is the default and doesn’t need to be set.",
+                                                 "description": "Generic button. This is the default and does not need to be set.",
                                                  "units": []
                                                },
                                                {

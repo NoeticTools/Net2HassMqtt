@@ -33,8 +33,4 @@ internal sealed class HassDomainInfo
     public bool HasRetainOption { get; }
 
     public IReadOnlyList<AdditionalOptionInfo> AdditionalOptions { get; }
-    
-    public bool OverrideValueTemplate { get; set; }
-    
-    public string? ValueTemplate { get; set; }
 }

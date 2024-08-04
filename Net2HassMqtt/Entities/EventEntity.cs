@@ -14,6 +14,10 @@ internal sealed class EventEntity : EventEntityBase<EventConfig>
 
     protected override EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig)
     {
-        return new EventConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
+        var mqtt = new EventConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId)
+        {
+            ValueTemplate = "{{ value_json.state | tojson }}"
+        };
+        return mqtt;
     }
 }

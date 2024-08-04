@@ -42,7 +42,7 @@ internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqt
 
     public async Task PublishStateAsync()
     {
-        var payload = new StateWithDataMqttJson(StatusPropertyReader.Read(), GetAttributeValuesDictionary());
+        var payload = new StateWithAttributeDataMqttJson(StatusPropertyReader.Read(), GetAttributeValuesDictionary());
         await PublishStatusAsync(payload);
     }
 

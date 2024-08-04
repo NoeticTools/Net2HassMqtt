@@ -3,8 +3,10 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt;
+using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 
@@ -14,7 +16,6 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     where T : EntityConfigBase
 {
     private readonly Delegate _eventHandlerDelegate;
-    //private readonly HaEvent _eventPublisher;
     private readonly EventInfo _eventInfo;
 
     protected EventEntityBase(T config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger)
@@ -43,7 +44,9 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
                                       .WithNodeId(DeviceNodeId)
                                       .WithObjectId(Config.EntityNodeId);
         // ReSharper disable once UseDiscardAssignment
-        var _ = MqttClient.PublishStatusAsync(topic, eventArgs.Arguments);
+        var payload = new EventWithAttributeDataMqttJson(eventArgs.Arguments, GetAttributeValuesDictionary());
+
+        var _ = MqttClient.PublishStatusAsync(topic, payload);
     }
 
     private EventInfo GetModelEventInfo()

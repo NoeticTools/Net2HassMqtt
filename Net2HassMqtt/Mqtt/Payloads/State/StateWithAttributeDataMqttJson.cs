@@ -3,12 +3,12 @@
 #pragma warning disable IDE1006
 namespace NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
 
-internal sealed class StateWithDataMqttJson
+internal sealed class StateWithAttributeDataMqttJson
 {
-    public StateWithDataMqttJson(object state, Dictionary<string, string> data)
+    public StateWithAttributeDataMqttJson(object state, Dictionary<string, string> attributes)
     {
         this.state = state;
-        this.data = data;
+        this.data = attributes;
     }
 
     public Dictionary<string, string> data { get; set; }
