@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
+using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
@@ -76,4 +78,11 @@ internal abstract class EntityBase<T> : IMqttEntity
     }
 
     protected abstract EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig);
+
+    [DoesNotReturn]
+    protected void ThrowConfigError(string message)
+    {
+        Logger.LogError(message);
+        throw new Net2HassMqttConfigurationException(message);
+    }
 }

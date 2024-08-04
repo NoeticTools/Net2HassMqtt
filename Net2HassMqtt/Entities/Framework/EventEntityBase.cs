@@ -1,19 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
-using NoeticTools.Net2HassMqtt.Entities.Framework;
-using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
-using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 
-namespace NoeticTools.Net2HassMqtt.Entities;
+namespace NoeticTools.Net2HassMqtt.Entities.Framework;
 
 internal abstract class EventEntityBase<T> : EntityBase<T>
-    where T : EntityConfigBase
+    where T : EventConfig
 {
     private readonly Delegate _eventHandlerDelegate;
     private readonly EventInfo _eventInfo;
@@ -40,7 +36,20 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
 
     internal void OnEvent(object sender, HassEventArgs eventArgs)
     {
-        var payload = new EventWithAttributeDataMqttJson(eventArgs.NamedProperties, GetAttributeValuesDictionary());
+        if (string.IsNullOrWhiteSpace(eventArgs.EventType))
+        {
+            Logger.LogError("Event is missing required event type. Event not published.");
+            return;
+        }
+
+        if (!Config.EventTypes.Contains(eventArgs.EventType))
+        {
+            Logger.LogError($"Event type '{eventArgs.EventType}' is invalid. Valid event types are: {string.Join(", ", Config.EventTypes)}.");
+            return;
+        }
+
+        var namedProperties = new Dictionary<string, string>(eventArgs.NamedProperties) { { "event_type", eventArgs.EventType } };
+        var payload = new EventWithAttributeDataMqttJson(namedProperties, GetAttributeValuesDictionary());
         var _ = PublishStatusAsync(payload);
     }
 
@@ -59,19 +68,12 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
         var model = Config.Model;
         
         var eventInfo = model.GetType().GetEvent(Config.EventMemberName, BindingFlags.Instance | BindingFlags.Public);
-        if (eventInfo == null)
+        if (eventInfo != null)
         {
-            var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
-            Logger.LogError(message);
-            throw new Net2HassMqttConfigurationException(message);
+            return eventInfo;
         }
-        
-        return eventInfo;
-    }
 
-    [DoesNotReturn]
-    private void ThrowConfigError(string message)
-    {
+        var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
         Logger.LogError(message);
         throw new Net2HassMqttConfigurationException(message);
     }

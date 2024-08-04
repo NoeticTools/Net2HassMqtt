@@ -17,9 +17,10 @@ internal class Program
                           Net2HassMqtt Quick Start Demo"
 
                           Press:
-                              'x' to exit
-                              '1' to toggle the state property
-
+                            'x' to exit
+                            '1' to toggle the state property
+                            '2' to fire event A/B
+                          
                           """);
 
         var appConfig = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
@@ -39,9 +40,11 @@ internal class Program
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.TestEvent))
-                                        .WithEventTypes(new[] { "A", "B" })
+                                        .WithEventTypes(["A", "B"])
                                         .WithFriendlyName("Test Event")
-                                        .WithNodeId("test_event"));
+                                        .WithNodeId("test_event")
+                                        .WithAttribute(nameof(QuickStartDemoModel.ModelName), "Senders Name"));
+
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);
         var bridge = new BridgeConfiguration()

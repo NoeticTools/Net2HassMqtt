@@ -4,30 +4,20 @@ using NoeticTools.Net2HassMqtt.Entities.Framework;
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
 
-public class QuickStartDemoModel : ObservableObject
+public partial class QuickStartDemoModel : ObservableObject
 {
-    private bool _batteryCharging;
+    [ObservableProperty] private bool _batteryCharging;
 
-    public bool BatteryCharging
-    {
-        get => _batteryCharging;
-        set
-        {
-            if (SetProperty(ref _batteryCharging, value))
-            {
-                Console.WriteLine($" Battery is charging: {BatteryCharging}");
-            }
-        }
-    }
+    public string ModelName => "Quick start demo model";
 
     public event EventHandler<HassEventArgs>? TestEvent;
 
     /// <summary>
     /// For testing only. Normally the event would be fired within its owning class based on some domain state/events.
     /// </summary>
-    public void FireEvent(string eventId)
+    public void FireEvent(string eventType)
     {
-        TestEvent?.Invoke(this, new HassEventArgs(eventId));
+        TestEvent?.Invoke(this, new HassEventArgs(eventType));
     }
 }
 

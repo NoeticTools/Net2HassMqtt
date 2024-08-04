@@ -48,11 +48,6 @@ public abstract class EntityConfigBase
     public string? EventMemberName { get; protected internal set; }
 
     /// <summary>
-    ///     The list of allowed event types. Only applicable to event entities.
-    /// </summary>
-    public string[] EventTypes { get; protected internal set; } = [];
-
-    /// <summary>
     ///     Optional HASS entity icon.
     /// </summary>
     /// <remarks>
