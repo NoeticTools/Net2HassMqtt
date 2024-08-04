@@ -19,7 +19,7 @@ internal class Program
                           Press:
                             'x' to exit
                             '1' to toggle the state property
-                            '2' to fire event A/B
+                            All key presses are sent to the demo model. 'a' and 'b' will fire events.
                           
                           """);
 
@@ -39,11 +39,17 @@ internal class Program
                                                               .WithNodeId("battery_1_charging"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.TestEvent))
-                                        .WithEventTypes(["A", "B"])
-                                        .WithFriendlyName("Test Event")
-                                        .WithNodeId("test_event")
+                                        .WithEvent(nameof(QuickStartDemoModel.Event1))
+                                        .WithEventTypes(["PressedA", "PressedB"])
+                                        .WithFriendlyName("Event 1")
+                                        .WithNodeId("test_event_1")
                                         .WithAttribute(nameof(QuickStartDemoModel.ModelName), "Property attribute - read automatically"));
+
+        device.HasEvent(config => config.OnModel(model)
+                                        .WithEvent(nameof(QuickStartDemoModel.Event2))
+                                        .WithEventTypes(["PressedC", "PressedD"])
+                                        .WithFriendlyName("Event 2")
+                                        .WithNodeId("test_event_2"));
 
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);
@@ -77,11 +83,7 @@ internal class Program
                     model.BatteryCharging = !model.BatteryCharging;
                 }
 
-                if (key.KeyChar == '2')
-                {
-                    _toggle = !_toggle;
-                    model.FireEvent(_toggle ? "A" : "B");
-                }
+                model.OnKeyPressed(key.KeyChar);
             }
         }
     }
