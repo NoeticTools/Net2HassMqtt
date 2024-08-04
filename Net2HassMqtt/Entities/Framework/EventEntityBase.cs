@@ -40,13 +40,8 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
 
     internal void OnEvent(object sender, HassEventArgs eventArgs)
     {
-        var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
-                                      .WithNodeId(DeviceNodeId)
-                                      .WithObjectId(Config.EntityNodeId);
-        // ReSharper disable once UseDiscardAssignment
-        var payload = new EventWithAttributeDataMqttJson(eventArgs.Arguments, GetAttributeValuesDictionary());
-
-        var _ = MqttClient.PublishStatusAsync(topic, payload);
+        var payload = new EventWithAttributeDataMqttJson(eventArgs.NamedProperties, GetAttributeValuesDictionary());
+        var _ = PublishStatusAsync(payload);
     }
 
     private EventInfo GetModelEventInfo()

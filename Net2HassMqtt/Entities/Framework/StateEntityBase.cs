@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
-using NoeticTools.Net2HassMqtt.Entities.Framework;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
@@ -10,7 +9,7 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace NoeticTools.Net2HassMqtt.Entities;
+namespace NoeticTools.Net2HassMqtt.Entities.Framework;
 
 /// <summary>
 ///     State entity base class.
@@ -73,13 +72,5 @@ internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqt
         {
             CommandHandler.Handle(message.Payload);
         }
-    }
-
-    private async Task PublishStatusAsync<T2>(T2 status)
-    {
-        var topicBuilder = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
-                                             .WithNodeId(DeviceNodeId)
-                                             .WithObjectId(Config.EntityNodeId);
-        await MqttClient.PublishStatusAsync(topicBuilder, status);
     }
 }

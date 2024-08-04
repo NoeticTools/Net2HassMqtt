@@ -3,7 +3,7 @@
 
 public class HassEventArgs : EventArgs
 {
-    public Dictionary<string, string> Arguments { get; }
+    public Dictionary<string, string> NamedProperties { get; }
 
     public HassEventArgs(string eventType) : this(eventType,  new Dictionary<string, string>())
     {
@@ -11,6 +11,6 @@ public class HassEventArgs : EventArgs
 
     public HassEventArgs(string eventType, IDictionary<string, string> args)
     {
-        Arguments = new Dictionary<string, string>(args) { { "event_type", eventType } };
+        NamedProperties = new Dictionary<string, string>(args) { { "event_type", eventType } };
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;

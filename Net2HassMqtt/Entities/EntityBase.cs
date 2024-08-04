@@ -2,6 +2,7 @@
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
+using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 
 namespace NoeticTools.Net2HassMqtt.Entities;
@@ -24,6 +25,14 @@ internal abstract class EntityBase<T> : IMqttEntity
         {
             _attributes.Add(new EntityAttribute(configuration, logger));
         }
+    }
+
+    protected async Task PublishStatusAsync<TP>(TP payload)
+    {
+        var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
+                                      .WithNodeId(DeviceNodeId)
+                                      .WithObjectId(Config.EntityNodeId);
+        await MqttClient.PublishStatusAsync(topic, payload);
     }
 
     /// <summary>
