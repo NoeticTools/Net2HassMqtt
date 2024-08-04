@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Diagnostics.Eventing.Reader;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Exceptions;
@@ -19,7 +21,9 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     {
         _eventInfo = GetModelEventInfo();
         var type = _eventInfo.EventHandlerType!;
-        _eventHandlerDelegate = Delegate.CreateDelegate(type, this, nameof(OnEvent));
+        _eventHandlerDelegate = Delegate.CreateDelegate(type, this, nameof(OnEventWithEventTypeName));
+
+        //ThrowConfigError($"Unsupported event type '{_eventInfo.EventHandlerType.Name}'. Event type must be 'EventHandler<T>' where T : HassEventArgs.");
     }
 
     public override Task StartAsync()
@@ -34,7 +38,7 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
         return Task.CompletedTask;
     }
 
-    internal void OnEvent(object sender, HassEventArgs eventArgs)
+    internal void OnEventWithEventTypeName(object sender, HassEventArgs eventArgs)
     {
         if (string.IsNullOrWhiteSpace(eventArgs.EventType))
         {
@@ -75,13 +79,13 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
         var model = Config.Model;
         
         var eventInfo = model.GetType().GetEvent(Config.EventMemberName, BindingFlags.Instance | BindingFlags.Public);
-        if (eventInfo != null)
+        if (eventInfo == null)
         {
-            return eventInfo;
+            var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
+            Logger.LogError(message);
+            throw new Net2HassMqttConfigurationException(message);
         }
 
-        var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
-        Logger.LogError(message);
-        throw new Net2HassMqttConfigurationException(message);
+        return eventInfo;
     }
 }

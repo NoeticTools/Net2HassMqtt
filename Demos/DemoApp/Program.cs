@@ -51,6 +51,12 @@ internal class Program
                                         .WithFriendlyName("Event 2")
                                         .WithNodeId("test_event_2"));
 
+        device.HasEvent(config => config.OnModel(model)
+                                        .WithEvent(nameof(QuickStartDemoModel.Event3))
+                                        .WithEventTypes(["KeyPressE", "KeyPressF"])
+                                        .WithFriendlyName("Enum event")
+                                        .WithNodeId("test_event_3"));
+
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);
         var bridge = new BridgeConfiguration()

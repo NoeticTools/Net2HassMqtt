@@ -8,6 +8,12 @@ public partial class QuickStartDemoModel : ObservableObject
 {
     [ObservableProperty] private bool _batteryCharging;
 
+    public enum EventTypes
+    {
+        KeyPressE = 0,
+        KeyPressF = 1
+    }
+
     /// <summary>
     /// Test property that will be automatically read on every TestEvent event and added as an attribute.
     /// </summary>
@@ -17,10 +23,31 @@ public partial class QuickStartDemoModel : ObservableObject
 
     public event EventHandler<HassEventArgs>? Event2;
 
+    public event EventHandler<HassEventArgs>? Event3;
+
     public void OnKeyPressed(char keyChar)
     {
         HandleEvent1KeyPresses(keyChar);
-        HandleEvent2KeyPresses(keyChar);
+
+        if (keyChar == 'c')
+        {
+            Event2?.Invoke(this, new HassEventArgs("PressedC"));
+        }
+
+        if (keyChar == 'd')
+        {
+            Event2?.Invoke(this, new HassEventArgs("PressedD"));
+        }
+
+        if (keyChar == 'e')
+        {
+            Event3?.Invoke(this, HassEventArgsFactory.From(EventTypes.KeyPressE));
+        }
+
+        if (keyChar == 'f')
+        {
+            Event3?.Invoke(this, HassEventArgsFactory.From(EventTypes.KeyPressF));
+        }
     }
 
     private void HandleEvent1KeyPresses(char keyChar)
@@ -43,23 +70,6 @@ public partial class QuickStartDemoModel : ObservableObject
             {"From event attribute 2", "Another attribute value set when the event is fired in app code."},
         };
         Event1?.Invoke(this, new HassEventArgs(eventType, attributes));
-    }
-
-    private void HandleEvent2KeyPresses(char keyChar)
-    {
-        var messages = new Dictionary<char, string>()
-        {
-            {'c', "PressedC"},
-            {'d', "PressedD"},
-        };
-        if (!messages.TryGetValue(keyChar, out var eventType))
-        {
-            return;
-        }
-
-        Console.WriteLine($"\nFiring event 2 '{eventType}'.\n");
-
-        Event2?.Invoke(this, new HassEventArgs(eventType));
     }
 }
 
