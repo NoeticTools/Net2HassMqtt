@@ -1,17 +1,20 @@
-﻿// ReSharper disable InconsistentNaming
-
+﻿
 #pragma warning disable IDE1006
+using System.Text.Json.Serialization;
+
 namespace NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
 
 internal sealed class StateWithAttributeDataMqttJson
 {
     public StateWithAttributeDataMqttJson(object state, Dictionary<string, string> attributes)
     {
-        this.state = state;
-        this.data = attributes;
+        State = state;
+        Attributes = attributes;
     }
 
-    public Dictionary<string, string> data { get; set; }
+    [JsonPropertyName("attributes")]
+    public Dictionary<string, string> Attributes { get; set; }
 
-    public object state { get; set; }
+    [JsonPropertyName("state")]
+    public object State { get; set; }
 }

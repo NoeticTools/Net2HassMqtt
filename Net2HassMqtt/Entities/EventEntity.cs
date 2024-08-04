@@ -17,7 +17,7 @@ internal sealed class EventEntity : EventEntityBase<EventConfig>
     {
         var mqtt = new EventConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId)
         {
-            ValueTemplate = "{{ value_json.state | tojson }}"
+            ValueTemplate = "{{ value_json.event | tojson }}"
         };
         return mqtt;
     }

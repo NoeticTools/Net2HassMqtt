@@ -45,7 +45,7 @@ public abstract class EntityConfigMqttJsonBase
     public string? Icon { get; set; }
 
     [JsonPropertyName("json_attributes_template")]
-    public string JsonAttributesTemplate { get; set; } = "{{ value_json.data | tojson }}";
+    public string JsonAttributesTemplate { get; set; } = "{{ value_json.attributes | tojson }}";
 
     [JsonPropertyName("json_attributes_topic")]
     public string JsonAttributesTopic { get; set; }

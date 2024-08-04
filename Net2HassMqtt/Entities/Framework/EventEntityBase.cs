@@ -44,12 +44,19 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
 
         if (!Config.EventTypes.Contains(eventArgs.EventType))
         {
-            Logger.LogError($"Event type '{eventArgs.EventType}' is invalid. Valid event types are: {string.Join(", ", Config.EventTypes)}.");
+            Logger.LogError("Event type '{EventType}' is invalid. Valid event types are: {EventTypes}.",
+                            eventArgs.EventType,
+                            string.Join(", ", Config.EventTypes));
             return;
         }
 
-        var namedProperties = new Dictionary<string, string>(eventArgs.NamedProperties) { { "event_type", eventArgs.EventType } };
-        var payload = new EventWithAttributeDataMqttJson(namedProperties, GetAttributeValuesDictionary());
+        var attributes = GetAttributeValuesDictionary();
+        foreach (var attribute in eventArgs.Attributes)
+        {
+            attributes.Add(attribute.Key, attribute.Value);
+        }
+
+        var payload = new EventWithAttributeDataMqttJson(eventArgs.EventType, attributes);
         var _ = PublishStatusAsync(payload);
     }
 

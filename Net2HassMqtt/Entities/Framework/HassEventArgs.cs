@@ -10,15 +10,15 @@ public class HassEventArgs : EventArgs
     public string EventType { get; }
 
     [Required]
-    public Dictionary<string, string> NamedProperties { get; }
+    public Dictionary<string, string> Attributes { get; }
 
     public HassEventArgs(string eventType) : this(eventType,  new Dictionary<string, string>())
     {
     }
 
-    public HassEventArgs(string eventType, IDictionary<string, string> args)
+    public HassEventArgs(string eventType, IDictionary<string, string> attributes)
     {
         EventType = eventType;
-        NamedProperties = new Dictionary<string, string>(args);
+        Attributes = new Dictionary<string, string>(attributes);
     }
 }

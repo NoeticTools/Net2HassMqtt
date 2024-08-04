@@ -1,15 +1,19 @@
-﻿namespace NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
-// ReSharper disable InconsistentNaming
+﻿using System.Text.Json.Serialization;
+
+
+namespace NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
 
 internal class EventWithAttributeDataMqttJson
 {
-    public EventWithAttributeDataMqttJson(Dictionary<string, string> eventData, Dictionary<string, string> attributes)
+    public EventWithAttributeDataMqttJson(string eventType, Dictionary<string, string> attributes)
     {
-        state = eventData;
-        data = attributes;
+        Event = new Dictionary<string, string>() { { "event_type", eventType } };
+        Attributes = attributes;
     }
 
-    public Dictionary<string, string> data { get; set; }
+    [JsonPropertyName("attributes")]
+    public Dictionary<string, string> Attributes { get; set; }
 
-    public object state { get; set; }
+    [JsonPropertyName("event")]
+    public Dictionary<string, string> Event { get; set; }
 }

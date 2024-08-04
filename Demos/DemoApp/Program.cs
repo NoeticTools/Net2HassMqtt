@@ -43,7 +43,7 @@ internal class Program
                                         .WithEventTypes(["A", "B"])
                                         .WithFriendlyName("Test Event")
                                         .WithNodeId("test_event")
-                                        .WithAttribute(nameof(QuickStartDemoModel.ModelName), "Senders Name"));
+                                        .WithAttribute(nameof(QuickStartDemoModel.ModelName), "Property attribute - read automatically"));
 
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);

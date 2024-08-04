@@ -17,7 +17,12 @@ public partial class QuickStartDemoModel : ObservableObject
     /// </summary>
     public void FireEvent(string eventType)
     {
-        TestEvent?.Invoke(this, new HassEventArgs(eventType));
+        var properties = new Dictionary<string, string>()
+        {
+            {"From event attribute 1", "An example attribute value defined in the client model."},
+            {"From event attribute 2", "Another attribute value set when the event is fired in app code."},
+        };
+        TestEvent?.Invoke(this, new HassEventArgs(eventType, properties));
     }
 }
 
