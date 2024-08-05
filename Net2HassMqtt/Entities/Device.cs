@@ -12,7 +12,7 @@ internal sealed class Device : IMqttSubscriber
     private readonly DeviceConfig _config;
     private readonly ILogger _logger;
     private readonly INet2HassMqttClient _mqttClient;
-    private readonly Dictionary<string, IMqttPublisher> _mqttEntitiesByEntityNodeId = new();
+    private readonly Dictionary<string, IMqttEntity> _mqttEntitiesByEntityNodeId = new();
     private readonly Dictionary<string, IMqttSubscriber> _mqttSubscribersByEntityNodeId = new();
 
     public Device(DeviceConfig config, INet2HassMqttClient mqttClient, ILogger logger)
@@ -49,7 +49,10 @@ internal sealed class Device : IMqttSubscriber
     {
         foreach (var (_, entity) in _mqttEntitiesByEntityNodeId)
         {
-            await entity.PublishStateAsync();
+            if (entity is IMqttPublisher publisher)
+            {
+                await publisher.PublishStateAsync();
+            }
         }
     }
 
@@ -71,14 +74,14 @@ internal sealed class Device : IMqttSubscriber
         }
     }
 
-    internal void AddEntity(string entityNodeId, IMqttPublisher mqttPublisher)
+    internal void AddEntity(string entityNodeId, IMqttEntity entity)
     {
-        if (mqttPublisher.CanCommand)
+        if (entity is IMqttPublisher { CanCommand: true })
         {
-            AddMqttSubscriber((IMqttSubscriber)mqttPublisher, entityNodeId);
+            AddMqttSubscriber((IMqttSubscriber)entity, entityNodeId);
         }
 
-        _mqttEntitiesByEntityNodeId[entityNodeId] = mqttPublisher;
+        _mqttEntitiesByEntityNodeId[entityNodeId] = entity;
     }
 
     private void AddMqttSubscriber(IMqttSubscriber listener, string entityNodeId)

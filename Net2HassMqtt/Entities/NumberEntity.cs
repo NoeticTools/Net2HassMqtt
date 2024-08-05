@@ -7,15 +7,15 @@ using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
 namespace NoeticTools.Net2HassMqtt.Entities;
 
-internal sealed class SensorEntity : StateEntityBase<SensorConfig>
+internal sealed class NumberEntity : StateEntityBase<NumberConfig>
 {
-    public SensorEntity(SensorConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
+    public NumberEntity(NumberConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
         base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
     {
     }
 
     protected override EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig)
     {
-        return new SensorConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
+        return new NumberConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
     }
 }

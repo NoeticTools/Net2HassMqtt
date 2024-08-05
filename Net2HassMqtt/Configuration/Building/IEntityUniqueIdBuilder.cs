@@ -1,6 +1,6 @@
 ﻿namespace NoeticTools.Net2HassMqtt.Configuration.Building;
 
-public interface IEntityUniqueIdBuilder
+internal interface IEntityUniqueIdBuilder
 {
     /// <summary>
     ///     <para>

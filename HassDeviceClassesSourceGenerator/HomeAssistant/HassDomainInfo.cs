@@ -5,13 +5,17 @@ namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
 
 internal sealed class HassDomainInfo
 {
-    public HassDomainInfo(string hassDomain, bool isReadOnly, bool commandHandlerIsRequired, IReadOnlyList<HassDeviceClassInfo> deviceClasses,
+    public HassDomainInfo(string hassDomain, bool isReadOnly, 
+                          bool commandHandlerIsRequired, 
+                          IReadOnlyList<HassDeviceClassInfo> deviceClasses,
+                          bool hasRetainOption,
                           List<AdditionalOptionInfo> additionalOptions)
     {
         HassDomainName = hassDomain;
         IsReadOnly = isReadOnly;
         CommandHandlerIsRequired = commandHandlerIsRequired;
         DeviceClasses = deviceClasses;
+        HasRetainOption = hasRetainOption;
         AdditionalOptions = additionalOptions;
         DomainName = UoMSnakeCaseTransformer.ToUpperCamelCase(hassDomain);
     }
@@ -25,6 +29,8 @@ internal sealed class HassDomainInfo
     public bool IsReadOnly { get; }
 
     public IReadOnlyList<HassDeviceClassInfo> DeviceClasses { get; }
+
+    public bool HasRetainOption { get; }
 
     public IReadOnlyList<AdditionalOptionInfo> AdditionalOptions { get; }
 }

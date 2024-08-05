@@ -41,7 +41,7 @@ Example state payload:
 
 ```json
 {
-  "data": {},
+  "attributes": {},
   "state": "ON"
 }
 ```

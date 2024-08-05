@@ -171,6 +171,72 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                              ]
                                            },
                                            {
+                                             "name": "button",
+                                             "read_only": false,
+                                             "requires_command_handler": true,
+                                             "additional_options": [],
+                                             "domain_classes": [
+                                               {
+                                                 "name": "None",
+                                                 "description": "Generic button. This is the default and doesn’t need to be set.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "identify",
+                                                 "description": "The button is used to identify a device.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "restart",
+                                                 "description": "The button restarts the device.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "update",
+                                                 "description": "The button updates the software of the device.",
+                                                 "units": []
+                                               },
+                                            ]
+                                           },
+                                           {
+                                             "name": "event",
+                                             "read_only": true,
+                                             "requires_command_handler": false,
+                                             "additional_options": [
+                                               {
+                                                 "name": "EventTypes",
+                                                 "mqtt_name": "event_types",
+                                                 "description": "A list of valid event_type strings.",
+                                                 "type": "string[]",
+                                                 "default": "[]",
+                                                 "is_optional": false
+                                               }
+                                             ],
+                                             "no_retain_option": true,
+                                             "domain_classes": [
+                                               {
+                                                 "name": "None",
+                                                 "description": "Generic button. This is the default and does not need to be set.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "button",
+                                                 "description": "For remote control buttons.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "doorbell",
+                                                 "description": "Specifically for buttons that are used as a doorbell.",
+                                                 "units": []
+                                               },
+                                               {
+                                                 "name": "motion",
+                                                 "description": "For motion events detected by a motion sensor.",
+                                                 "units": []
+                                               },
+                                            ]
+                                           },
+                                           {
                                              "name": "cover",
                                              "read_only": false,
                                              "requires_command_handler": false,

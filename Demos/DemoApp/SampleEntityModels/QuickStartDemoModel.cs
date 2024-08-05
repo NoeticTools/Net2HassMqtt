@@ -1,34 +1,72 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
+using static NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels.QuickStartDemoModel;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
 
-public class QuickStartDemoModel : ObservableObject
+public partial class QuickStartDemoModel : ObservableObject
 {
-    private bool _batteryCharging;
+    [ObservableProperty] private bool _batteryCharging;
 
-    public bool BatteryCharging
+    public enum Event3Types
     {
-        get => _batteryCharging;
-        set
-        {
-            if (SetProperty(ref _batteryCharging, value))
-            {
-                Console.WriteLine($" Battery is charging: {BatteryCharging}");
-            }
-        }
+        KeyPressE = 0,
+        KeyPressF = 1
     }
-}
 
-// A Better way of doing the same thing as above ...
-public partial class MyDemoModel_Alt : ObservableObject
-{
-    [ObservableProperty]
-    private bool _lightSwitch;
+    /// <summary>
+    /// Property that will be automatically read on every Event1 event and added as an attribute.
+    /// </summary>
+    public string ModelName => "Quick start demo model";
 
-    private void Example()
+    public event EventHandler<HassEventArgs>? AbEvent;
+
+    public event EventHandler<HassEventArgs>? CdEvent;
+
+    public event EventHandler<HassEventArgs>? EfEvent;
+
+    public void OnKeyPressed(char keyChar)
     {
-        // The property is auto generated. Just to show it exists:
-        LightSwitch = true;
+        if (keyChar == 'a')
+        {
+            Console.WriteLine($"\nFiring AB event 'a'.\n");
+            var aEventAttributes = new Dictionary<string, string>()
+            {
+                {"From AB event attribute 1", "An example attribute value defined in the client model."},
+                {"From AB event attribute 2", "Another attribute value set when the event is fired in app code."},
+            };
+            AbEvent?.Invoke(this, new HassEventArgs("PressedA", aEventAttributes));
+        }
+
+        if (keyChar == 'b')
+        {
+            Console.WriteLine($"\nFiring AB event 'b'.\n");
+            AbEvent?.Invoke(this, new HassEventArgs("PressedB"));
+        }
+
+        if (keyChar == 'c')
+        {
+            Console.WriteLine($"\nFiring CD event 'c'.\n");
+            CdEvent?.Invoke(this, new HassEventArgs("PressedC"));
+        }
+
+        if (keyChar == 'd')
+        {
+            Console.WriteLine($"\nFiring CD event 'd'.\n");
+            CdEvent?.Invoke(this, new HassEventArgs("PressedD"));
+        }
+
+        if (keyChar == 'e')
+        {
+            Console.WriteLine($"\nFiring EF event 'e'.\n");
+            EfEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressE));
+        }
+
+        if (keyChar == 'f')
+        {
+            Console.WriteLine($"\nFiring EF event 'f'.\n");
+            EfEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressF));
+        }
     }
 }
