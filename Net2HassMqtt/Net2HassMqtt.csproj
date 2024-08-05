@@ -31,6 +31,14 @@ Through Home Assistant MQTT Discovery your application devices and entities just
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;NU1803</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;NU1803</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\HassDeviceClassesSourceGenerator\HomeAssistantTypesSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
@@ -44,7 +52,6 @@ Through Home Assistant MQTT Discovery your application devices and entities just
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.6.1152" />
-    <PackageReference Include="NoeticTools.GitVersionAfterBurner" Version="0.3.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <None Include="..\Documentation\Images\Net2HassMqtt_icon_32x32.png">

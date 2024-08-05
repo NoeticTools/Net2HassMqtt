@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Exceptions;
 
 
 namespace NoeticTools.Net2HassMqtt.Configuration;
@@ -37,6 +40,22 @@ public abstract class EntityBuilderBase<T, TC>
     public T WithStatusProperty(string propertyName)
     {
         EntityConfig.StatusPropertyName = propertyName;
+        return (this as T)!;
+    }
+
+    /// <summary>
+    ///     The name of the model's event member. Only applicable to event entities.
+    /// </summary>
+    public T WithEvent(string haEventMemberName) 
+    {
+        EntityConfig.EventMemberName = haEventMemberName;
+
+        var model = EntityConfig.Model;
+        if (model == null)
+        {
+            throw new Net2HassMqttConfigurationException("WithEvent requires a model");
+        }
+        
         return (this as T)!;
     }
 

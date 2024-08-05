@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
+using NoeticTools.Net2HassMqtt.Entities.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
@@ -85,7 +86,7 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 ///         </item>
 ///     </list>
 /// </remarks>
-internal sealed class SwitchEntity : EntityBase<SwitchConfig>
+internal sealed class SwitchEntity : StateEntityBase<SwitchConfig>
 {
     public SwitchEntity(SwitchConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
         base(config, entityUniqueId, deviceNodeId, mqttClient, logger)

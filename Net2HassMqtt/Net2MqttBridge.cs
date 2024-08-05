@@ -22,11 +22,17 @@ internal sealed class Net2MqttBridge : INet2HassMqttBridge
         _mqttClient.OnDisconnectedAsync += OnMqttDisconnectedAsync;
     }
 
-    public async Task StartAsync()
+    public async Task<bool> StartAsync()
     {
         await _mqttClient.StartAsync();
-        await _mqttClient.WaitForConnection(3.Seconds());
-        await _devices.ForeachAsync(device => device.StartAsync());
+        if (false == await _mqttClient.WaitForConnection(3.Seconds()))
+            return false;
+        foreach (var device in _devices)
+        {
+            await device.StartAsync();
+        }
+        //await _devices.ForeachAsync(device => device.StartAsync());
+        return true;
     }
 
     public async Task StopAsync()
@@ -35,9 +41,9 @@ internal sealed class Net2MqttBridge : INet2HassMqttBridge
         await _mqttClient.StopAsync();
     }
 
-    public void Start()
+    public bool Start()
     {
-        StartAsync().GetAwaiter().GetResult();
+        return StartAsync().GetAwaiter().GetResult();
     }
 
     public void Stop()
