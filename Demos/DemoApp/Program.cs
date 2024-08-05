@@ -54,11 +54,10 @@ internal class Program
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.CDEvent))
-                                        .WithEventTypes(["Clear", "PressedC", "PressedD"])
-                                        .WithFirstEventTypeSentAfterEachEvent()
+                                        .WithEventTypes(["PressedC", "PressedD"])
+                                        .WithEventTypeToSendAfterEachEvent("Clear")
                                         .WithFriendlyName("CD event (pulsed)")
                                         .WithNodeId("test_event_cd"));
-
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);
         var bridge = new BridgeConfiguration()

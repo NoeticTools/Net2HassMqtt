@@ -9,17 +9,17 @@ namespace NoeticTools.Net2HassMqtt.Configuration
     public partial class EventConfig
     {
         /// <summary>
-        ///     If true the first event type to be published immediately after any other event is published.
+        ///     Optional event type to publish immediately after any other event type is published.
         /// </summary>
         /// <remarks>
         /// <para>
         ///     This is a workaround to prevent Home Assistant from resending last event on Home Assistant start-up or when device reconnects.
+        ///     It also allows for triggering on repeat events.
         /// </para>
         /// <para>
-        ///     If true the first configured event type is used as an idle or clear state and may be best named something like "clear".
-        ///     In this mode last event state will not be visible in Home Assistant's entity UI as the last event state will be momentary.
+        ///     It is expected to typically be an event type name like "clear".
         /// </para>
         /// </remarks>
-        public bool SendFirstEventTypeSentAfterEachEvent { get; set; }
+        public string EventTypeToSendAfterEachEvent { get; set; } = string.Empty;
     }
 }

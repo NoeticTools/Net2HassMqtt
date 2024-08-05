@@ -60,13 +60,13 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
 
         PublishEvent(eventArgs.EventType, attributes);
 
-        if (!Config.SendFirstEventTypeSentAfterEachEvent ||
-            eventArgs.EventType == Config.EventTypes[0])
+        if (string.IsNullOrWhiteSpace(Config.EventTypeToSendAfterEachEvent) ||
+            eventArgs.EventType == Config.EventTypeToSendAfterEachEvent)
         {
             return;
         }
 
-        PublishEvent(Config.EventTypes[0], new());
+        PublishEvent(Config.EventTypeToSendAfterEachEvent, new());
     }
 
     private void PublishEvent(string eventType, Dictionary<string, string> attributes)
