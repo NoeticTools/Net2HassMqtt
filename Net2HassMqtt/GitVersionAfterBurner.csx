@@ -15,48 +15,37 @@ using NoeticTools.GitVersionAfterBurner.Framework.Semver;
 using NoeticTools.GitVersionAfterBurner.Tools.GitVersion;
 
 
-new VersionInfoTransform(ScriptRunner.Instance).Execute();
 
-public class VersionInfoTransform
+const string initialDevPreReleaseTag = "experimental";
+const string uncontrolledPreReleaseTag = "alpha";
+const string controlledPreReleaseTag = "beta";
+
+var runner = ScriptRunner.Instance!;
+var gitVersionInfo = runner.GitVersion.FileIO.Read();
+var host = runner.Host;
+
+var prereleaseLabel = new SemverIdentifiers(!runner.Host.IsControlled ? uncontrolledPreReleaseTag :
+                                            gitVersionInfo.Major == 0 ? initialDevPreReleaseTag :
+                                            controlledPreReleaseTag);
+
+var buildNumberAndContext = new SemverIdentifiers(host.BuildNumber, host.BuildContext);
+var branchAndSha = new SemverIdentifiers(gitVersionInfo.BranchName, gitVersionInfo.ShortSha);
+
+if (gitVersionInfo.IsARelease)
 {
-    private const string InitialDevPreReleaseTag = "experimental";
-    private const string UncontrolledPreReleaseTag = "alpha";
-    private readonly IScriptRunner _runner;
-
-    public VersionInfoTransform(IScriptRunner runner)
-    {
-        _runner = runner;
-    }
-
-    public void Execute()
-    {
-        var gitVersionInfo = _runner.GitVersion.FileIO.Read();
-
-        var host = _runner.Host;
-
-        var prereleaseLabel =
-            !_runner.Host.IsControlled ? UncontrolledPreReleaseTag :
-            gitVersionInfo.Major == 0 ? gitVersionInfo.PreReleaseLabel :
-            InitialDevPreReleaseTag;
-
-        var preRelease = gitVersionInfo.IsARelease
-            ? SemverIdentifiers.None
-            : new SemverIdentifiers(prereleaseLabel, host.BuildNumber, host.BuildIdentifier);
-
-        var shortMetadata = SemverIdentifiers.None;
-
-        var informationalMetadata = gitVersionInfo.IsARelease
-            ? new SemverIdentifiers(host.BuildNumber, host.BuildIdentifier, gitVersionInfo.BranchName, gitVersionInfo.ShortSha)
-            : new SemverIdentifiers(gitVersionInfo.BranchName, gitVersionInfo.ShortSha);
-
-        gitVersionInfo.Update(preRelease, shortMetadata, informationalMetadata);
-
-        if (_runner.Inputs.UpdateHostBuildLabel)
-        {
-            host.SetBuildLabel(gitVersionInfo.FullSemVer);
-        }
-
-        _runner.GitVersion.Validation.ValidateStrict(gitVersionInfo);
-        _runner.GitVersion.FileIO.Write(gitVersionInfo);
-    }
+    gitVersionInfo.Update(SemverIdentifiers.None, buildNumberAndContext, buildNumberAndContext + branchAndSha);
 }
+else
+{
+    gitVersionInfo.Update(prereleaseLabel + buildNumberAndContext, SemverIdentifiers.None, branchAndSha);
+}
+
+runner.Logger.LogImportantMessage("Version: " + gitVersionInfo.InformationalVersion);
+
+if (runner.Inputs.UpdateHostBuildLabel)
+{
+    host.SetBuildLabel(gitVersionInfo.FullSemVer);
+}
+
+runner.GitVersion.Validation.ValidateStrict(gitVersionInfo);
+runner.GitVersion.FileIO.Write(gitVersionInfo);
