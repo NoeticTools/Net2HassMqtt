@@ -20,11 +20,11 @@ public partial class QuickStartDemoModel : ObservableObject
     /// </summary>
     public string ModelName => "Quick start demo model";
 
-    public event EventHandler<HassEventArgs>? ABEvent;
+    public event EventHandler<HassEventArgs>? AbEvent;
 
-    public event EventHandler<HassEventArgs>? CDEvent;
+    public event EventHandler<HassEventArgs>? CdEvent;
 
-    public event EventHandler<HassEventArgs>? EFEvent;
+    public event EventHandler<HassEventArgs>? EfEvent;
 
     public void OnKeyPressed(char keyChar)
     {
@@ -36,50 +36,37 @@ public partial class QuickStartDemoModel : ObservableObject
                 {"From AB event attribute 1", "An example attribute value defined in the client model."},
                 {"From AB event attribute 2", "Another attribute value set when the event is fired in app code."},
             };
-            ABEvent?.Invoke(this, new HassEventArgs("PressedA", aEventAttributes));
+            AbEvent?.Invoke(this, new HassEventArgs("PressedA", aEventAttributes));
         }
 
         if (keyChar == 'b')
         {
             Console.WriteLine($"\nFiring AB event 'b'.\n");
-            ABEvent?.Invoke(this, new HassEventArgs("PressedB"));
+            AbEvent?.Invoke(this, new HassEventArgs("PressedB"));
         }
 
         if (keyChar == 'c')
         {
             Console.WriteLine($"\nFiring CD event 'c'.\n");
-            CDEvent?.Invoke(this, new HassEventArgs("PressedC"));
+            CdEvent?.Invoke(this, new HassEventArgs("PressedC"));
         }
 
         if (keyChar == 'd')
         {
             Console.WriteLine($"\nFiring CD event 'd'.\n");
-            CDEvent?.Invoke(this, new HassEventArgs("PressedD"));
+            CdEvent?.Invoke(this, new HassEventArgs("PressedD"));
         }
 
         if (keyChar == 'e')
         {
             Console.WriteLine($"\nFiring EF event 'e'.\n");
-            EFEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressE));
+            EfEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressE));
         }
 
         if (keyChar == 'f')
         {
             Console.WriteLine($"\nFiring EF event 'f'.\n");
-            EFEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressF));
+            EfEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressF));
         }
-    }
-}
-
-// A Better way of doing the same thing as above ...
-public partial class MyDemoModel_Alt : ObservableObject
-{
-    [ObservableProperty]
-    private bool _lightSwitch;
-
-    private void Example()
-    {
-        // The property is auto generated. Just to show it exists:
-        LightSwitch = true;
     }
 }

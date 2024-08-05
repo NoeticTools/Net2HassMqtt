@@ -40,20 +40,20 @@ internal class Program
                                                               .WithNodeId("battery_1_charging"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.EFEvent))
+                                        .WithEvent(nameof(QuickStartDemoModel.EfEvent))
                                         .WithEventTypes<Event3Types>()
                                         .WithFriendlyName("EF event (enum)")
                                         .WithNodeId("test_event_ef"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.ABEvent))
+                                        .WithEvent(nameof(QuickStartDemoModel.AbEvent))
                                         .WithEventTypes(["PressedA", "PressedB"])
                                         .WithFriendlyName("AB event")
                                         .WithNodeId("test_event_ab")
                                         .WithAttribute(nameof(QuickStartDemoModel.ModelName), "Property attribute - read automatically"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.CDEvent))
+                                        .WithEvent(nameof(QuickStartDemoModel.CdEvent))
                                         .WithEventTypes(["PressedC", "PressedD"])
                                         .WithEventTypeToSendAfterEachEvent("Clear")
                                         .WithFriendlyName("CD event (pulsed)")
