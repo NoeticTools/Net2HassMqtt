@@ -19,4 +19,10 @@ public partial class EventEntityBuilder<T>
         EntityConfig.SendFirstEventTypeSentAfterEachEvent = true;
         return (this as T)!;
     }
+
+    public T WithEventTypes<TE>()
+        where TE : Enum
+    {
+        return WithEventTypes(Enum.GetNames(typeof(TE)));
+    }
 }

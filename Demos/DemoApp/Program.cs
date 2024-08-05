@@ -41,7 +41,7 @@ internal class Program
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.Event3))
-                                        .WithEventTypes(Enum.GetNames(typeof(Event3Types)))
+                                        .WithEventTypes<Event3Types>()
                                         .WithFriendlyName("Enum event")
                                         .WithNodeId("test_event_3"));
 
