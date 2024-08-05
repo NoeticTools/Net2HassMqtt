@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
 using NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
+using static NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels.QuickStartDemoModel;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp;
@@ -39,6 +40,12 @@ internal class Program
                                                               .WithNodeId("battery_1_charging"));
 
         device.HasEvent(config => config.OnModel(model)
+                                        .WithEvent(nameof(QuickStartDemoModel.Event3))
+                                        .WithEventTypes(Enum.GetNames(typeof(Event3Types)))
+                                        .WithFriendlyName("Enum event")
+                                        .WithNodeId("test_event_3"));
+
+        device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.Event1))
                                         .WithEventTypes(["PressedA", "PressedB"])
                                         .WithFriendlyName("Event 1")
@@ -47,15 +54,10 @@ internal class Program
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.Event2))
-                                        .WithEventTypes(["PressedC", "PressedD"])
+                                        .WithEventTypes(["Clear", "PressedC", "PressedD"])
+                                        .WithFirstEventTypeSentAfterEachEvent()
                                         .WithFriendlyName("Event 2")
                                         .WithNodeId("test_event_2"));
-
-        device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.Event3))
-                                        .WithEventTypes(["KeyPressE", "KeyPressF"])
-                                        .WithFriendlyName("Enum event")
-                                        .WithNodeId("test_event_3"));
 
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);

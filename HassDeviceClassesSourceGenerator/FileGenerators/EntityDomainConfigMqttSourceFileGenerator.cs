@@ -42,7 +42,7 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
         ///         </item>
         ///     </list>
         /// </remarks>
-        public class {{DomainName}}ConfigMqttJson : EntityConfigMqttJsonBase
+        internal class {{DomainName}}ConfigMqttJson : EntityConfigMqttJsonBase
         {
             public {{DomainName}}ConfigMqttJson(string entityUniqueId, {{DomainName}}Config config, DeviceConfig deviceConfig, string mqttClientId) :
                 base(config, entityUniqueId, deviceConfig, mqttClientId)

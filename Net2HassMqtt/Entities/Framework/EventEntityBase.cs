@@ -21,9 +21,7 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     {
         _eventInfo = GetModelEventInfo();
         var type = _eventInfo.EventHandlerType!;
-        _eventHandlerDelegate = Delegate.CreateDelegate(type, this, nameof(OnEventWithEventTypeName));
-
-        //ThrowConfigError($"Unsupported event type '{_eventInfo.EventHandlerType.Name}'. Event type must be 'EventHandler<T>' where T : HassEventArgs.");
+        _eventHandlerDelegate = Delegate.CreateDelegate(type, this, nameof(OnEvent));
     }
 
     public override Task StartAsync()
@@ -38,7 +36,7 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
         return Task.CompletedTask;
     }
 
-    internal void OnEventWithEventTypeName(object sender, HassEventArgs eventArgs)
+    internal void OnEvent(object sender, HassEventArgs eventArgs)
     {
         if (string.IsNullOrWhiteSpace(eventArgs.EventType))
         {
@@ -60,7 +58,20 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
             attributes.Add(attribute.Key, attribute.Value);
         }
 
-        var payload = new EventWithAttributeDataMqttJson(eventArgs.EventType, attributes);
+        PublishEvent(eventArgs.EventType, attributes);
+
+        if (!Config.SendFirstEventTypeSentAfterEachEvent ||
+            eventArgs.EventType == Config.EventTypes[0])
+        {
+            return;
+        }
+
+        PublishEvent(Config.EventTypes[0], new());
+    }
+
+    private void PublishEvent(string eventType, Dictionary<string, string> attributes)
+    {
+        var payload = new EventWithAttributeDataMqttJson(eventType, attributes);
         var _ = PublishStatusAsync(payload);
     }
 

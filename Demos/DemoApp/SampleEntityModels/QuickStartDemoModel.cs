@@ -8,14 +8,14 @@ public partial class QuickStartDemoModel : ObservableObject
 {
     [ObservableProperty] private bool _batteryCharging;
 
-    public enum EventTypes
+    public enum Event3Types
     {
         KeyPressE = 0,
         KeyPressF = 1
     }
 
     /// <summary>
-    /// Test property that will be automatically read on every TestEvent event and added as an attribute.
+    /// Property that will be automatically read on every Event1 event and added as an attribute.
     /// </summary>
     public string ModelName => "Quick start demo model";
 
@@ -41,12 +41,12 @@ public partial class QuickStartDemoModel : ObservableObject
 
         if (keyChar == 'e')
         {
-            Event3?.Invoke(this, HassEventArgsFactory.From(EventTypes.KeyPressE));
+            Event3?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressE));
         }
 
         if (keyChar == 'f')
         {
-            Event3?.Invoke(this, HassEventArgsFactory.From(EventTypes.KeyPressF));
+            Event3?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressF));
         }
     }
 

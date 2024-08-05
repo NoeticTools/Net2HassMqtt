@@ -25,7 +25,7 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             IsReadOnly = domain.IsReadOnly
             CommandHandlerIsRequired = domain.CommandHandlerIsRequired
         ~}}
-        public class {{DomainName}}Config : EntityConfigBase
+        public partial class {{DomainName}}Config : EntityConfigBase
         {
             internal {{DomainName}}Config({{DomainName}}DeviceClass deviceClass)
                 : base(HassDomains.{{DomainName}}, deviceClass.HassDeviceClassName)
@@ -61,7 +61,7 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             UoMClass = deviceClass.UoMClassName
             DomainDeviceConfigClass = ( DeviceClass | string.append DomainName | string.append "Config" )
         }}
-        public sealed class {{DomainDeviceConfigClass}} : EntityConfigBase
+        public sealed partial class {{DomainDeviceConfigClass}} : EntityConfigBase
         {
             internal {{DomainDeviceConfigClass}}({{DomainName}}DeviceClass deviceClass)
                 : base(HassDomains.{{DomainName}}, deviceClass.HassDeviceClassName)
