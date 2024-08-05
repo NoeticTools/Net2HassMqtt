@@ -23,8 +23,6 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             IsReadOnly = domain.IsReadOnly
             CommandHandlerIsRequired = domain.CommandHandlerIsRequired
             AdditionalOptions = domain.AdditionalOptions
-            OverrideValueTemplate = domain.OverrideValueTemplate
-            ValueTemplate = domain.ValueTemplate
             HasRetainOption = domain.HasRetainOption
         ~}}
         /// <summary>
@@ -54,13 +52,6 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 {{~ end ~}}
                 {{~ for option in AdditionalOptions ~}}
                 {{option.Name}} = config.{{option.Name}};
-                {{~ end ~}}
-                {{~ if OverrideValueTemplate == true ~}}
-                    {{~ if ValueTemplate == null ~}}
-                ValueTemplate = null;
-                    {{~ else ~}}
-                ValueTemplate = "{{ ValueTemplate }}";
-                    {{~ end ~}}
                 {{~ end ~}}
             }
             {{~ if IsReadOnly == false ~}}
