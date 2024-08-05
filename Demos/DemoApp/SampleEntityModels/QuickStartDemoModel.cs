@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
+using static NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels.QuickStartDemoModel;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
@@ -19,57 +20,54 @@ public partial class QuickStartDemoModel : ObservableObject
     /// </summary>
     public string ModelName => "Quick start demo model";
 
-    public event EventHandler<HassEventArgs>? Event1;
+    public event EventHandler<HassEventArgs>? ABEvent;
 
-    public event EventHandler<HassEventArgs>? Event2;
+    public event EventHandler<HassEventArgs>? CDEvent;
 
-    public event EventHandler<HassEventArgs>? Event3;
+    public event EventHandler<HassEventArgs>? EFEvent;
 
     public void OnKeyPressed(char keyChar)
     {
-        HandleEvent1KeyPresses(keyChar);
+        if (keyChar == 'a')
+        {
+            Console.WriteLine($"\nFiring AB event 'a'.\n");
+            var aEventAttributes = new Dictionary<string, string>()
+            {
+                {"From AB event attribute 1", "An example attribute value defined in the client model."},
+                {"From AB event attribute 2", "Another attribute value set when the event is fired in app code."},
+            };
+            ABEvent?.Invoke(this, new HassEventArgs("PressedA", aEventAttributes));
+        }
+
+        if (keyChar == 'b')
+        {
+            Console.WriteLine($"\nFiring AB event 'b'.\n");
+            ABEvent?.Invoke(this, new HassEventArgs("PressedB"));
+        }
 
         if (keyChar == 'c')
         {
-            Event2?.Invoke(this, new HassEventArgs("PressedC"));
+            Console.WriteLine($"\nFiring CD event 'c'.\n");
+            CDEvent?.Invoke(this, new HassEventArgs("PressedC"));
         }
 
         if (keyChar == 'd')
         {
-            Event2?.Invoke(this, new HassEventArgs("PressedD"));
+            Console.WriteLine($"\nFiring CD event 'd'.\n");
+            CDEvent?.Invoke(this, new HassEventArgs("PressedD"));
         }
 
         if (keyChar == 'e')
         {
-            Event3?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressE));
+            Console.WriteLine($"\nFiring EF event 'e'.\n");
+            EFEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressE));
         }
 
         if (keyChar == 'f')
         {
-            Event3?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressF));
+            Console.WriteLine($"\nFiring EF event 'f'.\n");
+            EFEvent?.Invoke(this, HassEventArgs.From(Event3Types.KeyPressF));
         }
-    }
-
-    private void HandleEvent1KeyPresses(char keyChar)
-    {
-        var messages = new Dictionary<char, string>()
-        {
-            {'a', "PressedA"},
-            {'b', "PressedB"},
-        };
-        if (!messages.TryGetValue(keyChar, out var eventType))
-        {
-            return;
-        }
-
-        Console.WriteLine($"\nFiring event 1 '{eventType}'.\n");
-
-        var attributes = new Dictionary<string, string>()
-        {
-            {"From event attribute 1", "An example attribute value defined in the client model."},
-            {"From event attribute 2", "Another attribute value set when the event is fired in app code."},
-        };
-        Event1?.Invoke(this, new HassEventArgs(eventType, attributes));
     }
 }
 

@@ -40,24 +40,24 @@ internal class Program
                                                               .WithNodeId("battery_1_charging"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.Event3))
+                                        .WithEvent(nameof(QuickStartDemoModel.EFEvent))
                                         .WithEventTypes<Event3Types>()
-                                        .WithFriendlyName("Enum event")
-                                        .WithNodeId("test_event_3"));
+                                        .WithFriendlyName("EF event (enum)")
+                                        .WithNodeId("test_event_ef"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.Event1))
+                                        .WithEvent(nameof(QuickStartDemoModel.ABEvent))
                                         .WithEventTypes(["PressedA", "PressedB"])
-                                        .WithFriendlyName("Event 1")
-                                        .WithNodeId("test_event_1")
+                                        .WithFriendlyName("AB event")
+                                        .WithNodeId("test_event_ab")
                                         .WithAttribute(nameof(QuickStartDemoModel.ModelName), "Property attribute - read automatically"));
 
         device.HasEvent(config => config.OnModel(model)
-                                        .WithEvent(nameof(QuickStartDemoModel.Event2))
+                                        .WithEvent(nameof(QuickStartDemoModel.CDEvent))
                                         .WithEventTypes(["Clear", "PressedC", "PressedD"])
                                         .WithFirstEventTypeSentAfterEachEvent()
-                                        .WithFriendlyName("Event 2")
-                                        .WithNodeId("test_event_2"));
+                                        .WithFriendlyName("CD event (pulsed)")
+                                        .WithNodeId("test_event_cd"));
 
 
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_quick_start", appConfig);
