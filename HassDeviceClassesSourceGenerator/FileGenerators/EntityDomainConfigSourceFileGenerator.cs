@@ -31,6 +31,9 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
                 : base(HassDomains.{{DomainName}}, deviceClass.HassDeviceClassName)
             {
                 CommandHandlerIsRequired = {{CommandHandlerIsRequired}};
+                {{~ for option in domain.AdditionalOptions ~}}
+                {{option.Name}} = {{option.DefaultValue}};
+                {{~ end ~}}
             }
         
             public string CommandTopic { get; set; } = "";

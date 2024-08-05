@@ -16,7 +16,6 @@ internal sealed class EntityAttribute
 
     {
         Name = config.Name;
-        Logger = logger;
         StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement, logger);
     }
 
@@ -26,6 +25,4 @@ internal sealed class EntityAttribute
     public string Name { get; }
 
     public IStatusPropertyReader StatusPropertyReader { get; }
-
-    protected ILogger Logger { get; }
 }

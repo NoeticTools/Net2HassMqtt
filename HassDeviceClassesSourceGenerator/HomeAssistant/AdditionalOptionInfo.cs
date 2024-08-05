@@ -14,8 +14,12 @@ internal class AdditionalOptionInfo
         Name = name;
         MqttName = mqttName;
         Description = description;
+        IsOptional = isOptional;
         ValueType = valueType;
         DefaultValue = defaultValue;
-        IsOptional = isOptional;
+        if (ValueType.ToLower() == "string")
+        {
+            DefaultValue = $"\"{DefaultValue}\"";
+        }
     }
 }

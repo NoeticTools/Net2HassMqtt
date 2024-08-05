@@ -10,8 +10,6 @@ namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp;
 
 internal class Program
 {
-    private static bool _toggle;
-
     private static async Task Main(string[] args)
     {
         Console.WriteLine("""
