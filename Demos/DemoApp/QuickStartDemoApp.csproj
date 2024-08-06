@@ -11,6 +11,14 @@
     <UserSecretsId>d978106a-a975-46de-866c-42480afff94e</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;NU1803</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;NU1803</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="Net2HassMqtt_ion_64x64.ico" />
   </ItemGroup>

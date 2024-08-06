@@ -13,7 +13,7 @@ update-build-number: false
 branches:
   main:
     regex: ^master$|^main$
-    tag: ''
+    tag: 'alpha'
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
@@ -31,7 +31,7 @@ branches:
     is-release-branch: false
   feature:
     regex: ^(?!(master$|main$|pull/|pull-request[/-]|pr[/-])).+
-    tag: beta
+    tag: alpha
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: true
