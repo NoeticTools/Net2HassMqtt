@@ -59,6 +59,10 @@ A device with entity then appears in Home Assistant as shown below:
   - [Concepts](#concepts)
   - [MQTT broker connection](#mqtt-broker-connection)
   - [Your Application](#your-application)
+    - [Providing an entity model](#providing-an-entity-model)
+    - [Status Properties](#status-properties)
+    - [Command Methods](#command-methods)
+    - [Events](#events)
   - [Devices](#devices)
   - [Entities](#entities)
     - [Naming](#naming)
@@ -366,7 +370,7 @@ Example code using the bundled MQTT options:
 
 ### Your Application
 
-#### Providing entity models
+#### Providing an entity model
 
 An entity model is an application supplied model that provides at least one of:
 
