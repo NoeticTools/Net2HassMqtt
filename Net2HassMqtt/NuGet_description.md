@@ -3,7 +3,7 @@
 ![Current Version](https://img.shields.io/badge/version-v0.1-blue)
 ![GitHub contributors](https://img.shields.io/github/contributors/madhur-taneja/README-Template)
 
-> [!NOTE]  
+**NOTE**
 > This project is currently experimental/pre-release with much of the code untested.
 > Early trial and feedback would be great!
 
