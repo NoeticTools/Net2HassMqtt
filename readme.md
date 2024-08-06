@@ -6,7 +6,8 @@
 # Net2HassMqtt
 
 > [!NOTE]  
-> This project is pre-release with much of the code untested.
+> This project is an early development release.
+>
 > Early testing and feedback would be great!
 
 Net2HassMqtt provides [Home Assistant](https://www.home-assistant.io/) (HASS) integration to .NET applications via [MQTT](https://mqtt.org/).
@@ -302,7 +303,9 @@ The are all modelled in Net2HassMqtt's fluid configuration framework.
 Supported Home Assistant entity domains are:
 
 * BinarySensor
+* Button _(not tested)_
 * Cover _(open/close only, proportional covers not yet supported)_
+* Event
 * Number
 * Sensor
 * Switch
@@ -359,10 +362,6 @@ Example code using the bundled MQTT options:
 >
 > To setup these secrets see [Developer Secrets](/Documentation/DeveloperSecrets.md)
 > or run the application and read the exception message instructions.
-
-
-
-
 
 
 ### Your Application
@@ -532,6 +531,109 @@ Valid command argument types and values are:
         </tr>
     </tbody>
 </table>
+
+#### Events
+
+Event entities are intended to trigger and event in Home Assistant and subscribe to an event on the model.
+
+For example, an event on model may look like:
+
+```csharp
+    public enum VolumeEventTypes
+    {
+        Mute,
+        LowerVolume,
+        RaiseVolume
+    }
+
+    public event EventHandler<HassEventArgs>? VolumeEvent;
+
+    // Example model method firing event
+
+    public void OnKeyPressed(char keyChar)
+    {
+        if (keyChar == '+')
+        {
+            EfEvent?.Invoke(this, HassEventArgs.From(VolumeEventTypes.RaiseVolume));
+        }
+
+        if (keyChar == '-')
+        {
+            EfEvent?.Invoke(this, HassEventArgs.From(VolumeEventTypes.LowerVolume));
+        }
+
+        if (keyChar == 'm')
+        {
+            EfEvent?.Invoke(this, HassEventArgs.From(VolumeEventTypes.Mute));
+        }
+    }
+```
+
+The Net2HassMqtt configuration will look something like:
+
+```csharp
+        device.HasEvent(config => config.OnModel(model)
+                                        .WithEvent(nameof(MyModel.VolumeEvent))
+                                        .WithEventTypes<VolumeEventTypes>()
+                                        .WithEventTypeToSendAfterEachEvent("Clear")
+                                        .WithFriendlyName("Volume control event")
+                                        .WithNodeId("volume_event"));
+```
+
+Home Assistant keeps the last received event as a state.
+When a device disconnects it shows a state of "unavailable" (Correct)
+and when the device reconnects is show the last received event state again (OK).
+The problem is retriggers the last received event each time the device reconnects and possibly when Home Assistant starts.
+In the above example this may cause the volume to change everytime the device connects.
+
+The `WithEventTypeToSendAfterEachEvent("Clear")` option seen in the example is a workaround to achieve desired event behaviour:
+
+* Do not resend last received event on startup or on reconnecting.
+* Treat every event as new. Allow the same event to be fired repeatedly. e.g: Multiple raise volume events.
+
+This option causes Net2HassMqtt to add, if necessary, an event type (in the example "Clear") and publish this event
+immediately after publishing any other event. 
+Hence Home Assistant's Event entity sees every event as a changed state.
+
+While the example used an enum event names as strings may also be used. Here is an example:
+
+
+```csharp
+
+    public event EventHandler<HassEventArgs>? VolumeEvent;
+
+    // Example model method firing event
+
+    public void OnKeyPressed(char keyChar)
+    {
+        if (keyChar == '+')
+        {
+            EfEvent?.Invoke(this, new HassEventArgs("increase"));
+        }
+
+        if (keyChar == '-')
+        {
+            EfEvent?.Invoke(this, new HassEventArgs("decrease"));
+        }
+
+        if (keyChar == 'm')
+        {
+            EfEvent?.Invoke(this, new HassEventArgs("mute"));
+        }
+    }
+```
+
+With the configuration:
+
+
+```csharp
+        device.HasEvent(config => config.OnModel(model)
+                                        .WithEvent(nameof(MyModel.VolumeEvent))
+                                        .WithEventTypes("increase", "decrease", "mute")
+                                        .WithEventTypeToSendAfterEachEvent("clear")
+                                        .WithFriendlyName("Volume control event")
+                                        .WithNodeId("volume_event"));
+```
 
 ### Devices
 
