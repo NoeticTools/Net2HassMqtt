@@ -538,7 +538,7 @@ Valid command argument types and values are:
 
 #### Events
 
-Event entities are intended to trigger and event in Home Assistant and subscribe to an event on the model.
+Event entities are intended to trigger an event in Home Assistant and subscribe to an event on the model.
 
 For example, an event on model may look like:
 
@@ -553,7 +553,6 @@ For example, an event on model may look like:
     public event EventHandler<HassEventArgs>? VolumeEvent;
 
     // Example model method firing event
-
     public void OnKeyPressed(char keyChar)
     {
         if (keyChar == '+')
@@ -584,30 +583,27 @@ The Net2HassMqtt configuration will look something like:
                                         .WithNodeId("volume_event"));
 ```
 
-Home Assistant keeps the last received event as a state.
+Home Assistant's Event entity keeps the last received event as a state.
 When a device disconnects it shows a state of "unavailable" (Correct)
-and when the device reconnects is show the last received event state again (OK).
-The problem is retriggers the last received event each time the device reconnects and possibly when Home Assistant starts.
+and when the device reconnects it shows the last received event state again (OK).
+The problem is that it retriggers the last received event each time the device reconnects and possibly when Home Assistant starts.
 In the above example this may cause the volume to change everytime the device connects.
 
-The `WithEventTypeToSendAfterEachEvent("Clear")` option seen in the example is a workaround to achieve desired event behaviour:
+The `WithEventTypeToSendAfterEachEvent("Clear")` option, seen in the example, is a workaround to achieve desired event behaviour:
 
 * Do not resend last received event on startup or on reconnecting.
 * Treat every event as new. Allow the same event to be fired repeatedly. e.g: Multiple raise volume events.
 
-This option causes Net2HassMqtt to add, if necessary, an event type (in the example "Clear") and publish this event
-immediately after publishing any other event. 
-Hence Home Assistant's Event entity sees every event as a changed state.
+This option causes Net2HassMqtt to, if necessary, add an event type (in the example "Clear") and publish this event type
+immediately after publishing any other event type.
+Hence Home Assistant's Event sees every event as a changed state. It will still resent the "Clear" event but that should be ignored.
 
-While the example used an enum event names as strings may also be used. Here is an example:
-
+The example defined used an enum event to define event types. Names as strings may also be used as shown below:
 
 ```csharp
-
     public event EventHandler<HassEventArgs>? VolumeEvent;
 
     // Example model method firing event
-
     public void OnKeyPressed(char keyChar)
     {
         if (keyChar == '+')
@@ -628,7 +624,6 @@ While the example used an enum event names as strings may also be used. Here is 
 ```
 
 With the configuration:
-
 
 ```csharp
         device.HasEvent(config => config.OnModel(model)
