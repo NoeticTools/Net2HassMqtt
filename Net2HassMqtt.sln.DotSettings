@@ -13,15 +13,15 @@
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A02D2EB0D03BD94EBB985496689672FB/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A02D2EB0D03BD94EBB985496689672FB/AbsolutePath/@EntryValue">C:\Sources\Dotnet2HassMqtt\Dotnet2HassMqtt.sln.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=A02D2EB0D03BD94EBB985496689672FB/RelativePath/@EntryValue"></s:String>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=E2B337FB4D92A24EAB1477ECBB615FCF/@KeyIndexDefined">True</s:Boolean>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=E2B337FB4D92A24EAB1477ECBB615FCF/AbsolutePath/@EntryValue">C:\Sources\NET2HomeAssistantMqtt\NET2HomeAssistantMqtt.sln.DotSettings</s:String>
-	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=E2B337FB4D92A24EAB1477ECBB615FCF/RelativePath/@EntryValue"></s:String>
+	
+	
+	
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileA02D2EB0D03BD94EBB985496689672FB/@KeyIndexDefined">True</s:Boolean>
 	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileA02D2EB0D03BD94EBB985496689672FB/RelativePriority/@EntryValue">0.5</s:Double>
 	
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileE2B337FB4D92A24EAB1477ECBB615FCF/@KeyIndexDefined">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileE2B337FB4D92A24EAB1477ECBB615FCF/IsOn/@EntryValue">False</s:Boolean>
-	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=FileE2B337FB4D92A24EAB1477ECBB615FCF/RelativePriority/@EntryValue">1.5</s:Double>
+	
+	
+	
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpKeepExistingMigration/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpPlaceEmbeddedOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpUseContinuousIndentInsideBracesMigration/@EntryIndexedValue">True</s:Boolean>
