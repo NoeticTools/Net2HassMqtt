@@ -2,3 +2,4 @@
 obj
 bin
 *.user
+/Net2HassMqtt/msbuild.binlog
