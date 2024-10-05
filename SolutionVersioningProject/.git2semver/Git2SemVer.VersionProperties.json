@@ -6,18 +6,18 @@
   "FileVersion": "0.3.2",
   "Git": {
     "BranchName": "AutomaticVersioning2",
-    "CommitsSinceLastRelease": 4,
+    "CommitsSinceLastRelease": 6,
     "HasLocalChanges": true,
     "HeadCommit": {
       "CommitId": {
-        "Id": "eae312f03df1fffdd86fef1bf966bca0559f7eb9",
-        "ShortSha": "eae312f"
+        "Id": "61f50f4436876f4ad7dab4449e7e6b6c7521b49f",
+        "ShortSha": "61f50f4"
       },
-      "Message": "Replacing GitVersion with Git2SemVer",
+      "Message": "Added automated versioning",
       "Parents": [
         {
-          "Id": "f892546272dc40e141cb33fcb880392c0922a012",
-          "ShortSha": "f892546"
+          "Id": "76a523619cf354cd32e45f301f17f6e4e0d9d97a",
+          "ShortSha": "76a5236"
         }
       ],
       "ReleasedVersion": null,
@@ -62,11 +62,11 @@
       "MetadataIdentifiers": []
     }
   },
-  "InformationalVersion": "0.3.2-alpha.491.NUC1+AutomaticVersioning2.eae312f03df1fffdd86fef1bf966bca0559f7eb9",
+  "InformationalVersion": "0.3.2-alpha.493.NUC1+AutomaticVersioning2.61f50f4436876f4ad7dab4449e7e6b6c7521b49f",
   "IsInInitialDevelopment": true,
   "Output1": "",
   "Output2": "",
-  "PackageVersion": "0.3.2-alpha.491.NUC1",
+  "PackageVersion": "0.3.2-alpha.493.NUC1",
   "PrereleaseLabel": "alpha",
-  "Version": "0.3.2-alpha.491.NUC1"
+  "Version": "0.3.2-alpha.493.NUC1"
 }

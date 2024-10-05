@@ -4,5 +4,3 @@ bin
 *.user
 /Net2HassMqtt/msbuild.binlog
 
-# Git2SemVer version info share folder
-.git2semver
