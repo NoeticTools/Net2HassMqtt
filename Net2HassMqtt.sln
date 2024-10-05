@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples1", "Examples1\Exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net2HassMqtt.Tests", "Net2HassMqtt.Tests\Net2HassMqtt.Tests.csproj", "{C3C7B92B-980F-428D-A7E6-CC86D25F6693}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionVersioningProject", "SolutionVersioningProject\SolutionVersioningProject.csproj", "{3AB3F9E2-1F3D-4167-85B9-253F72CB9C94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{C3C7B92B-980F-428D-A7E6-CC86D25F6693}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3C7B92B-980F-428D-A7E6-CC86D25F6693}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3C7B92B-980F-428D-A7E6-CC86D25F6693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AB3F9E2-1F3D-4167-85B9-253F72CB9C94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AB3F9E2-1F3D-4167-85B9-253F72CB9C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AB3F9E2-1F3D-4167-85B9-253F72CB9C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AB3F9E2-1F3D-4167-85B9-253F72CB9C94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
