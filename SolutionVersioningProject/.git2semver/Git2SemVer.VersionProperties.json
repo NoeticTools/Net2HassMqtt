@@ -6,18 +6,18 @@
   "FileVersion": "0.3.2",
   "Git": {
     "BranchName": "AutomaticVersioning2",
-    "CommitsSinceLastRelease": 8,
+    "CommitsSinceLastRelease": 9,
     "HasLocalChanges": true,
     "HeadCommit": {
       "CommitId": {
-        "Id": "b543425270ac28f14948900676ec3439e3b9c486",
-        "ShortSha": "b543425"
+        "Id": "016e866f84bb81fa28c490f750db518004ea6cb9",
+        "ShortSha": "016e866"
       },
-      "Message": "Fixing files missing when cloned.",
+      "Message": "Working on Sem2GitVer.MSBuild issue executing git on TeamCity",
       "Parents": [
         {
-          "Id": "c7f288491b5a7be86eb9809cf3a1e870341bb30c",
-          "ShortSha": "c7f2884"
+          "Id": "b543425270ac28f14948900676ec3439e3b9c486",
+          "ShortSha": "b543425"
         }
       ],
       "ReleasedVersion": null,
@@ -62,11 +62,11 @@
       "MetadataIdentifiers": []
     }
   },
-  "InformationalVersion": "0.3.2-alpha.503.NUC1+AutomaticVersioning2.b543425270ac28f14948900676ec3439e3b9c486",
+  "InformationalVersion": "0.3.2-alpha.507.NUC1+AutomaticVersioning2.016e866f84bb81fa28c490f750db518004ea6cb9",
   "IsInInitialDevelopment": true,
   "Output1": "",
   "Output2": "",
-  "PackageVersion": "0.3.2-alpha.503.NUC1",
+  "PackageVersion": "0.3.2-alpha.507.NUC1",
   "PrereleaseLabel": "alpha",
-  "Version": "0.3.2-alpha.503.NUC1"
+  "Version": "0.3.2-alpha.507.NUC1"
 }

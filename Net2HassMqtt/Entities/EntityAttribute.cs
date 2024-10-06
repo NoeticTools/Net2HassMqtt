@@ -27,5 +27,5 @@ internal sealed class EntityAttribute
 
     public IStatusPropertyReader StatusPropertyReader { get; }
 
-    protected ILogger Logger { get; }
+    public ILogger Logger { get; }
 }
