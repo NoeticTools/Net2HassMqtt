@@ -6,18 +6,18 @@
   "FileVersion": "0.1.0",
   "Git": {
     "BranchName": "main",
-    "CommitsSinceLastRelease": 12,
+    "CommitsSinceLastRelease": 13,
     "HasLocalChanges": true,
     "HeadCommit": {
       "CommitId": {
-        "Id": "28aa3749435cd6da3f54df4617888956c6c9ae6e",
-        "ShortSha": "28aa374"
+        "Id": "f538a02921405fe8f54c6922cf68df09dc7f34a8",
+        "ShortSha": "f538a02"
       },
-      "Message": "Added automatic versioning (#9)",
+      "Message": "Fixing GitHub build ID",
       "Parents": [
         {
-          "Id": "d77cae7fd1b1dbdcb94c822dbd224bee0d299563",
-          "ShortSha": "d77cae7"
+          "Id": "28aa3749435cd6da3f54df4617888956c6c9ae6e",
+          "ShortSha": "28aa374"
         }
       ],
       "ReleasedVersion": null,
@@ -26,7 +26,7 @@
     "LastReleaseCommit": null,
     "LastReleaseVersion": null
   },
-  "InformationalVersion": "0.1.0+529.NUC1.main.28aa3749435cd6da3f54df4617888956c6c9ae6e",
+  "InformationalVersion": "0.1.0+533.NUC1.main.f538a02921405fe8f54c6922cf68df09dc7f34a8",
   "IsInInitialDevelopment": true,
   "Output1": "",
   "Output2": "",
