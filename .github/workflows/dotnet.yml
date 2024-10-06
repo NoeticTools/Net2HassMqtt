@@ -27,12 +27,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Harvest version variables
-      run: |
-          echo 'N2H_BUILD_NUMBER=${{ env.BUILD_NUMBER }}' >> $GITHUB_ENV
-      env:
-        BUILD_NUMBER: ${{ github.run_number }}-${{ github.run_attempt }}
-
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -43,7 +37,10 @@ jobs:
 
     - name: Build
       run: |
-          dotnet build --no-restore --configuration Release -p:BuildNumber=${{ env.N2H_BUILD_NUMBER }}
+          dotnet build --no-restore --configuration Release -p:Git2SemVer_BuildNumber=${{ env.RUN_NUMBER }} -p:Git2SemVer_BuildContext=${{ env.RUN_ATTEMPT }}
+      env:
+        RUN_NUMBER: ${{ github.run_number }}
+        RUN_ATTEMPT: ${{ github.run_attempt }}
 
     - name: Pack
       run: |
