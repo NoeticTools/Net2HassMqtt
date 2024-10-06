@@ -1,0 +1,72 @@
+{
+  "AssemblyVersion": "0.3.2",
+  "BuildContext": "",
+  "BuildNumber": "",
+  "BuildSystemVersion": "0.3.2-alpha",
+  "FileVersion": "0.3.2",
+  "Git": {
+    "BranchName": "AutomaticVersioning2",
+    "CommitsSinceLastRelease": 14,
+    "HasLocalChanges": true,
+    "HeadCommit": {
+      "CommitId": {
+        "Id": "f0b2cce7ce3a1c2a864fd38b2960c35fb6020894",
+        "ShortSha": "f0b2cce"
+      },
+      "Message": "Work on Git2SemVer.Build issues.",
+      "Parents": [
+        {
+          "Id": "23e75efb1a8c5f9bf812ef0a9f719398b1483995",
+          "ShortSha": "23e75ef"
+        }
+      ],
+      "ReleasedVersion": null,
+      "Tags": ""
+    },
+    "LastReleaseCommit": {
+      "CommitId": {
+        "Id": "d77cae7fd1b1dbdcb94c822dbd224bee0d299563",
+        "ShortSha": "d77cae7"
+      },
+      "Message": "Update NuGet_description.md",
+      "Parents": [
+        {
+          "Id": "b5613aab05b13533bcd1df04c6416fd70ec8feed",
+          "ShortSha": "b5613aa"
+        }
+      ],
+      "ReleasedVersion": {
+        "Major": 0,
+        "Minor": 3,
+        "Patch": 1,
+        "Prerelease": "",
+        "PrereleaseIdentifiers": [],
+        "IsPrerelease": false,
+        "IsRelease": true,
+        "Build": "",
+        "Metadata": "",
+        "MetadataIdentifiers": []
+      },
+      "Tags": "v0.3.1"
+    },
+    "LastReleaseVersion": {
+      "Major": 0,
+      "Minor": 3,
+      "Patch": 1,
+      "Prerelease": "",
+      "PrereleaseIdentifiers": [],
+      "IsPrerelease": false,
+      "IsRelease": true,
+      "Build": "",
+      "Metadata": "",
+      "MetadataIdentifiers": []
+    }
+  },
+  "InformationalVersion": "0.3.2-alpha.525.NUC1+AutomaticVersioning2.f0b2cce7ce3a1c2a864fd38b2960c35fb6020894",
+  "IsInInitialDevelopment": true,
+  "Output1": "",
+  "Output2": "",
+  "PackageVersion": "0.3.2-alpha.525.NUC1",
+  "PrereleaseLabel": "alpha",
+  "Version": "0.3.2-alpha.525.NUC1"
+}

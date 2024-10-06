@@ -11,14 +11,6 @@
     <UserSecretsId>d978106a-a975-46de-866c-42480afff94e</UserSecretsId>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;NU1803</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;NU1803</NoWarn>
-  </PropertyGroup>
-
   <ItemGroup>
     <Content Include="Net2HassMqtt_ion_64x64.ico" />
   </ItemGroup>
@@ -31,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Net2HassMqtt\Net2HassMqtt.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.6.1" />
   </ItemGroup>
 
 </Project>

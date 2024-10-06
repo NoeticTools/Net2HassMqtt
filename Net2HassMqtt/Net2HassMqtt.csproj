@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <WriteVersionInfoToBuildLog>true</WriteVersionInfoToBuildLog>
+    <WriteVersionInfoToBuildLog>false</WriteVersionInfoToBuildLog>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -45,10 +46,6 @@ Through Home Assistant MQTT Discovery your application devices and entities just
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FluentDateTime" Version="3.0.0" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="MQTTnet" Version="4.3.6.1152" />
     <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.3.6.1152" />
@@ -69,6 +66,10 @@ Through Home Assistant MQTT Discovery your application devices and entities just
   
   <ItemGroup>
     <Content Include="Net2HassMqtt_icon_64x64.ico" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.6.1" />
   </ItemGroup>
 
 </Project>
