@@ -6,18 +6,18 @@
   "FileVersion": "0.3.2",
   "Git": {
     "BranchName": "AutomaticVersioning2",
-    "CommitsSinceLastRelease": 6,
+    "CommitsSinceLastRelease": 8,
     "HasLocalChanges": true,
     "HeadCommit": {
       "CommitId": {
-        "Id": "61f50f4436876f4ad7dab4449e7e6b6c7521b49f",
-        "ShortSha": "61f50f4"
+        "Id": "b543425270ac28f14948900676ec3439e3b9c486",
+        "ShortSha": "b543425"
       },
-      "Message": "Added automated versioning",
+      "Message": "Fixing files missing when cloned.",
       "Parents": [
         {
-          "Id": "76a523619cf354cd32e45f301f17f6e4e0d9d97a",
-          "ShortSha": "76a5236"
+          "Id": "c7f288491b5a7be86eb9809cf3a1e870341bb30c",
+          "ShortSha": "c7f2884"
         }
       ],
       "ReleasedVersion": null,
@@ -62,11 +62,11 @@
       "MetadataIdentifiers": []
     }
   },
-  "InformationalVersion": "0.3.2-alpha.493.NUC1+AutomaticVersioning2.61f50f4436876f4ad7dab4449e7e6b6c7521b49f",
+  "InformationalVersion": "0.3.2-alpha.503.NUC1+AutomaticVersioning2.b543425270ac28f14948900676ec3439e3b9c486",
   "IsInInitialDevelopment": true,
   "Output1": "",
   "Output2": "",
-  "PackageVersion": "0.3.2-alpha.493.NUC1",
+  "PackageVersion": "0.3.2-alpha.503.NUC1",
   "PrereleaseLabel": "alpha",
-  "Version": "0.3.2-alpha.493.NUC1"
+  "Version": "0.3.2-alpha.503.NUC1"
 }
