@@ -1,0 +1,36 @@
+{
+  "AssemblyVersion": "0.1.0",
+  "BuildContext": "",
+  "BuildNumber": "",
+  "BuildSystemVersion": "0.1.0-InitialDevAlpha.NUC1.626",
+  "FileVersion": "0.1.0",
+  "Git": {
+    "BranchName": "Versioning-not-working-on-main-branch",
+    "CommitsSinceLastRelease": 7,
+    "HasLocalChanges": true,
+    "HeadCommit": {
+      "CommitId": {
+        "Id": "075edf78096225b057dbbfc59f48680e9dee5ba0",
+        "ShortSha": "075edf7"
+      },
+      "Message": "Git2SemVer update to fix versioning props file growing on each build.",
+      "Parents": [
+        {
+          "Id": "99f9d7509df4f891dfe7c14f5cbf440666b3af5f",
+          "ShortSha": "99f9d75"
+        }
+      ],
+      "ReleasedVersion": null,
+      "Tags": ""
+    },
+    "LastReleaseCommit": null,
+    "LastReleaseVersion": null
+  },
+  "InformationalVersion": "0.1.0-InitialDevAlpha.NUC1.626+Versioning-not-working-on-main-branch.075edf78096225b057dbbfc59f48680e9dee5ba0",
+  "IsInInitialDevelopment": true,
+  "Output1": "",
+  "Output2": "",
+  "PackageVersion": "0.1.0-InitialDevAlpha.NUC1.626",
+  "PrereleaseLabel": "InitialDevAlpha",
+  "Version": "0.1.0-InitialDevAlpha.NUC1.626"
+}
