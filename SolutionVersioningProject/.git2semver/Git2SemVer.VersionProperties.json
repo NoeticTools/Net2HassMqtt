@@ -1,36 +1,72 @@
 {
-  "AssemblyVersion": "0.1.0",
+  "AssemblyVersion": "0.3.2",
   "BuildContext": "",
   "BuildNumber": "",
-  "BuildSystemVersion": "0.1.0",
-  "FileVersion": "0.1.0",
+  "BuildSystemVersion": "0.3.2-InitialDevAlpha.NUC1.604",
+  "FileVersion": "0.3.2",
   "Git": {
-    "BranchName": "main",
-    "CommitsSinceLastRelease": 13,
+    "BranchName": "Versioning-not-working-on-main-branch",
+    "CommitsSinceLastRelease": 5,
     "HasLocalChanges": true,
     "HeadCommit": {
       "CommitId": {
-        "Id": "f538a02921405fe8f54c6922cf68df09dc7f34a8",
-        "ShortSha": "f538a02"
+        "Id": "501fe2235d787720b020182f9e63c766f4e8f00b",
+        "ShortSha": "501fe22"
       },
-      "Message": "Fixing GitHub build ID",
+      "Message": "Fixed issue with Git2SemVer regex parsing log line",
       "Parents": [
         {
-          "Id": "28aa3749435cd6da3f54df4617888956c6c9ae6e",
-          "ShortSha": "28aa374"
+          "Id": "14eca22ae3d49a42753cdacc4e293804fabb77ef",
+          "ShortSha": "14eca22"
         }
       ],
       "ReleasedVersion": null,
       "Tags": ""
     },
-    "LastReleaseCommit": null,
-    "LastReleaseVersion": null
+    "LastReleaseCommit": {
+      "CommitId": {
+        "Id": "d77cae7fd1b1dbdcb94c822dbd224bee0d299563",
+        "ShortSha": "d77cae7"
+      },
+      "Message": "Update NuGet_description.md",
+      "Parents": [
+        {
+          "Id": "b5613aab05b13533bcd1df04c6416fd70ec8feed",
+          "ShortSha": "b5613aa"
+        }
+      ],
+      "ReleasedVersion": {
+        "Major": 0,
+        "Minor": 3,
+        "Patch": 1,
+        "Prerelease": "",
+        "PrereleaseIdentifiers": [],
+        "IsPrerelease": false,
+        "IsRelease": true,
+        "Build": "",
+        "Metadata": "",
+        "MetadataIdentifiers": []
+      },
+      "Tags": "v0.3.1"
+    },
+    "LastReleaseVersion": {
+      "Major": 0,
+      "Minor": 3,
+      "Patch": 1,
+      "Prerelease": "",
+      "PrereleaseIdentifiers": [],
+      "IsPrerelease": false,
+      "IsRelease": true,
+      "Build": "",
+      "Metadata": "",
+      "MetadataIdentifiers": []
+    }
   },
-  "InformationalVersion": "0.1.0+533.NUC1.main.f538a02921405fe8f54c6922cf68df09dc7f34a8",
+  "InformationalVersion": "0.3.2-InitialDevAlpha.NUC1.604+Versioning-not-working-on-main-branch.501fe2235d787720b020182f9e63c766f4e8f00b",
   "IsInInitialDevelopment": true,
   "Output1": "",
   "Output2": "",
-  "PackageVersion": "0.1.0",
-  "PrereleaseLabel": "",
-  "Version": "0.1.0"
+  "PackageVersion": "0.3.2-InitialDevAlpha.NUC1.604",
+  "PrereleaseLabel": "InitialDevAlpha",
+  "Version": "0.3.2-InitialDevAlpha.NUC1.604"
 }

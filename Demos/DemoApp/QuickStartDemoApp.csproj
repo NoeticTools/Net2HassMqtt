@@ -9,6 +9,7 @@
     <RootNamespace>NoeticTools.Net2HassMqtt.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <ApplicationIcon>Net2HassMqtt_ion_64x64.ico</ApplicationIcon>
     <UserSecretsId>d978106a-a975-46de-866c-42480afff94e</UserSecretsId>
+    <NoWarn>1701;1702;NU1803</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.6.6" />
+    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.7.7" />
   </ItemGroup>
 
 </Project>
