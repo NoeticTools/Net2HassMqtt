@@ -14,7 +14,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{166632D1-0E31-460A-9C67-9D336E802FB4}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
-		GitVersion.yml = GitVersion.yml
 		license.txt = license.txt
 		readme.md = readme.md
 	EndProjectSection
@@ -29,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples1", "Examples1\Exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net2HassMqtt.Tests", "Net2HassMqtt.Tests\Net2HassMqtt.Tests.csproj", "{C3C7B92B-980F-428D-A7E6-CC86D25F6693}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionVersioningProject", "SolutionVersioningProject\SolutionVersioningProject.csproj", "{A64B1862-D8F1-4755-87EB-DC9DECEA21D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionVersioningProject", "SolutionVersioningProject\SolutionVersioningProject.csproj", "{A64B1862-D8F1-4755-87EB-DC9DECEA21D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

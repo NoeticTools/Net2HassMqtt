@@ -3,11 +3,14 @@
 
 name: NuGet Package Release Build
 
+run-name: Build and pack. Run ${{ github.run_number }}.${{ github.run_attempt }}
+
 on:
   push:
     branches:
       - 'main'
       - 'releases/**'
+      - '**'
   pull_request:
     types:
       - opened
@@ -37,19 +40,19 @@ jobs:
 
     - name: Build
       run: |
-          dotnet build --no-restore --configuration Release -p:Git2SemVer_HostType=GitHub -p:Git2SemVer_BuildNumber=${{ env.RUN_NUMBER }} -p:Git2SemVer_BuildContext=${{ env.RUN_ATTEMPT }}
+          dotnet build --no-restore --configuration Release --verbosity normal -p:Git2SemVer_HostType=GitHub -p:Git2SemVer_BuildNumber=${{ env.RUN_NUMBER }} -p:Git2SemVer_BuildContext=${{ env.RUN_ATTEMPT }}
       env:
         RUN_NUMBER: ${{ github.run_number }}
         RUN_ATTEMPT: ${{ github.run_attempt }}
 
     - name: Pack
       run: |
-          dotnet pack ./Net2HassMqtt/Net2HassMqtt.csproj --no-build --no-restore --configuration Release
+          dotnet pack ./Net2HassMqtt/Net2HassMqtt.csproj --verbosity normal --no-build --no-restore --configuration Release
 
     - name: Archive NuGet package
       uses: actions/upload-artifact@v4
       with:
-        name: nuget-package
+        name: Nuget package (github run ${{ github.run_number }}.${{ github.run_attempt }})
         path: Net2HassMqtt/bin/**/*.nupkg
         compression-level: 0
         if-no-files-found: error
