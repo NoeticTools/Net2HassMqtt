@@ -69,7 +69,7 @@ Through Home Assistant MQTT Discovery your application devices and entities just
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.11.4" />
+    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.11.5" />
   </ItemGroup>
 
 </Project>
