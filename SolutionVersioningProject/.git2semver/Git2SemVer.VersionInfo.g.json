@@ -1,0 +1,117 @@
+{
+  "Rev": 1,
+  "Git2SemVerVersionInfo": {
+    "AssemblyVersion": "0.3.5",
+    "BuildContext": "NUC1",
+    "BuildNumber": "1734",
+    "BuildSystemVersion": "0.3.5-InitialDev.NUC1.1734",
+    "FileVersion": "0.3.5",
+    "Git": {
+      "$type": "GitOutputs",
+      "BranchName": "main",
+      "CommitsSinceLastRelease": 1,
+      "HasLocalChanges": true,
+      "HeadCommit": {
+        "$type": "Commit",
+        "CommitId": {
+          "Id": "a68ec42cdca38009ac7a3f56045b2ce8b5e5b21b",
+          "ObfuscatedSha": "0001",
+          "ShortSha": "a68ec42"
+        },
+        "ReleasedVersion": {
+          "Major": 0,
+          "Minor": 3,
+          "Patch": 4,
+          "Prerelease": "",
+          "PrereleaseIdentifiers": [],
+          "IsPrerelease": false,
+          "IsRelease": true,
+          "Build": "",
+          "Metadata": "",
+          "MetadataIdentifiers": []
+        },
+        "Summary": "Bump Git2SemVer.MSBuild",
+        "MessageBody": "",
+        "Refs": "HEAD -\u003E main, tag: v0.3.4, tag: v0.3.3, origin/main, origin/HEAD",
+        "Parents": [
+          {
+            "Id": "d6c0e263c81099e50c6dc3620a9e9c4cf1c43f4d",
+            "ObfuscatedSha": "0002",
+            "ShortSha": "d6c0e26"
+          }
+        ],
+        "Metadata": {
+          "ApiChangeFlags": {
+            "BreakingChange": false,
+            "Fix": false,
+            "FunctionalityChange": false
+          },
+          "Body": "",
+          "ChangeDescription": "",
+          "ChangeType": 0,
+          "FooterKeyValues": []
+        }
+      },
+      "LastReleaseCommit": {
+        "$type": "Commit",
+        "CommitId": {
+          "Id": "a68ec42cdca38009ac7a3f56045b2ce8b5e5b21b",
+          "ObfuscatedSha": "0001",
+          "ShortSha": "a68ec42"
+        },
+        "ReleasedVersion": {
+          "Major": 0,
+          "Minor": 3,
+          "Patch": 4,
+          "Prerelease": "",
+          "PrereleaseIdentifiers": [],
+          "IsPrerelease": false,
+          "IsRelease": true,
+          "Build": "",
+          "Metadata": "",
+          "MetadataIdentifiers": []
+        },
+        "Summary": "Bump Git2SemVer.MSBuild",
+        "MessageBody": "",
+        "Refs": "HEAD -\u003E main, tag: v0.3.4, tag: v0.3.3, origin/main, origin/HEAD",
+        "Parents": [
+          {
+            "Id": "d6c0e263c81099e50c6dc3620a9e9c4cf1c43f4d",
+            "ObfuscatedSha": "0002",
+            "ShortSha": "d6c0e26"
+          }
+        ],
+        "Metadata": {
+          "ApiChangeFlags": {
+            "BreakingChange": false,
+            "Fix": false,
+            "FunctionalityChange": false
+          },
+          "Body": "",
+          "ChangeDescription": "",
+          "ChangeType": 0,
+          "FooterKeyValues": []
+        }
+      },
+      "LastReleaseVersion": {
+        "Major": 0,
+        "Minor": 3,
+        "Patch": 4,
+        "Prerelease": "",
+        "PrereleaseIdentifiers": [],
+        "IsPrerelease": false,
+        "IsRelease": true,
+        "Build": "",
+        "Metadata": "",
+        "MetadataIdentifiers": []
+      }
+    },
+    "InformationalVersion": "0.3.5-InitialDev.NUC1.1734\u002Bmain.a68ec42cdca38009ac7a3f56045b2ce8b5e5b21b",
+    "IsInInitialDevelopment": true,
+    "Output1": "",
+    "Output2": "",
+    "PackageVersion": "0.3.5-InitialDev.NUC1.1734",
+    "PrereleaseLabel": "InitialDev",
+    "Version": "0.3.5-InitialDev.NUC1.1734"
+  }
+}
