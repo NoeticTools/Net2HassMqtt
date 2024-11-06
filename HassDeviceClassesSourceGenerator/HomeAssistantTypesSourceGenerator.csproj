@@ -37,13 +37,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Scriban" Version="5.10.0" IncludeAssets="Build" />
+    <PackageReference Include="Scriban" Version="5.11.0" IncludeAssets="Build" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.20.0-InitialDev.279" />
+    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="0.22.0-InitialDev.313" />
   </ItemGroup>
 
 </Project>

@@ -31,7 +31,6 @@ internal sealed class Net2MqttBridge : INet2HassMqttBridge
         {
             await device.StartAsync();
         }
-        //await _devices.ForeachAsync(device => device.StartAsync());
         return true;
     }
 
@@ -60,7 +59,6 @@ internal sealed class Net2MqttBridge : INet2HassMqttBridge
 
     private Task OnMqttDisconnectedAsync(EventArgs args)
     {
-        // todo
         return Task.CompletedTask;
     }
 }
