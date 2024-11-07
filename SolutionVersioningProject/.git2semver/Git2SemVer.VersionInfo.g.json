@@ -3,41 +3,30 @@
   "Git2SemVerVersionInfo": {
     "AssemblyVersion": "0.3.6",
     "BuildContext": "NUC1",
-    "BuildNumber": "1907",
-    "BuildSystemVersion": "0.3.6-InitialDev.NUC1.1907",
+    "BuildNumber": "1957",
+    "BuildSystemVersion": "0.3.6-alpha-InitialDev.NUC1.1957",
     "FileVersion": "0.3.6",
     "Git": {
       "$type": "GitOutputs",
-      "BranchName": "main",
-      "CommitsSinceLastRelease": 1,
+      "BranchName": "Prepare-for-release",
+      "CommitsSinceLastRelease": 2,
       "HasLocalChanges": true,
       "HeadCommit": {
         "$type": "Commit",
         "CommitId": {
-          "Id": "367c7feb84b1e18491eaec1337b61e5bbfaeae74",
+          "Id": "4a849f6cd85f5c1418f5dac9612d83bf2a35701d",
           "ObfuscatedSha": "0001",
-          "ShortSha": "367c7fe"
+          "ShortSha": "4a849f6"
         },
-        "ReleasedVersion": {
-          "Major": 0,
-          "Minor": 3,
-          "Patch": 5,
-          "Prerelease": "",
-          "PrereleaseIdentifiers": [],
-          "IsPrerelease": false,
-          "IsRelease": true,
-          "Build": "",
-          "Metadata": "",
-          "MetadataIdentifiers": []
-        },
-        "Summary": "build: update Git2SemVer.MSBuild package",
+        "ReleasedVersion": null,
+        "Summary": "build: nuget package updates",
         "MessageBody": "",
-        "Refs": "HEAD -\u003E main, tag: v0.3.5, origin/main, origin/HEAD",
+        "Refs": "HEAD -\u003E Prepare-for-release, origin/main, origin/HEAD, main",
         "Parents": [
           {
-            "Id": "a68ec42cdca38009ac7a3f56045b2ce8b5e5b21b",
+            "Id": "367c7feb84b1e18491eaec1337b61e5bbfaeae74",
             "ObfuscatedSha": "0002",
-            "ShortSha": "a68ec42"
+            "ShortSha": "367c7fe"
           }
         ],
         "Metadata": {
@@ -47,7 +36,7 @@
             "FunctionalityChange": false
           },
           "Body": "",
-          "ChangeDescription": "update Git2SemVer.MSBuild package",
+          "ChangeDescription": "nuget package updates",
           "ChangeType": 3,
           "FooterKeyValues": []
         }
@@ -56,7 +45,7 @@
         "$type": "Commit",
         "CommitId": {
           "Id": "367c7feb84b1e18491eaec1337b61e5bbfaeae74",
-          "ObfuscatedSha": "0001",
+          "ObfuscatedSha": "0002",
           "ShortSha": "367c7fe"
         },
         "ReleasedVersion": {
@@ -73,11 +62,11 @@
         },
         "Summary": "build: update Git2SemVer.MSBuild package",
         "MessageBody": "",
-        "Refs": "HEAD -\u003E main, tag: v0.3.5, origin/main, origin/HEAD",
+        "Refs": "tag: v0.3.5",
         "Parents": [
           {
             "Id": "a68ec42cdca38009ac7a3f56045b2ce8b5e5b21b",
-            "ObfuscatedSha": "0002",
+            "ObfuscatedSha": "0003",
             "ShortSha": "a68ec42"
           }
         ],
@@ -106,12 +95,12 @@
         "MetadataIdentifiers": []
       }
     },
-    "InformationalVersion": "0.3.6-InitialDev.NUC1.1907\u002Bmain.367c7feb84b1e18491eaec1337b61e5bbfaeae74",
+    "InformationalVersion": "0.3.6-alpha-InitialDev.NUC1.1957\u002BPrepare-for-release.4a849f6cd85f5c1418f5dac9612d83bf2a35701d",
     "IsInInitialDevelopment": true,
     "Output1": "",
     "Output2": "",
-    "PackageVersion": "0.3.6-InitialDev.NUC1.1907",
-    "PrereleaseLabel": "InitialDev",
-    "Version": "0.3.6-InitialDev.NUC1.1907"
+    "PackageVersion": "0.3.6-alpha-InitialDev.NUC1.1957",
+    "PrereleaseLabel": "alpha-InitialDev",
+    "Version": "0.3.6-alpha-InitialDev.NUC1.1957"
   }
 }

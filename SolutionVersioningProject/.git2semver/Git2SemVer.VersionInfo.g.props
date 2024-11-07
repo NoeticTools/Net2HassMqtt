@@ -3,11 +3,11 @@
 
   <PropertyGroup>
 
-      <Version Condition=" '$(Version)' != '' ">0.3.6-InitialDev.NUC1.1907</Version>
+      <Version Condition=" '$(Version)' != '' ">0.3.6-alpha-InitialDev.NUC1.1957</Version>
       <VersionPrefix Condition=" '$(VersionPrefix)' != '' ">0.3.6</VersionPrefix>
-      <VersionSuffix Condition=" '$(VersionSuffix)' != '' ">InitialDev.NUC1.1907</VersionSuffix>
-      <PackageVersion Condition=" '$(PackageVersion)' != '' ">0.3.6-InitialDev.NUC1.1907</PackageVersion>
-      <InformationalVersion Condition=" '$(InformationalVersion)' != '' ">0.3.6-InitialDev.NUC1.1907+main.367c7feb84b1e18491eaec1337b61e5bbfaeae74</InformationalVersion>
+      <VersionSuffix Condition=" '$(VersionSuffix)' != '' ">alpha-InitialDev.NUC1.1957</VersionSuffix>
+      <PackageVersion Condition=" '$(PackageVersion)' != '' ">0.3.6-alpha-InitialDev.NUC1.1957</PackageVersion>
+      <InformationalVersion Condition=" '$(InformationalVersion)' != '' ">0.3.6-alpha-InitialDev.NUC1.1957+Prepare-for-release.4a849f6cd85f5c1418f5dac9612d83bf2a35701d</InformationalVersion>
       <AssemblyVersion Condition=" '$(AssemblyVersion)' != '' ">0.3.6</AssemblyVersion>
       <FileVersion Condition=" '$(FileVersion)' != '' ">0.3.6</FileVersion>
 
