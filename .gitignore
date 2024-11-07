@@ -7,3 +7,5 @@ bin
 /SolutionVersioningProject/.git2semver/Git2SemVer.Generated.Properties.g.json
 /SolutionVersioningProject/.git2semver/Git2SemVer.VersionProperties.json
 /SolutionVersioningProject/.git2semver/Git2SemVer.VersionProperties.json
+/SolutionVersioningProject/.git2semver/Git2SemVer.VersionInfo.g.props
+/SolutionVersioningProject/.git2semver/Git2SemVer.VersionInfo.g.json
