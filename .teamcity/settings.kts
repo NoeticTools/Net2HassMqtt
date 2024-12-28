@@ -3,10 +3,8 @@ import jetbrains.buildServer.configs.kotlin.CustomChart.*
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.buildSteps.DotnetBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.DotnetPackStep
-import jetbrains.buildServer.configs.kotlin.buildSteps.DotnetRestoreStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.dotnetBuild
 import jetbrains.buildServer.configs.kotlin.buildSteps.dotnetPack
-import jetbrains.buildServer.configs.kotlin.buildSteps.dotnetRestore
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.projectCustomChart
 import jetbrains.buildServer.configs.kotlin.projectFeatures.githubIssues
@@ -95,16 +93,6 @@ object Build : BuildType({
                 echo 'Flush local nuget caches'
                 dotnet nuget locals --clear all
             """.trimIndent()
-        }
-        dotnetRestore {
-            name = "Restore"
-            id = "Restore"
-            enabled = false
-            sources = """
-                http://10.1.10.80:5000/v3/index.json
-                https://api.nuget.org/v3/index.json
-            """.trimIndent()
-            logging = DotnetRestoreStep.Verbosity.Normal
         }
         dotnetBuild {
             name = "Build"
