@@ -5,11 +5,6 @@
 
 # Net2HassMqtt
 
-> [!NOTE]  
-> This project is an early development release.
->
-> Early testing and feedback would be great!
-
 Net2HassMqtt provides [Home Assistant](https://www.home-assistant.io/) (HASS) integration to .NET applications via [MQTT](https://mqtt.org/).
 It not a MQTT transport layer. It provides a Home Assistant centric fluent configuration interface to map your application's models to Home Assistant entities.
 
