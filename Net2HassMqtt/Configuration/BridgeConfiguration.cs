@@ -17,9 +17,9 @@ public sealed class BridgeConfiguration
         return this;
     }
 
-    public INet2HassMqttBridge Build()
+    public INet2HassMqttBridge Build(IManagedMqttClient? client = null)
     {
-        return HassMqttBridgeBuilder.Build(this);
+        return HassMqttBridgeBuilder.Build(this, client);
     }
 
     public BridgeConfiguration HasDevice(DeviceBuilder deviceBuilder)

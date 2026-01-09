@@ -12,11 +12,11 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
 
 internal static class HassMqttBridgeBuilder
 {
-    public static INet2HassMqttBridge Build(BridgeConfiguration config)
+    public static INet2HassMqttBridge Build(BridgeConfiguration config, IManagedMqttClient? client = null)
     {
         config.Validate();
 
-        var serviceProvider = GetServiceProvider(config);
+        var serviceProvider = GetServiceProvider(config, client);
         var m2HClient = serviceProvider.GetService<INet2HassMqttClient>()!;
         var deviceFactory = serviceProvider.GetService<DeviceFactory>()!;
         var entityModelFactory = serviceProvider.GetService<EntityFactory>()!;
@@ -43,7 +43,7 @@ internal static class HassMqttBridgeBuilder
         }
     }
 
-    private static IServiceProvider GetServiceProvider(BridgeConfiguration config)
+    private static IServiceProvider GetServiceProvider(BridgeConfiguration config, IManagedMqttClient? client)
     {
         var builder = Host.CreateDefaultBuilder();
         builder.ConfigureServices((context, services) =>
@@ -51,10 +51,10 @@ internal static class HassMqttBridgeBuilder
             services.AddSingleton(config);
             services.AddSingleton(config.MqttOptions!);
             services.AddSingleton<HassMqttClientFactory>();
-            services.AddSingleton(_ =>
+            services.AddSingleton(x =>
             {
-                var factory = _.GetService<HassMqttClientFactory>()!;
-                return factory.Create(_.GetService<ManagedMqttClientOptions>()!);
+                var factory = x.GetService<HassMqttClientFactory>()!;
+                return factory.Create(x.GetService<ManagedMqttClientOptions>()!, client);
             });
             services.AddTransient<Device>();
             services.AddTransient<EntityFactory>();

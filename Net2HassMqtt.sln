@@ -13,6 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeAssistantTypesSourceGen
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{166632D1-0E31-460A-9C67-9D336E802FB4}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Versioning.Build.props = Directory.Versioning.Build.props
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		license.txt = license.txt
 		readme.md = readme.md
