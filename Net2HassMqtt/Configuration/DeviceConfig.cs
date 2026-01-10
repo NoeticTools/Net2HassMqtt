@@ -10,7 +10,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration;
 
 public sealed class DeviceConfig : IEntityUniqueIdBuilder
 {
-    internal DeviceConfig()
+    public DeviceConfig()
     {
     }
 

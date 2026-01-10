@@ -56,7 +56,6 @@ internal static class HassMqttBridgeBuilder
                 var factory = x.GetService<HassMqttClientFactory>()!;
                 return factory.Create(x.GetService<ManagedMqttClientOptions>()!, client);
             });
-            services.AddTransient<Device>();
             services.AddTransient<EntityFactory>();
             services.AddSingleton<DeviceFactory>();
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true)
