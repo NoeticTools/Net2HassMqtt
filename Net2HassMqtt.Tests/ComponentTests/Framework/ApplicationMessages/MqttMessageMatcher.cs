@@ -3,7 +3,7 @@ using MQTTnet;
 using MQTTnet.Protocol;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
 
 public class MqttMessageMatcher(string topic, string payload)
 {

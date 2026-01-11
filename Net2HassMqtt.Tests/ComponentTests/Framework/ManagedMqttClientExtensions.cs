@@ -15,33 +15,28 @@ internal static class ManagedMqttClientExtensions
     {
         var priorIsConnected = false;
 
-        if (isConnectedSequence.Length == 0)
+        switch (isConnectedSequence.Length)
         {
-            client.SetupOnConnectedBehaviour();
-        }
-        else if (isConnectedSequence.Length > 0)
-        {
-            foreach (var isConnected in isConnectedSequence)
+            case 0:
+                client.SetupOnConnectedBehaviour();
+                break;
+            case > 0:
             {
-                if (isConnected && !priorIsConnected)
+                foreach (var isConnected in isConnectedSequence)
                 {
-                    client.SetupOnConnectedBehaviour();
+                    if (isConnected && !priorIsConnected)
+                    {
+                        client.SetupOnConnectedBehaviour();
+                    }
+                    else
+                    {
+                        client.SetupGet(x => x.IsConnected).Returns(isConnected);
+                    }
+                    priorIsConnected = isConnected;
                 }
-                else
-                {
-                    client.SetupGet(x => x.IsConnected).Returns(isConnected);
-                }
-                priorIsConnected = isConnected;
+
+                break;
             }
-            //_managedMqttClient.SetupSequence(x => x.IsConnected)
-            //                  .Returns(false)
-            //                  .Returns(false);
-            //_managedMqttClient.SetupGet(x => x.IsConnected)
-            //                  .Returns(true)
-            //                  .Raises(x => x.ConnectedAsync += null,
-            //                          new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
-            //_managedMqttClient.SetupGet(x => x.IsConnected)
-            //                  .Returns(true);
         }
     }
 

@@ -1,11 +1,16 @@
 ﻿using MQTTnet;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
 
 public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
 {
-    public MqttMessagesValidationScope Sequence(List<MqttMessageMatcher> expectedMessageSequence)
+    public MqttMessagesValidationScope NonePublished()
+    {
+        return SequenceWas([]);
+    }
+
+    public MqttMessagesValidationScope SequenceWas(List<MqttMessageMatcher> expectedMessageSequence)
     {
         Assert.That(messages, Has.Count.EqualTo(expectedMessageSequence.Count), "The number of messages is different to number expected.");
 

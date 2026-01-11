@@ -1,7 +1,5 @@
-﻿using Moq;
-using MQTTnet.Extensions.ManagedClient;
-using MQTTnet.Packets;
-using Net2HassMqtt.Tests.ComponentTests.Framework;
+﻿using Net2HassMqtt.Tests.ComponentTests.Framework;
+using Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests;
@@ -13,7 +11,7 @@ public class ClientConnectionTests : ComponentTestsBase
     public void Setup()
     {
         base.BaseSetup();
-        SetupBatteryChargingBinarySensor();
+        DeviceBuilder.SetupBatteryChargingBinarySensor(Model);
     }
 
     [Test]
@@ -23,9 +21,12 @@ public class ClientConnectionTests : ComponentTestsBase
 
         var result = await Run();
 
-        ManagedMqttClient.Verify(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>()), Times.Once());
-        ManagedMqttClient.Verify(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()), Times.Never());
-        Validate(PublishedMessages).Sequence([]);
+        Client.Verify
+              .WasStartedOnce()
+              .NoSubscriptionsMade();
+
+        PublishedMessages.Verify.NonePublished();
+
         Assert.That(result, Is.False, "Expected run to fail.");
     }
 
@@ -36,9 +37,13 @@ public class ClientConnectionTests : ComponentTestsBase
 
         var result = await Run();
 
-        ManagedMqttClient.Verify(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>()), Times.Once());
-        ManagedMqttClient.Verify(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()), Times.Once());
-        Validate(PublishedMessages).Sequence([MqttMessageMatcher.BridgeStateOfflineMessage]);
+        
+        Client.Verify
+              .WasStartedOnce()
+              .SubscriptionsCountIs(1);
+
+        PublishedMessages.Verify.SequenceWas([MqttMessageMatcher.BridgeStateOfflineMessage]);
+
         Assert.That(result, Is.True, "Expected run to pass.");
     }
 
@@ -49,10 +54,11 @@ public class ClientConnectionTests : ComponentTestsBase
 
         var result = await Run(ToggleChargingStatus, 5);
 
-        ManagedMqttClient.Verify(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>()), Times.Once);
-        ManagedMqttClient.Verify(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()), Times.Once());
+        Client.Verify
+              .WasStartedOnce()
+              .SubscriptionsCountIs(1);
 
-        Validate(PublishedMessages).Sequence([
+        PublishedMessages.Verify.SequenceWas([
             MqttMessageMatcher.BatteryChargingStateOffMessage,
             MqttMessageMatcher.BatteryChargingStateOnMessage,
             MqttMessageMatcher.BatteryChargingStateOffMessage,

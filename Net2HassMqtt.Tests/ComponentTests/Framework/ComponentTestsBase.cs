@@ -6,6 +6,7 @@ using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
+using Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
@@ -17,22 +18,17 @@ public class ComponentTestsBase
 {
     protected Mock<IManagedMqttClient> ManagedMqttClient = null!;
     protected ComponentTestModel Model = null!;
-    protected Mock<IMqttClient> MqttClient = null!;
+    private Mock<IMqttClient> _mqttClient = null!;
     protected DeviceBuilder DeviceBuilder = null!;
     private IConfigurationRoot _appConfig = null!;
-    protected List<MqttApplicationMessage> PublishedMessages = null!;
-
-    protected static MqttMessagesValidationScope Validate(List<MqttApplicationMessage> messages)
-    {
-        return new MqttMessagesValidationScope(messages);
-    }
+    private List<MqttApplicationMessage> _publishedMessages = null!;
 
     protected void BaseSetup()
     {
-        MqttClient = new Mock<IMqttClient>();
+        _mqttClient = new Mock<IMqttClient>();
 
         ManagedMqttClient = new Mock<IManagedMqttClient>(MockBehavior.Strict);
-        ManagedMqttClient.SetupGet(x => x.InternalClient).Returns(MqttClient.Object);
+        ManagedMqttClient.SetupGet(x => x.InternalClient).Returns(_mqttClient.Object);
         ManagedMqttClient.Setup<Task>(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>())).Returns(Task.CompletedTask);
         ManagedMqttClient.Setup<Task>(x => x.StopAsync(It.IsAny<bool>())).Returns(Task.CompletedTask);
         ManagedMqttClient.Setup(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()))
@@ -47,34 +43,25 @@ public class ComponentTestsBase
         _appConfig = new ConfigurationBuilder().AddUserSecrets<ClientConnectionTests>().Build();
         DeviceBuilder = CreateDeviceBuilder();
 
-        PublishedMessages = new List<MqttApplicationMessage>();
-        MqttClient.Setup(x => x.PublishAsync(It.IsAny<MqttApplicationMessage>(), It.IsAny<CancellationToken>()))
-                  .Callback<MqttApplicationMessage, CancellationToken>((message, _) => PublishedMessages.Add(message));
+        _publishedMessages = [];
+        _mqttClient.Setup(x => x.PublishAsync(It.IsAny<MqttApplicationMessage>(), It.IsAny<CancellationToken>()))
+                  .Callback<MqttApplicationMessage, CancellationToken>((message, _) => _publishedMessages.Add(message));
+
+        Client = new ClientScope(ManagedMqttClient);
+        PublishedMessages = new MqttMessagesScope(_publishedMessages);
     }
 
-    private DeviceBuilder CreateDeviceBuilder()
+    internal MqttMessagesScope PublishedMessages  { get; private set; } = null!;
+
+    internal ClientScope Client { get; private set; } = null!;
+
+    private static DeviceBuilder CreateDeviceBuilder()
     {
         return new DeviceBuilder().WithFriendlyName("Net2HassMqtt Component Test Device 1")
                                   .WithId("net2hassmqtt_component_test_device_01");
     }
 
-    protected void SetupBatteryChargingBinarySensor()
-    {
-        DeviceBuilder.HasBatteryChargingBinarySensor(config => config.OnModel(Model)
-                                                                     .WithStatusProperty(nameof(ComponentTestModel.BatteryCharging))
-                                                                     .WithFriendlyName("Battery Charging Status")
-                                                                     .WithNodeId("battery_1_charging"));
-    }
-
-    protected void SetupEnumSensor()
-    {
-        DeviceBuilder.HasEnumSensor(config => config.OnModel(Model)
-                                             .WithStatusProperty(nameof(ComponentTestModel.TestStates))
-                                             .WithFriendlyName("Current State")
-                                             .WithNodeId("current_state"));
-    }
-
-    protected static async Task<bool> RunApplication(int runLoopCount, Action loopAction)
+    private static async Task<bool> RunApplication(int runLoopCount, Action loopAction)
     {
         var runTimeLimit = 3.Seconds();
         var stopwatch = Stopwatch.StartNew();
