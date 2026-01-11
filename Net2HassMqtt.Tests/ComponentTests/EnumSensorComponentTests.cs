@@ -1,34 +1,57 @@
-﻿using FluentDate;
+﻿using System.Diagnostics;
+using System.Text;
+using FluentDate;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
+using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 using MQTTnet.Protocol;
+using Net2HassMqtt.Tests.ComponentTests.Framework;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
-using System.Diagnostics;
-using MQTTnet;
 
 
-namespace Net2HassMqtt.Tests.Sensors;
+namespace Net2HassMqtt.Tests.ComponentTests;
 
 [TestFixture]
 public class EnumSensorComponentTests
 {
-    private int _runLoopCount = 5;
     private Mock<IManagedMqttClient> _managedMqttClient;
     private ComponentTestModel _model;
     private DeviceBuilder _device;
     private IConfigurationRoot _appConfig;
     private Mock<IMqttClient> _mqttClient;
+    
+    private readonly MqttMessageMatcher _batteryChargingStateOffMessage =
+        new("net2hassmqtt_test_start/net2hassmqtt_component_test_device_01/battery_1_charging",
+            """
+            {
+              "attributes": {},
+              "state": "OFF"
+            }
+            """);
+    private readonly MqttMessageMatcher _batteryChargingStateOnMessage =
+        new("net2hassmqtt_test_start/net2hassmqtt_component_test_device_01/battery_1_charging",
+            """
+            {
+              "attributes": {},
+              "state": "ON"
+            }
+            """);
+    private readonly MqttMessageMatcher _bridgeStateOfflineMessage =
+        new("net2hassmqtt_test_start/bridge/state",
+            """
+            {
+              "state": "offline"
+            }
+            """);
 
     [SetUp]
     public void Setup()
     {
-        _runLoopCount = 5;
         _mqttClient = new Mock<IMqttClient>();
 
         _managedMqttClient = new Mock<IManagedMqttClient>(MockBehavior.Strict);
@@ -74,7 +97,8 @@ public class EnumSensorComponentTests
                           .Returns(false);
         _managedMqttClient.SetupGet(x => x.IsConnected)
                           .Returns(true)
-                          .Raises(x => x.ConnectedAsync += null, new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
+                          .Raises(x => x.ConnectedAsync += null, 
+                                  new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
         _managedMqttClient.SetupGet(x => x.IsConnected)
                           .Returns(true);
 
@@ -89,17 +113,60 @@ public class EnumSensorComponentTests
     public async Task BrokerConnectsImmediatelyTest()
     {
         _managedMqttClient.SetupGet(x => x.IsConnected).Returns(true);
-        _runLoopCount = 5;                               
+        var publishedMessages = new List<MqttApplicationMessage>();
+        _mqttClient.Setup(x => x.PublishAsync(It.IsAny<MqttApplicationMessage>(), It.IsAny<CancellationToken>()))
+                   .Callback<MqttApplicationMessage, CancellationToken>((message, _) => publishedMessages.Add(message));
 
-        var result = await Run();
+        var result = await Run(ToggleChargingStatus, 5);
 
         _managedMqttClient.Verify(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>()), Times.Once);
         _managedMqttClient.Verify(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()), Times.Once());
-        _mqttClient.Verify(x => x.PublishAsync(It.IsAny<MqttApplicationMessage>(), It.IsAny<CancellationToken>()), Times.Exactly(6));
+
+        Validate(publishedMessages).Sequence([
+            _batteryChargingStateOffMessage,
+            _batteryChargingStateOnMessage,
+            _batteryChargingStateOffMessage,
+            _batteryChargingStateOnMessage,
+            _batteryChargingStateOffMessage,
+            _bridgeStateOfflineMessage,
+        ]);
+
         Assert.That(result, Is.True, "Expected run to pass.");
     }
 
+    private void ToggleChargingStatus()
+    {
+        _model.BatteryCharging = !_model.BatteryCharging;
+    }
+
+    private MqttMessagesValidationScope Validate(List<MqttApplicationMessage> messages)
+    {
+        var publishedMessage = messages[0];
+        var payload = Encoding.UTF8.GetString(publishedMessage.PayloadSegment); 
+        Assert.That(publishedMessage.Topic, Is.EqualTo("net2hassmqtt_test_start/net2hassmqtt_component_test_device_01/battery_1_charging"));
+        Assert.That(payload, Is.EqualTo("""
+                                        {
+                                          "attributes": {},
+                                          "state": "OFF"
+                                        }
+                                        """));
+        Assert.That(publishedMessage.Retain, Is.True);
+        Assert.That(publishedMessage.Dup, Is.False);
+        Assert.That(publishedMessage.MessageExpiryInterval, Is.EqualTo(0));
+        Assert.That(publishedMessage.PayloadFormatIndicator, Is.EqualTo(MqttPayloadFormatIndicator.Unspecified));
+        Assert.That(publishedMessage.QualityOfServiceLevel, Is.EqualTo(MqttQualityOfServiceLevel.AtLeastOnce));
+        Assert.That(publishedMessage.ContentType, Is.Null);
+        Assert.That(publishedMessage.ResponseTopic, Is.Null);
+
+        return new MqttMessagesValidationScope(messages);
+    }
+
     private async Task<bool> Run()
+    {
+        return await Run(() => { }, 5);
+    }
+
+    private async Task<bool> Run(Action loopAction, int runLoopCount)
     {
         var mqttOptions = HassMqttClientFactory.CreateQuickStartOptions("net2hassmqtt_test_start", _appConfig);
         var bridge = new BridgeConfiguration()
@@ -115,7 +182,7 @@ public class EnumSensorComponentTests
                 return false;
             }
 
-            result = await Run(_runLoopCount);
+            result = await RunApplication(runLoopCount, loopAction);
 
             await bridge.StopAsync();
         }
@@ -145,7 +212,7 @@ public class EnumSensorComponentTests
         return device;
     }
 
-    private async Task<bool> Run(int runLoopCount)
+    private static async Task<bool> RunApplication(int runLoopCount, Action loopAction)
     {
         var runTimeLimit = 3.Seconds();
         var stopwatch = Stopwatch.StartNew();
@@ -157,25 +224,9 @@ public class EnumSensorComponentTests
                 return false;
             }
 
-            await Task.Delay(500.Milliseconds());
+            await Task.Delay(5.Milliseconds());
 
-            _model.BatteryCharging = !_model.BatteryCharging;
-
-            //if (Console.KeyAvailable)
-            //{
-            //    var key = Console.ReadKey();
-            //    if (key.KeyChar == 'x')
-            //    {
-            //        break;
-            //    }
-
-            //    if (key.KeyChar == '1')
-            //    {
-            //        model.BatteryCharging = !model.BatteryCharging;
-            //    }
-
-            //    model.OnKeyPressed(key.KeyChar);
-            //}
+            loopAction.Invoke();
         }
 
         return true;
