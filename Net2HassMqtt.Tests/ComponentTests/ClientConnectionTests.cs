@@ -1,5 +1,6 @@
 ﻿using Net2HassMqtt.Tests.ComponentTests.Framework;
 using Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
+using Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests;
@@ -17,7 +18,7 @@ public class ClientConnectionTests : ComponentTestsBase
     [Test]
     public async Task BrokerFailsToConnectTest()
     {
-        ManagedMqttClient.SetupIsConnected(false);
+        Client.Setup.IsConnected(false);
 
         var result = await Run();
 
@@ -25,7 +26,8 @@ public class ClientConnectionTests : ComponentTestsBase
               .WasStartedOnce()
               .NoSubscriptionsMade();
 
-        PublishedMessages.Verify.NonePublished();
+        PublishedMessages.Verify
+                         .NonePublished();
 
         Assert.That(result, Is.False, "Expected run to fail.");
     }
@@ -33,7 +35,7 @@ public class ClientConnectionTests : ComponentTestsBase
     [Test]
     public async Task BrokerSlowToConnectTest()
     {
-        ManagedMqttClient.SetupIsConnected(false, false, true);
+        Client.Setup.IsConnected(false, false, true);
 
         var result = await Run();
 
@@ -42,7 +44,8 @@ public class ClientConnectionTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.SequenceWas([MqttMessageMatcher.BridgeStateOfflineMessage]);
+        PublishedMessages.Verify
+                         .SequenceWas([MqttMessageMatcher.BridgeStateOfflineMessage]);
 
         Assert.That(result, Is.True, "Expected run to pass.");
     }
@@ -50,7 +53,7 @@ public class ClientConnectionTests : ComponentTestsBase
     [Test]
     public async Task SendsBridgeOfflineWhenStoppedTest()
     {
-        ManagedMqttClient.SetupIsConnected();
+        Client.Setup.IsConnected();
 
         var result = await Run(ToggleChargingStatus, 5);
 

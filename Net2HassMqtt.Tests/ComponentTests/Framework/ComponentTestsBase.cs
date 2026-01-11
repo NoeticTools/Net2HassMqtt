@@ -7,6 +7,7 @@ using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 using Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
+using Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
@@ -16,7 +17,7 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework;
 
 public class ComponentTestsBase
 {
-    protected Mock<IManagedMqttClient> ManagedMqttClient = null!;
+    private Mock<IManagedMqttClient> _managedMqttClient = null!;
     protected ComponentTestModel Model = null!;
     private Mock<IMqttClient> _mqttClient = null!;
     protected DeviceBuilder DeviceBuilder = null!;
@@ -27,11 +28,11 @@ public class ComponentTestsBase
     {
         _mqttClient = new Mock<IMqttClient>();
 
-        ManagedMqttClient = new Mock<IManagedMqttClient>(MockBehavior.Strict);
-        ManagedMqttClient.SetupGet(x => x.InternalClient).Returns(_mqttClient.Object);
-        ManagedMqttClient.Setup<Task>(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>())).Returns(Task.CompletedTask);
-        ManagedMqttClient.Setup<Task>(x => x.StopAsync(It.IsAny<bool>())).Returns(Task.CompletedTask);
-        ManagedMqttClient.Setup(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()))
+        _managedMqttClient = new Mock<IManagedMqttClient>(MockBehavior.Strict);
+        _managedMqttClient.SetupGet(x => x.InternalClient).Returns(_mqttClient.Object);
+        _managedMqttClient.Setup<Task>(x => x.StartAsync(It.IsAny<ManagedMqttClientOptions>())).Returns(Task.CompletedTask);
+        _managedMqttClient.Setup<Task>(x => x.StopAsync(It.IsAny<bool>())).Returns(Task.CompletedTask);
+        _managedMqttClient.Setup(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()))
                           .Returns(Task.CompletedTask);
 
         Model = new ComponentTestModel
@@ -47,7 +48,7 @@ public class ComponentTestsBase
         _mqttClient.Setup(x => x.PublishAsync(It.IsAny<MqttApplicationMessage>(), It.IsAny<CancellationToken>()))
                   .Callback<MqttApplicationMessage, CancellationToken>((message, _) => _publishedMessages.Add(message));
 
-        Client = new ClientScope(ManagedMqttClient);
+        Client = new ClientScope(_managedMqttClient);
         PublishedMessages = new MqttMessagesScope(_publishedMessages);
     }
 
@@ -63,7 +64,7 @@ public class ComponentTestsBase
 
     private static async Task<bool> RunApplication(int runLoopCount, Action loopAction)
     {
-        var runTimeLimit = 3.Seconds();
+        var runTimeLimit = 2.Seconds();
         var stopwatch = Stopwatch.StartNew();
 
         while (runLoopCount-- > 0)
@@ -87,7 +88,7 @@ public class ComponentTestsBase
         var bridge = new BridgeConfiguration()
                      .WithMqttOptions(mqttOptions)
                      .HasDevice(DeviceBuilder)
-                     .Build(ManagedMqttClient.Object);
+                     .Build(_managedMqttClient.Object);
 
         bool result;
         try

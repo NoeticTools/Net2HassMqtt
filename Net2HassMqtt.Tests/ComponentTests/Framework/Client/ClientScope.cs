@@ -1,10 +1,13 @@
 ﻿using Moq;
+using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 
 public class ClientScope(Mock<IManagedMqttClient> managedMqttClient)
 {
-    public ClientVerificationScope Verify => new ClientVerificationScope(managedMqttClient);
+    public ClientSetupScope Setup => new(managedMqttClient);
+
+    public ClientVerificationScope Verify => new(managedMqttClient);
 }
