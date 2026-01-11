@@ -3,7 +3,7 @@
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
 
-internal class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
+public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
 {
     public MqttMessagesValidationScope Sequence(List<MqttMessageMatcher> expectedMessageSequence)
     {
