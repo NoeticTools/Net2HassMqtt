@@ -18,7 +18,7 @@ public class ClientConnectionTests : ComponentTestsBase
     [Test]
     public async Task BrokerFailsToConnectTest()
     {
-        Client.Setup.IsConnected(false);
+        Client.Setup.NeverConnects();
 
         var result = await Run();
 
@@ -35,17 +35,19 @@ public class ClientConnectionTests : ComponentTestsBase
     [Test]
     public async Task BrokerSlowToConnectTest()
     {
-        Client.Setup.IsConnected(false, false, true);
+        Client.Setup.ConnectsAfterDelay();
 
         var result = await Run();
-
         
         Client.Verify
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
         PublishedMessages.Verify
-                         .SequenceWas([MqttMessageMatcher.BridgeStateOfflineMessage]);
+                         .SequenceWas([
+                             MessageMatcher.BridgeStateOnlineMessage,
+                             MessageMatcher.BridgeStateOfflineMessage
+                         ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");
     }
@@ -53,7 +55,7 @@ public class ClientConnectionTests : ComponentTestsBase
     [Test]
     public async Task SendsBridgeOfflineWhenStoppedTest()
     {
-        Client.Setup.IsConnected();
+        Client.Setup.ConnectsImmediately();
 
         var result = await Run(ToggleChargingStatus, 5);
 
@@ -62,12 +64,13 @@ public class ClientConnectionTests : ComponentTestsBase
               .SubscriptionsCountIs(1);
 
         PublishedMessages.Verify.SequenceWas([
-            MqttMessageMatcher.BatteryChargingStateOffMessage,
-            MqttMessageMatcher.BatteryChargingStateOnMessage,
-            MqttMessageMatcher.BatteryChargingStateOffMessage,
-            MqttMessageMatcher.BatteryChargingStateOnMessage,
-            MqttMessageMatcher.BatteryChargingStateOffMessage,
-            MqttMessageMatcher.BridgeStateOfflineMessage,
+            MessageMatcher.BridgeStateOnlineMessage,
+            MessageMatcher.BatteryChargingStateOffMessage,
+            MessageMatcher.BatteryChargingStateOnMessage,
+            MessageMatcher.BatteryChargingStateOffMessage,
+            MessageMatcher.BatteryChargingStateOnMessage,
+            MessageMatcher.BatteryChargingStateOffMessage,
+            MessageMatcher.BridgeStateOfflineMessage,
         ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");

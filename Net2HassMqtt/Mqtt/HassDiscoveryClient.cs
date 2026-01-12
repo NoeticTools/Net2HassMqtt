@@ -23,17 +23,8 @@ namespace NoeticTools.Net2HassMqtt.Mqtt;
 ///         </item>
 ///     </list>
 /// </remarks>
-internal sealed class HassDiscoveryClient : IHassMqttDiscoveryClient
+internal sealed class HassDiscoveryClient(string mqttClientId, INet2HassMqttClient mqttClient) : IHassMqttDiscoveryClient
 {
-    private readonly INet2HassMqttClient _mqttClient;
-    private readonly string _mqttClientId;
-
-    public HassDiscoveryClient(string mqttClientId, INet2HassMqttClient mqttClient)
-    {
-        _mqttClientId = mqttClientId;
-        _mqttClient = mqttClient;
-    }
-
     /// <summary>
     ///     Home Assistant (HASS) discovers and updates entities (and devices) when configuration published to the 'config'
     ///     topic.
@@ -43,7 +34,7 @@ internal sealed class HassDiscoveryClient : IHassMqttDiscoveryClient
     {
         payload.ObjectId = objectId;
 
-        var topic = new TopicBuilder().WithBaseTopic(_mqttClientId)
+        var topic = new TopicBuilder().WithBaseTopic(mqttClientId)
                                       .WithComponent(payload.MqttTopicComponent)
                                       .WithNodeId(device.DeviceId)
                                       .WithObjectId(config.EntityNodeId);
@@ -57,6 +48,6 @@ internal sealed class HassDiscoveryClient : IHassMqttDiscoveryClient
                                                .BuildHassDiscoveryTopic();
 
         var payloadJson = JsonSerializer.Serialize(payload, payload!.GetType(), MqttConstants.MqttJsonSerialiseOptions);
-        await _mqttClient.PublishAsync(discoveryTopic, payloadJson);
+        await mqttClient.PublishAsync(discoveryTopic, payloadJson);
     }
 }

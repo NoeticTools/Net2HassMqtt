@@ -52,6 +52,8 @@ internal sealed class Net2MqttBridge : INet2HassMqttBridge
 
     private async Task OnMqttConnectedAsync(EventArgs args)
     {
+        Console.WriteLine("--- 98 ---");
+
         await _devices.ForeachAsync(device => device.PublishConfigAsync());
         await Task.Delay(MqttConstants.DelayAfterPublishingConfig);
         await _devices.ForeachAsync(device => device.PublishStateAsync());

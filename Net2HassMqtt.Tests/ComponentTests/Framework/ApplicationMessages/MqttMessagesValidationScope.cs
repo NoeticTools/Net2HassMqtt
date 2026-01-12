@@ -10,9 +10,20 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         return SequenceWas([]);
     }
 
-    public MqttMessagesValidationScope SequenceWas(List<MqttMessageMatcher> expectedMessageSequence)
+    public MqttMessagesValidationScope SequenceWas(List<MessageMatcher> expectedMessageSequence)
     {
-        Assert.That(messages, Has.Count.EqualTo(expectedMessageSequence.Count), "The number of messages is different to number expected.");
+        if (messages.Count != expectedMessageSequence.Count)
+        {
+            var errorMessage = $"Expected {expectedMessageSequence.Count} messages but detected {messages.Count} messages.";
+            errorMessage += "\n";
+            errorMessage += "Detected messages:\n";
+            foreach (var actual in messages)
+            {
+                errorMessage += "  " + MessageMatcher.ToString(actual) + "\n\n";
+            }
+            errorMessage += "\n";
+            Assert.Fail(errorMessage);
+        }
 
         for (var index = 0; index < messages.Count; index++)
         {
@@ -27,7 +38,7 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
                         {expected}
                         
                           Was:
-                        {MqttMessageMatcher.ToString(actual)}
+                        {MessageMatcher.ToString(actual)}
                         
                         """);
         }

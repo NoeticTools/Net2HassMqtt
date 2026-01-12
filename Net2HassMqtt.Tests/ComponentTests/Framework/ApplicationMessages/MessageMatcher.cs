@@ -5,7 +5,7 @@ using MQTTnet.Protocol;
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
 
-public class MqttMessageMatcher(string topic, string payload)
+public class MessageMatcher(string topic, string payload)
 {
     public bool Matches(MqttApplicationMessage actual)
     {
@@ -52,7 +52,7 @@ public class MqttMessageMatcher(string topic, string payload)
                 """;
     }
 
-    public static MqttMessageMatcher BatteryChargingStateOffMessage =>
+    public static MessageMatcher BatteryChargingStateOffMessage =>
         new("net2hassmqtt_test_start/net2hassmqtt_component_test_device_01/battery_1_charging",
             """
             {
@@ -61,7 +61,7 @@ public class MqttMessageMatcher(string topic, string payload)
             }
             """);
 
-    public static MqttMessageMatcher BatteryChargingStateOnMessage =>
+    public static MessageMatcher BatteryChargingStateOnMessage =>
         new("net2hassmqtt_test_start/net2hassmqtt_component_test_device_01/battery_1_charging",
             """
             {
@@ -70,7 +70,15 @@ public class MqttMessageMatcher(string topic, string payload)
             }
             """);
 
-    public static MqttMessageMatcher BridgeStateOfflineMessage =>
+    public static MessageMatcher BridgeStateOnlineMessage =>
+        new("net2hassmqtt_test_start/bridge/state",
+            """
+            {
+              "state": "online"
+            }
+            """);
+
+    public static MessageMatcher BridgeStateOfflineMessage =>
         new("net2hassmqtt_test_start/bridge/state",
             """
             {

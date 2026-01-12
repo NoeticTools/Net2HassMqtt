@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using FluentDate;
+using Microsoft.Extensions.Logging;
+using Moq;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 
@@ -7,6 +9,21 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 
 public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
 {
+    public void ConnectsAfterDelay()
+    {
+        IsConnected (false, false, false, true);
+    }
+
+    public void ConnectsImmediately()
+    {
+        IsConnected (true);
+    }
+
+    public void NeverConnects()
+    {
+        IsConnected (false);
+    }
+
     public void IsConnected(params bool[] isConnectedSequence)
     {
         var priorIsConnected = false;
@@ -14,19 +31,25 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
         switch (isConnectedSequence.Length)
         {
             case 0:
-                SetupOnConnectedBehaviour();
+                managedMqttClient.Setup(x => x.IsConnected)
+                                 .Callback(OnIsConnected)
+                                 .Returns(true);
                 break;
+
             case > 0:
             {
                 foreach (var isConnected in isConnectedSequence)
                 {
                     if (isConnected && !priorIsConnected)
                     {
-                        SetupOnConnectedBehaviour();
+                        managedMqttClient.Setup(x => x.IsConnected)
+                                         .Callback(OnIsConnected)
+                                         .Returns(true);
                     }
                     else
                     {
-                        managedMqttClient.SetupGet(x => x.IsConnected).Returns(isConnected);
+                        managedMqttClient.Setup(x => x.IsConnected)
+                                         .Returns(isConnected);
                     }
                     priorIsConnected = isConnected;
                 }
@@ -36,13 +59,20 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
         }
     }
 
-    private void SetupOnConnectedBehaviour()
+    private int _isConnectedDelayCount = 0;
+
+    private void OnIsConnected()
     {
-        managedMqttClient.SetupGet(x => x.IsConnected)
-                         .Returns(true)
-                         .Raises(x => x.ConnectedAsync += null,
-                                 new MqttClientConnectedEventArgs(new MqttClientConnectResult()));
-        managedMqttClient.SetupGet(x => x.IsConnected)
-                         .Returns(true);
+        if (_isConnectedDelayCount++ == 0)
+        {
+            Console.WriteLine("--- on connected ---");
+            Task.Run(() => managedMqttClient.RaiseAsync(c => c.ConnectedAsync += null,
+                                                        (new MqttClientConnectedEventArgs(new MqttClientConnectResult())))
+                    ).Wait(1.Seconds());
+        }
+        else
+        {
+            Console.WriteLine("--- connected ---");
+        }
     }
 }

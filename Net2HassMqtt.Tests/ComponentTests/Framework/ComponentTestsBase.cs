@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using FluentDate;
+﻿using FluentDate;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using MQTTnet;
@@ -11,6 +10,8 @@ using Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
+using NoeticTools.Net2HassMqtt.Mqtt;
+using System.Diagnostics;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -23,10 +24,15 @@ public class ComponentTestsBase
     protected DeviceBuilder DeviceBuilder = null!;
     private IConfigurationRoot _appConfig = null!;
     private List<MqttApplicationMessage> _publishedMessages = null!;
+    //private Mock<IHassMqttDiscoveryClient> _discoveryClient;
 
     protected void BaseSetup()
     {
+        //_discoveryClient = new Mock<IHassMqttDiscoveryClient>();
+
         _mqttClient = new Mock<IMqttClient>();
+        //_mqttClient.SetupGet(x => x.d)
+        //xxx; // >>> mock Discovery IHassMqttDiscoveryClient
 
         _managedMqttClient = new Mock<IManagedMqttClient>(MockBehavior.Strict);
         _managedMqttClient.SetupGet(x => x.InternalClient).Returns(_mqttClient.Object);
@@ -34,6 +40,7 @@ public class ComponentTestsBase
         _managedMqttClient.Setup<Task>(x => x.StopAsync(It.IsAny<bool>())).Returns(Task.CompletedTask);
         _managedMqttClient.Setup(x => x.SubscribeAsync(It.IsAny<IEnumerable<MqttTopicFilter>>()))
                           .Returns(Task.CompletedTask);
+
 
         Model = new ComponentTestModel
         {
@@ -62,7 +69,7 @@ public class ComponentTestsBase
                                   .WithId("net2hassmqtt_component_test_device_01");
     }
 
-    private static async Task<bool> RunApplication(int runLoopCount, Action loopAction)
+    private async Task<bool> RunApplication(int runLoopCount, Action loopAction)
     {
         var runTimeLimit = 2.Seconds();
         var stopwatch = Stopwatch.StartNew();
