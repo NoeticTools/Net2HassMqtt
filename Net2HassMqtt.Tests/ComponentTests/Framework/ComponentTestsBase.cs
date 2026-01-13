@@ -73,7 +73,7 @@ public class ComponentTestsBase
 
         while (runLoopCount-- > 0)
         {
-            if (stopwatch.Elapsed > runTimeLimit)
+            if (stopwatch.Elapsed > runTimeLimit || !_managedMqttClient.Object.IsConnected)
             {
                 return false;
             }
@@ -92,7 +92,7 @@ public class ComponentTestsBase
                      .WithMqttOptions(mqttOptions)
                      .HasDevice(DeviceBuilder)
                      .Build(_managedMqttClient.Object);
-
+        
         bool result;
         try
         {
@@ -100,6 +100,7 @@ public class ComponentTestsBase
             {
                 return false;
             }
+            await Task.Delay(5.Milliseconds()); // todo - timing hack
 
             result = await RunApplication(runLoopCount, loopAction);
 

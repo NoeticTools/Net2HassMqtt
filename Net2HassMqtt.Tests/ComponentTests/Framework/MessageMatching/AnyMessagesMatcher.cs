@@ -7,6 +7,10 @@ public class AnyMessagesMatcher(int maximumNumberOfMessages) : IMessageMatcher
 {
     public bool Match(List<MqttApplicationMessage> actualMessages)
     {
+        if (actualMessages.Count == 0)
+        {
+            return true;
+        }
         var removeCount = Math.Min(maximumNumberOfMessages, actualMessages.Count);
         actualMessages.RemoveRange(0, removeCount);
         return true;

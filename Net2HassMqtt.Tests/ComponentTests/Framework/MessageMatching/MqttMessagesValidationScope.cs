@@ -28,7 +28,7 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         {
             if (expectedQueue.Count == 0)
             {
-                var errorMessage = new StringBuilder($"Expected messages matchers required for last {actualMessages.Count} messages detected.\n");
+                var errorMessage = new StringBuilder($"Messages matchers required for last {actualMessages.Count} messages detected.\n");
                 AppendDetectedMessages(errorMessage, actualMessages);
                 Assert.Fail(errorMessage.ToString());
             }
