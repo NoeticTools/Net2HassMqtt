@@ -10,7 +10,7 @@ using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
 using System.Diagnostics;
-using Net2HassMqtt.Tests.ComponentTests.Framework.Messages;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -54,7 +54,7 @@ public class ComponentTestsBase
         PublishedMessages = new MqttMessagesScope(_publishedMessages);
     }
 
-    protected DeviceMessageMatchers MessageMatchers { get; } = new(DeviceFriendlyName, DeviceId);
+    protected DeviceMessageMatchers MessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
 
     internal MqttMessagesScope PublishedMessages  { get; private set; } = null!;
 
@@ -117,10 +117,5 @@ public class ComponentTestsBase
     protected async Task<bool> Run()
     {
         return await Run(() => { }, 5);
-    }
-
-    protected void ToggleChargingStatus()
-    {
-        Model.BatteryCharging = !Model.BatteryCharging;
     }
 }

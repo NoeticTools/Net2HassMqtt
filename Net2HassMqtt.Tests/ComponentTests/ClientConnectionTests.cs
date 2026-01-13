@@ -1,6 +1,5 @@
 ﻿using FluentDate;
 using Net2HassMqtt.Tests.ComponentTests.Framework;
-using Net2HassMqtt.Tests.ComponentTests.Framework.Messages;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests;
@@ -34,7 +33,7 @@ public class ClientConnectionTests : ComponentTestsBase
               .NoSubscriptionsMade();
 
         PublishedMessages.Verify
-                         .NonePublished();
+                         .ValidateNonePublished();
 
         Assert.That(result, Is.False, "Expected run to fail.");
     }
@@ -51,7 +50,7 @@ public class ClientConnectionTests : ComponentTestsBase
               .SubscriptionsCountIs(1);
 
         PublishedMessages.Verify
-                         .SequenceWas([
+                         .ValidateSequenceWas([
                              MessageMatchers.BridgeState.Online,
                              MessageMatchers.BatteryChargingEntity.Config,
                              MessageMatchers.BridgeState.Offline
@@ -65,14 +64,14 @@ public class ClientConnectionTests : ComponentTestsBase
     {
         Client.Setup.ConnectsImmediately();
 
-        var result = await Run(ToggleChargingStatus, 5);
+        var result = await Run(() => Model.BatteryCharging = !Model.BatteryCharging, 5);
 
         Client.Verify
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.SequenceWas([
-            //MessageMatchers.BatteryChargingEntity.On, // todo: this looks odd (intermittent)
+        PublishedMessages.Verify.ValidateSequenceWas([
+            //MessageMatchers.BatteryChargingEntity.On, // todo: this looks odd (intermittent) - work on this separately
 
             MessageMatchers.BridgeState.Online,
             MessageMatchers.BatteryChargingEntity.Config,

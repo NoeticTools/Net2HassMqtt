@@ -7,6 +7,7 @@ namespace Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 public partial class ComponentTestModel : ObservableObject
 {
     [ObservableProperty] private bool _batteryCharging;
+    [ObservableProperty] private bool _doorIsOpen;
     [ObservableProperty] private TestStates _currentState;
 
     public enum TestStates

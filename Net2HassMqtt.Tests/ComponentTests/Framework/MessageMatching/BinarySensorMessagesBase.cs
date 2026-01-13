@@ -1,8 +1,8 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.Messages;
+﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
 
-public class BinarySensorMessagesBase(string clientId, string deviceName, string deviceId, string nodeId, string deviceClass)
+public class BinarySensorMessagesBase(string clientId, string deviceId, string deviceName, string nodeId, string nodeName, string deviceClass)
 {
-    public MessageMatching Off =>
+    public MessageMatcher Off =>
         new($"{clientId}/{deviceId}/{nodeId}",
             """
             {
@@ -11,7 +11,7 @@ public class BinarySensorMessagesBase(string clientId, string deviceName, string
             }
             """);
 
-    public MessageMatching On =>
+    public MessageMatcher On =>
         new($"{clientId}/{deviceId}/{nodeId}",
             """
             {
@@ -20,7 +20,7 @@ public class BinarySensorMessagesBase(string clientId, string deviceName, string
             }
             """);
 
-    public MessageMatching Config =>
+    public MessageMatcher Config =>
         new($"homeassistant/binary_sensor/{deviceId}/{deviceId}_{nodeId}/config",
             $$$"""
                {
@@ -43,7 +43,7 @@ public class BinarySensorMessagesBase(string clientId, string deviceName, string
                  },
                  "json_attributes_template": "{{ value_json.attributes | tojson }}",
                  "json_attributes_topic": "net2hassmqtt_test_start/{{{deviceId}}}/{{{nodeId}}}",
-                 "name": "Battery Charging Status",
+                 "name": "{{{nodeName}}}",
                  "object_id": "{{{deviceId}}}_{{{nodeId}}}",
                  "state_topic": "net2hassmqtt_test_start/{{{deviceId}}}/{{{nodeId}}}",
                  "unique_id": "{{{deviceId}}}_{{{nodeId}}}",

@@ -3,9 +3,9 @@ using MQTTnet;
 using MQTTnet.Protocol;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.Messages;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
 
-public sealed class MessageMatching(string topic, string payload)
+public sealed class MessageMatcher(string topic, string payload) : IMessageMatcher
 {
     public bool Matches(MqttApplicationMessage actual)
     {
@@ -35,6 +35,17 @@ public sealed class MessageMatching(string topic, string payload)
                    ContentType:   null
                    ResponseTopic: null
                """;
+    }
+
+    public bool Match(List<MqttApplicationMessage> actualMessages)
+    {
+        var actual = actualMessages[0];
+        var result = Matches(actual);
+        if (result)
+        {
+            actualMessages.RemoveAt(0);
+        }
+        return result;
     }
 
     public static string ToString(MqttApplicationMessage message)

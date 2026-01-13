@@ -19,6 +19,13 @@ internal static class DeviceBuilderExtensions
                                                                      .WithFriendlyName("Battery Charging Status")
                                                                      .WithNodeId("batt1_charging"));
     }
+    public static void SetupDoorIsOpenBinarySensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
+    {
+        deviceBuilder.HasDoorBinarySensor(config => config.OnModel(model)
+                                                                     .WithStatusProperty(nameof(ComponentTestModel.DoorIsOpen))
+                                                                     .WithFriendlyName("Door Open Status")
+                                                                     .WithNodeId("door_is_open"));
+    }
 
     public static void SetupEnumSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
     {

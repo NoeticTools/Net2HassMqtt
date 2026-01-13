@@ -1,7 +1,7 @@
 ﻿using MQTTnet;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.Messages;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
 
 public class MqttMessagesScope(List<MqttApplicationMessage> messages)
 {
