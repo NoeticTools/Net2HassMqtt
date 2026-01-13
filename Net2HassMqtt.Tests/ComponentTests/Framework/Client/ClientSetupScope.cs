@@ -1,5 +1,4 @@
 ﻿using FluentDate;
-using Microsoft.Extensions.Logging;
 using Moq;
 using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
@@ -9,6 +8,9 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 
 public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
 {
+    private int _connectedEventCalledCount = 0;
+    private int _disconnectedEventCalledCount = 0;
+
     public void ConnectsAfterDelay()
     {
         IsConnected (false, false, false, true);
@@ -24,6 +26,7 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
         IsConnected (false);
     }
 
+    // ReSharper disable once MemberCanBePrivate.Global
     public void IsConnected(params bool[] isConnectedSequence)
     {
         var priorIsConnected = false;
@@ -40,17 +43,26 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
             {
                 foreach (var isConnected in isConnectedSequence)
                 {
-                    if (isConnected && !priorIsConnected)
+                    switch (isConnected)
                     {
-                        managedMqttClient.Setup(x => x.IsConnected)
-                                         .Callback(OnIsConnected)
-                                         .Returns(true);
+                        case true when !priorIsConnected:
+                            managedMqttClient.Setup(x => x.IsConnected)
+                                             .Callback(OnIsConnected)
+                                             .Returns(isConnected);
+                            break;
+
+                        case false when priorIsConnected:
+                            managedMqttClient.Setup(x => x.IsConnected)
+                                             .Callback(OnIsDisconnected)
+                                             .Returns(isConnected);
+                            break;
+
+                        default:
+                            managedMqttClient.Setup(x => x.IsConnected)
+                                             .Returns(isConnected);
+                            break;
                     }
-                    else
-                    {
-                        managedMqttClient.Setup(x => x.IsConnected)
-                                         .Returns(isConnected);
-                    }
+
                     priorIsConnected = isConnected;
                 }
 
@@ -59,20 +71,32 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
         }
     }
 
-    private int _isConnectedDelayCount = 0;
-
     private void OnIsConnected()
     {
-        if (_isConnectedDelayCount++ == 0)
+        if (_connectedEventCalledCount++ != 1)
         {
-            Console.WriteLine("--- on connected ---");
-            Task.Run(() => managedMqttClient.RaiseAsync(c => c.ConnectedAsync += null,
-                                                        (new MqttClientConnectedEventArgs(new MqttClientConnectResult())))
-                    ).Wait(1.Seconds());
+            return;
         }
-        else
+
+        _connectedEventCalledCount = 10;
+        Task.Run(() => managedMqttClient.RaiseAsync(c => c.ConnectedAsync += null,
+                                                    (new MqttClientConnectedEventArgs(new MqttClientConnectResult())))
+                ).Wait(1.Seconds());
+    }
+
+    private void OnIsDisconnected()
+    {
+        if (_disconnectedEventCalledCount++ == 1)
         {
-            Console.WriteLine("--- connected ---");
+            _disconnectedEventCalledCount = 10;
+            Task.Run(() => managedMqttClient.RaiseAsync(c => c.DisconnectedAsync += null,
+                                                        (new MqttClientDisconnectedEventArgs(true, 
+                                                                                             new MqttClientConnectResult(), 
+                                                                                             MqttClientDisconnectReason.UnspecifiedError,
+                                                                                             "Test disconnection", 
+                                                                                             [], 
+                                                                                             null)))
+                    ).Wait(1.Seconds());
         }
     }
 }

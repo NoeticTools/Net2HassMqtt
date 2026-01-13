@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
-using static NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels.QuickStartDemoModel;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;

@@ -1,11 +1,12 @@
-﻿using MQTTnet.Extensions.ManagedClient;
+﻿using Microsoft.Extensions.Logging;
+using MQTTnet.Extensions.ManagedClient;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
 using NoeticTools.Net2HassMqtt.Exceptions;
 
 
 namespace NoeticTools.Net2HassMqtt.Configuration;
 
-public sealed class BridgeConfiguration
+public sealed class BridgeConfiguration()
 {
     internal List<object> Devices { get; set; } = [];
 

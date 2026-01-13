@@ -17,7 +17,7 @@ internal static class DeviceBuilderExtensions
         deviceBuilder.HasBatteryChargingBinarySensor(config => config.OnModel(model)
                                                                      .WithStatusProperty(nameof(ComponentTestModel.BatteryCharging))
                                                                      .WithFriendlyName("Battery Charging Status")
-                                                                     .WithNodeId("battery_1_charging"));
+                                                                     .WithNodeId("batt1_charging"));
     }
 
     public static void SetupEnumSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)

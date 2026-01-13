@@ -1,7 +1,7 @@
 ﻿using MQTTnet;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.ApplicationMessages;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.Messages;
 
 public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
 {
@@ -10,24 +10,25 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         return SequenceWas([]);
     }
 
-    public MqttMessagesValidationScope SequenceWas(List<MessageMatcher> expectedMessageSequence)
+    public MqttMessagesValidationScope SequenceWas(List<MessageMatching> expectedMessageSequence)
     {
-        if (messages.Count != expectedMessageSequence.Count)
+        var actualMessages = new List<MqttApplicationMessage>(messages);
+        if (actualMessages.Count != expectedMessageSequence.Count)
         {
-            var errorMessage = $"Expected {expectedMessageSequence.Count} messages but detected {messages.Count} messages.";
+            var errorMessage = $"Expected {expectedMessageSequence.Count} messages but detected {actualMessages.Count} messages.";
             errorMessage += "\n";
-            errorMessage += "Detected messages:\n";
-            foreach (var actual in messages)
+            errorMessage += "Detected messages:\n\n";
+            foreach (var actual in actualMessages)
             {
-                errorMessage += "  " + MessageMatcher.ToString(actual) + "\n\n";
+                errorMessage += "  " + MessageMatching.ToString(actual) + "\n\n";
             }
             errorMessage += "\n";
             Assert.Fail(errorMessage);
         }
 
-        for (var index = 0; index < messages.Count; index++)
+        for (var index = 0; index < actualMessages.Count; index++)
         {
-            var actual = messages[index];
+            var actual = actualMessages[index];
             var expected = expectedMessageSequence[index];
 
             Assert.That(expected.Matches(actual), Is.True,
@@ -38,7 +39,7 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
                         {expected}
                         
                           Was:
-                        {MessageMatcher.ToString(actual)}
+                        {MessageMatching.ToString(actual)}
                         
                         """);
         }

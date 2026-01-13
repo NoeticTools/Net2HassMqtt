@@ -3,7 +3,7 @@ using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 
 public class ClientVerificationScope(Mock<IManagedMqttClient> managedMqttClient)
 {

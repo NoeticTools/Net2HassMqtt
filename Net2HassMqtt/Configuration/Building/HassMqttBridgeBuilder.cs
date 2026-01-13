@@ -29,7 +29,8 @@ internal static class HassMqttBridgeBuilder
             devices.Add(device);
         }
 
-        return new Net2MqttBridge(m2HClient, devices);
+        var loggerFactory = serviceProvider.GetService<ILoggerFactory>()!;
+        return new Net2MqttBridge(m2HClient, devices, loggerFactory.CreateLogger<Net2MqttBridge>());
     }
 
     private static void AddEntities(Device device, DeviceConfig deviceConfig, EntityFactory entityFactory)

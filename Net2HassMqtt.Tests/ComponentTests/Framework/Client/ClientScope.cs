@@ -1,5 +1,4 @@
 ﻿using Moq;
-using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 
 
