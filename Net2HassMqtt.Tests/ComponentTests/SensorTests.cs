@@ -32,17 +32,17 @@ public class SensorTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.SequenceWas(
+        PublishedMqttMessages.Verify.MatchSequence(
         [
-            MessageMatchers.BridgeState.Online,
-            MessageMatchers.CurrentStateEntity.Config,
+            MqttMessageMatchers.BridgeState.Online,
+            MqttMessageMatchers.CurrentStateEntity.Config,
 
-            MessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateTwo),
-            MessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateThree),
-            MessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateOne),
-            MessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateTwo),
+            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateTwo),
+            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateThree),
+            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateOne),
+            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateTwo),
 
-            MessageMatchers.Any(9)
+            MqttMessageMatchers.Any(9)
         ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");

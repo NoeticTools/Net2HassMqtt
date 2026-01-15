@@ -46,7 +46,14 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
                 base(config, entityUniqueId, deviceConfig, mqttClientId)
             {
                 DeviceClass = config.HassDeviceClassName!;
-                UnitOfMeasurement = config.UnitOfMeasurement!.HassUnitOfMeasurement;
+                if (config.UnitOfMeasurement == null)
+                {
+                    UnitOfMeasurement = null;
+                }
+                else
+                {
+                    UnitOfMeasurement = config.UnitOfMeasurement.HassUnitOfMeasurement;
+                }
                 {{~ if IsReadOnly == false ~}}
                 CommandTopic = config.CommandTopic;
                 {{~ end ~}}

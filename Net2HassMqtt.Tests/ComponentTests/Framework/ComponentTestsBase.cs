@@ -10,8 +10,8 @@ using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
 using System.Diagnostics;
-using Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
-using Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching.TestProperties;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -52,12 +52,12 @@ public class ComponentTestsBase
                   .Callback<MqttApplicationMessage, CancellationToken>((message, _) => _publishedMessages.Add(message));
 
         Client = new ClientScope(_managedMqttClient);
-        PublishedMessages = new MqttMessagesScope(_publishedMessages);
+        PublishedMqttMessages = new MqttMessagesScope(_publishedMessages);
     }
 
-    protected TestSensorsMessageMatchers MessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
+    protected TestSensorsMessageMqttMatchers MqttMessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
 
-    internal MqttMessagesScope PublishedMessages  { get; private set; } = null!;
+    internal MqttMessagesScope PublishedMqttMessages  { get; private set; } = null!;
 
     internal ClientScope Client { get; private set; } = null!;
 

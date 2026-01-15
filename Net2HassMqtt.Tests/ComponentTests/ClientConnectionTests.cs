@@ -31,7 +31,7 @@ public class ClientConnectionTests : ComponentTestsBase
               .WasStartedOnce()
               .NoSubscriptionsMade();
 
-        PublishedMessages.Verify
+        PublishedMqttMessages.Verify
                          .ValidateNonePublished();
 
         Assert.That(result, Is.False, "Expected run to fail.");
@@ -48,11 +48,11 @@ public class ClientConnectionTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify
-                         .SequenceWas([
-                             MessageMatchers.BridgeState.Online,
-                             MessageMatchers.BatteryChargingEntity.Config,
-                             MessageMatchers.Any() // todo - timing hack
+        PublishedMqttMessages.Verify
+                         .MatchSequence([
+                             MqttMessageMatchers.BridgeState.Online,
+                             MqttMessageMatchers.BatteryChargingEntity.Config,
+                             MqttMessageMatchers.Any() // todo - timing hack
                          ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");
@@ -69,20 +69,20 @@ public class ClientConnectionTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.SequenceWas([
-            //MessageMatchers.BatteryChargingEntity.On, // todo: this looks odd (intermittent) - work on this separately
+        PublishedMqttMessages.Verify.MatchSequence([
+            //MqttMessageMatchers.BatteryChargingEntity.On, // todo: this looks odd (intermittent) - work on this separately
 
-            MessageMatchers.BridgeState.Online,
-            MessageMatchers.BatteryChargingEntity.Config,
+            MqttMessageMatchers.BridgeState.Online,
+            MqttMessageMatchers.BatteryChargingEntity.Config,
 
-            MessageMatchers.BatteryChargingEntity.Off,
-            MessageMatchers.BatteryChargingEntity.On,
-            MessageMatchers.BatteryChargingEntity.Off,
+            MqttMessageMatchers.BatteryChargingEntity.Off,
+            MqttMessageMatchers.BatteryChargingEntity.On,
+            MqttMessageMatchers.BatteryChargingEntity.Off,
 
-            MessageMatchers.BridgeState.Offline,
+            MqttMessageMatchers.BridgeState.Offline,
 
-            MessageMatchers.Any()
-            //MessageMatchers.BatteryChargingEntity.Off, // todo: this looks odd
+            MqttMessageMatchers.Any()
+            //MqttMessageMatchers.BatteryChargingEntity.Off, // todo: this looks odd
         ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");

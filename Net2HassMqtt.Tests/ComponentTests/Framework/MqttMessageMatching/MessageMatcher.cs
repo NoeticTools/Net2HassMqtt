@@ -1,10 +1,9 @@
-﻿using MQTTnet;
+﻿using System.Text;
+using MQTTnet;
 using MQTTnet.Protocol;
-using System.Text;
-using System.Text.RegularExpressions;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public sealed class MessageMatcher(string topic, string expectedPayload) : IMessageMatcher
 {
@@ -46,7 +45,7 @@ public sealed class MessageMatcher(string topic, string expectedPayload) : IMess
         return matches ? "" : "oops";
     }
 
-    private static string GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft=25, int charactersToRight= 20)
+    private static string GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft=50, int charactersToRight= 50)
     {
         charactersToLeft = Math.Min(charactersToLeft, firstDifferenceIndex);
         var fragmentLength = Math.Min(firstDifferenceIndex + 1 + charactersToRight, payload.Length-firstDifferenceIndex);

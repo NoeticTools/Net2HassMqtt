@@ -1,4 +1,4 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public abstract class BinarySensorEntityMessagesBase(
     string clientId,
@@ -7,7 +7,7 @@ public abstract class BinarySensorEntityMessagesBase(
     string nodeId,
     string nodeName,
     string deviceClass)
-    : MessagesBase(clientId, deviceId, deviceName, nodeId, nodeName, "binary_sensor", deviceClass)
+    : MqttMessageMatcherBase(clientId, deviceId, deviceName, nodeId, nodeName, "binary_sensor", deviceClass)
 {
     public IMessageMatcher Off =>
         new MessageMatcher($"{StateTopic}",

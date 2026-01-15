@@ -24,6 +24,7 @@ internal abstract class EntityBase<T> : IMqttEntity
         EntityUniqueId = entityUniqueId;
         DeviceNodeId = deviceNodeId;
         MqttClient = mqttClient;
+        PropertyInfoReader = propertyInfoReader;
         foreach (var configuration in config.Attributes)
         {
             _attributes.Add(new EntityAttribute(configuration, propertyInfoReader, logger));
@@ -56,6 +57,8 @@ internal abstract class EntityBase<T> : IMqttEntity
     protected ILogger Logger { get; }
 
     protected INet2HassMqttClient MqttClient { get; }
+
+    protected IPropertyInfoReader PropertyInfoReader { get; }
 
     public async Task PublishConfigAsync(DeviceConfig deviceConfig)
     {

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
 using NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
+using System.Reflection;
 using static NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels.QuickStartDemoModel;
 
 
@@ -17,7 +18,8 @@ internal class Program
 
                           Press:
                             'x' to exit
-                            '1' to toggle the state property
+                            '1' to toggle the BatteryCharging state property
+                            '2' to bump the CurrentState enum property
                             All key presses are sent to the demo model. 'a' and 'b' will fire events.
                           
                           """);
@@ -36,6 +38,11 @@ internal class Program
                                                               .WithStatusProperty(nameof(QuickStartDemoModel.BatteryCharging))
                                                               .WithFriendlyName("Battery Charging Status")
                                                               .WithNodeId("battery_1_charging"));
+
+        device.HasEnumSensor(config => config.OnModel(model)
+                                                    .WithStatusProperty(nameof(QuickStartDemoModel.CurrentState))
+                                                    .WithFriendlyName("Current State")
+                                                    .WithNodeId("current_state"));
 
         device.HasEvent(config => config.OnModel(model)
                                         .WithEvent(nameof(QuickStartDemoModel.EfEvent))
@@ -88,8 +95,24 @@ internal class Program
                     model.BatteryCharging = !model.BatteryCharging;
                 }
 
+                if (key.KeyChar == '2')
+                {
+                    BumpCurrentState(model);
+                }
+
                 model.OnKeyPressed(key.KeyChar);
             }
         }
+    }
+
+    private static void BumpCurrentState(QuickStartDemoModel model)
+    {
+        model.CurrentState = model.CurrentState switch
+        {
+            QuickStartDemoModel.CurrentStates.StateOne => QuickStartDemoModel.CurrentStates.StateTwo,
+            QuickStartDemoModel.CurrentStates.StateTwo => QuickStartDemoModel.CurrentStates.StateThree,
+            QuickStartDemoModel.CurrentStates.StateThree => QuickStartDemoModel.CurrentStates.StateOne,
+            _ => model.CurrentState
+        };
     }
 }

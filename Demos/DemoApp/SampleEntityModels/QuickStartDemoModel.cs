@@ -7,6 +7,14 @@ namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
 public partial class QuickStartDemoModel : ObservableObject
 {
     [ObservableProperty] private bool _batteryCharging;
+    [ObservableProperty] private CurrentStates _currentState;
+
+    public enum CurrentStates
+    {
+        StateOne,
+        StateTwo,
+        StateThree,
+    }
 
     public enum Event3Types
     {

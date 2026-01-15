@@ -31,17 +31,17 @@ public class BinarySensorTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.SequenceWas(
+        PublishedMqttMessages.Verify.MatchSequence(
         [
-            MessageMatchers.BridgeState.Online,
-            MessageMatchers.DoorIsOpenEntity.Config,
+            MqttMessageMatchers.BridgeState.Online,
+            MqttMessageMatchers.DoorIsOpenEntity.Config,
 
-            MessageMatchers.DoorIsOpenEntity.On,
-            MessageMatchers.DoorIsOpenEntity.Off,
-            MessageMatchers.DoorIsOpenEntity.On,
-            MessageMatchers.DoorIsOpenEntity.Off,
+            MqttMessageMatchers.DoorIsOpenEntity.On,
+            MqttMessageMatchers.DoorIsOpenEntity.Off,
+            MqttMessageMatchers.DoorIsOpenEntity.On,
+            MqttMessageMatchers.DoorIsOpenEntity.Off,
 
-            MessageMatchers.Any(9)
+            MqttMessageMatchers.Any(9)
         ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");
@@ -58,17 +58,17 @@ public class BinarySensorTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.SequenceWas(
+        PublishedMqttMessages.Verify.MatchSequence(
         [
-            MessageMatchers.BridgeState.Online,
-            MessageMatchers.BatteryChargingEntity.Config,
+            MqttMessageMatchers.BridgeState.Online,
+            MqttMessageMatchers.BatteryChargingEntity.Config,
 
-            MessageMatchers.BatteryChargingEntity.Off,
-            MessageMatchers.BatteryChargingEntity.On,
-            MessageMatchers.BatteryChargingEntity.Off,
-            MessageMatchers.BatteryChargingEntity.On,
+            MqttMessageMatchers.BatteryChargingEntity.Off,
+            MqttMessageMatchers.BatteryChargingEntity.On,
+            MqttMessageMatchers.BatteryChargingEntity.Off,
+            MqttMessageMatchers.BatteryChargingEntity.On,
 
-            MessageMatchers.Any(9)
+            MqttMessageMatchers.Any(9)
         ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");

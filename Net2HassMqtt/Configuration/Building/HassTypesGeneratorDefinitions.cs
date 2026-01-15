@@ -689,9 +689,9 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                                    "name": "Options",
                                                    "mqtt_name": "options",
                                                    "description": "In case this sensor provides a textual state, this property can be used to provide a list of possible states. Requires the enum device class to be set. Cannot be combined with state_class or native_unit_of_measurement.",
-                                                   "type": "string",
+                                                   "type": "List<string>",
                                                    "default": "\"None\"",
-                                                   "is_optional": false
+                                                   "is_optional": true
                                                  },
                                                  {
                                                    "name": "StateClass",

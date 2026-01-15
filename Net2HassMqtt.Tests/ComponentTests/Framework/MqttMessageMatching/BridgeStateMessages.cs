@@ -1,4 +1,4 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public sealed class BridgeStateMessages
 {

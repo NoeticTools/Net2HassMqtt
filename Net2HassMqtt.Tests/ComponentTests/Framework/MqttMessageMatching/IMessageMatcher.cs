@@ -1,7 +1,7 @@
 ﻿using MQTTnet;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public interface IMessageMatcher
 {

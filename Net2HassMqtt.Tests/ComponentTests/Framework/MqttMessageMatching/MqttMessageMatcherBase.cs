@@ -1,6 +1,6 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
-public abstract class MessagesBase(
+public abstract class MqttMessageMatcherBase(
     string clientId,
     string deviceId,
     string deviceName,
@@ -16,16 +16,20 @@ public abstract class MessagesBase(
 
     protected MessageMatcher GetConfigurationMessageWithoutOptions(string? options = null)
     {
-        options = options == null ? "" : $"""
-                                          
-                                            "options": "{options}",
-                                          """;
+        options = options == null ? 
+            """
+            
+              "unit_of_measurement": "None",
+            """ : 
+            $"""
+            
+              "options": {options},
+            """;
 
         return new MessageMatcher($"homeassistant/{domainName}/{deviceId}/{deviceId}_{nodeId}/config",
                                   $$$"""
                                      {
                                        "device_class": "{{{deviceClass}}}",{{{options}}}
-                                       "unit_of_measurement": "None",
                                        "retain": true,
                                        "availability": {
                                          "payload_available": "online",

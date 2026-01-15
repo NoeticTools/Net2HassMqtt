@@ -2,7 +2,7 @@
 using MQTTnet;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
 {
@@ -17,7 +17,7 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         return this;
     }
 
-    public MqttMessagesValidationScope SequenceWas(List<IMessageMatcher> expectedMessageSequence)
+    public MqttMessagesValidationScope MatchSequence(List<IMessageMatcher> expectedMessageSequence)
     {
         var expectedQueue = new Queue<IMessageMatcher>(expectedMessageSequence);
         var actualMessages = new List<MqttApplicationMessage>(messages);

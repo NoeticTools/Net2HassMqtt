@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Text;
+using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
-using System.Reflection;
 using NoeticTools.Net2HassMqtt.Framework;
 
 
@@ -21,15 +21,19 @@ internal sealed class SensorEntity(
 {
     protected override EntityConfigMqttJsonBase GetConfigurationMqttPayload(DeviceConfig deviceConfig)
     {
-        var configMqttJson = new SensorConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
-        if (Config.HassDeviceClassName != SensorDeviceClass.Enum.HassDeviceClassName)
-        {
-            return configMqttJson;
-        }
+        return Config.HassDeviceClassName != SensorDeviceClass.Enum.HassDeviceClassName ? new SensorConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId) : GetEnumSensorMqttConfig(deviceConfig);
+    }
 
-        var statusValueType = propertyInfoReader.GetPropertyGetterInfo(Config.Model!, Config.StatusPropertyName!)!.PropertyType;
+    private EntityConfigMqttJsonBase GetEnumSensorMqttConfig(DeviceConfig deviceConfig)
+    {
+        Config.UnitOfMeasurement = null; // see: https://www.home-assistant.io/integrations/sensor.mqtt/
+        Config.Options ??= [];
+        var statusValueType = PropertyInfoReader.GetPropertyGetterInfo(Config.Model!, Config.StatusPropertyName!)!.PropertyType;
         var enumNames = Enum.GetNames(statusValueType);
-        configMqttJson.Options = string.Join(",", enumNames);
-        return configMqttJson;
+        foreach (var enumName in enumNames)
+        {
+            Config.Options.Add(enumName);
+        }
+        return new SensorConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
     }
 }
