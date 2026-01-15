@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 using NoeticTools.Net2HassMqtt.Exceptions;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 
 
@@ -42,9 +43,13 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
     private readonly INotifyPropertyChanged _model;
     private readonly Func<object?, string> _reader;
 
-    public StatusPropertyReader(INotifyPropertyChanged model, string? statusPropertyName,
-                                string? hassDomainName, string? hassDeviceClass,
-                                string hassUoM, ILogger logger)
+    public StatusPropertyReader(INotifyPropertyChanged model, 
+                                string? statusPropertyName,
+                                string? hassDomainName, 
+                                string? hassDeviceClass,
+                                string hassUoM, 
+                                IPropertyInfoReader propertyInfoReader,
+                                ILogger logger)
     {
         _model = model;
         _getterPropertyName = statusPropertyName;
@@ -52,7 +57,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
         CanRead = !string.IsNullOrWhiteSpace(statusPropertyName);
         if (CanRead)
         {
-            var getterPropertyInfo = GetGetterPropertyInfo(statusPropertyName);
+            var getterPropertyInfo = propertyInfoReader.GetPropertyGetterInfo(model, statusPropertyName);
             if (getterPropertyInfo == null)
             {
                 ThrowConfigError($"Unable to find status property {statusPropertyName} on model of type {model.GetType()}.");
@@ -143,7 +148,16 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
 
         if (ValueHassDomains.Contains(hassDomainName))
         {
-            if (propertyValueType == typeof(int) || propertyValueType == typeof(double))
+            if (hassDeviceClass == "enum")
+            {
+                if (!propertyValueType.IsEnum)
+                {
+                    ThrowConfigError($"An enum entity requires an enum property. {_getterPropertyName}'s type is {propertyValueType}.");
+                }
+
+                return DefaultReader;
+            }
+            else if (propertyValueType == typeof(int) || propertyValueType == typeof(double))
             {
                 return DefaultReader;
             }
@@ -174,27 +188,5 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
     {
         _logger.LogError(message);
         throw new Net2HassMqttConfigurationException(message);
-    }
-
-    private PropertyInfo? GetGetterPropertyInfo(string? statusPropertyName)
-    {
-        if (string.IsNullOrWhiteSpace(statusPropertyName))
-        {
-            return null;
-        }
-
-        var propertyInfo = _model.GetType().GetProperty(statusPropertyName, BindingFlags.Instance | BindingFlags.Public);
-        if (propertyInfo != null)
-        {
-            if (!propertyInfo.CanRead)
-            {
-                _logger.LogError("Model property '{0}' must have a getter (be readable).", statusPropertyName);
-            }
-
-            return propertyInfo;
-        }
-
-        ThrowConfigError($"Could not find public property '{statusPropertyName}' on model of type of type '{_model.GetType()}'");
-        return null;
     }
 }

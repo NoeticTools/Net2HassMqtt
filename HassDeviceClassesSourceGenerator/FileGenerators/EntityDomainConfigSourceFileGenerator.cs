@@ -51,7 +51,11 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             /// <summary>
             ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
             /// </summary>
-            public {{option.ValueType}}{{ option.IsOptional ? "?" : "" }} {{option.Name}} { get; set; }
+            {{~ if option.IsOptional ~}}
+            public {{option.ValueType}}? {{option.Name}} { get; set; }
+            {{~ else ~}}
+            public {{option.ValueType}} {{option.Name}} { get; set; } = {{ option.DefaultValue }};
+            {{~ end ~}}
             {{~ end ~}}
         }
 

@@ -27,10 +27,10 @@ internal static class DeviceBuilderExtensions
                                                                      .WithNodeId("door_is_open"));
     }
 
-    public static void SetupEnumSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
+    public static void SetupCurrentStateEnumSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
     {
         deviceBuilder.HasEnumSensor(config => config.OnModel(model)
-                                                    .WithStatusProperty(nameof(ComponentTestModel.TestStates))
+                                                    .WithStatusProperty(nameof(ComponentTestModel.CurrentState))
                                                     .WithFriendlyName("Current State")
                                                     .WithNodeId("current_state"));
     }

@@ -1,32 +1,83 @@
-﻿using System.Text;
-using MQTTnet;
+﻿using MQTTnet;
 using MQTTnet.Protocol;
+using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
 
-public sealed class MessageMatcher(string topic, string payload) : IMessageMatcher
+public sealed class MessageMatcher(string topic, string expectedPayload) : IMessageMatcher
 {
-    public bool Matches(MqttApplicationMessage actual)
+    /// <summary>
+    /// Compare actual and expected me
+    /// </summary>
+    /// <param name="actual"></param>
+    /// <returns></returns>
+    private string Matches(MqttApplicationMessage actual)
     {
-        return actual.Topic.Equals(topic) &&
-               Encoding.UTF8.GetString(actual.PayloadSegment).Equals(payload) &&
-               actual is { 
-                   Retain: true, 
-                   Dup: false, 
-                   MessageExpiryInterval: 0, 
-                   PayloadFormatIndicator: MqttPayloadFormatIndicator.Unspecified, 
-                   QualityOfServiceLevel: MqttQualityOfServiceLevel.AtLeastOnce, 
-                   ContentType: null, 
-                   ResponseTopic: null
-               };
+        var actualPayload = Encoding.UTF8.GetString(actual.PayloadSegment);
+        var firstDifferenceIndex = FindFirstDifferenceIndex(actualPayload, expectedPayload);
+        if (firstDifferenceIndex != -1)
+        {
+            var expectedFragment = GetFragment(expectedPayload, firstDifferenceIndex);
+            var actualFragment = GetFragment(actualPayload, firstDifferenceIndex);
+            return $"""
+                    The payloads does not match what was expected.
+                    
+                      Expected:  '...{expectedFragment}...'
+                      
+                      But was:   '...{actualFragment}...'
+                      
+                    """;
+        }
+
+        var matches = actual.Topic.Equals(topic) &&
+                      Encoding.UTF8.GetString(actual.PayloadSegment).Equals(expectedPayload) &&
+                      actual is { 
+                          Retain: true, 
+                          Dup: false, 
+                          MessageExpiryInterval: 0, 
+                          PayloadFormatIndicator: MqttPayloadFormatIndicator.Unspecified, 
+                          QualityOfServiceLevel: MqttQualityOfServiceLevel.AtLeastOnce, 
+                          ContentType: null, 
+                          ResponseTopic: null
+                      };
+
+        return matches ? "" : "oops";
+    }
+
+    private static string GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft=25, int charactersToRight= 20)
+    {
+        charactersToLeft = Math.Min(charactersToLeft, firstDifferenceIndex);
+        var fragmentLength = Math.Min(firstDifferenceIndex + 1 + charactersToRight, payload.Length-firstDifferenceIndex);
+        return payload.Substring(firstDifferenceIndex-charactersToLeft, fragmentLength).Replace("\r", @"\r").Replace("\n", @"\n");
+    }
+
+    private static int FindFirstDifferenceIndex(string string1, string string2)
+    {
+        var minLength = Math.Min(string1.Length, string2.Length);
+        for (var i = 0; i < minLength; i++)
+        {
+            if (string1[i] != string2[i])
+            {
+                return i;
+            }
+        }
+    
+        // If one string is a substring of the other, the difference is the length of the shorter one
+        if (string1.Length != string2.Length)
+        {
+            return minLength;
+        }
+
+        return -1; // Strings are identical
     }
 
     public override string ToString()
     {
         return $"""
                    Topic:   {topic}
-                   Payload: {payload}
+                   Payload: {expectedPayload}
                    Retain:  True
                    Dup:     False
                    MessageExpiryInterval:  0
@@ -37,11 +88,11 @@ public sealed class MessageMatcher(string topic, string payload) : IMessageMatch
                """;
     }
 
-    public bool Match(List<MqttApplicationMessage> actualMessages)
+    public string Match(List<MqttApplicationMessage> actualMessages)
     {
         var actual = actualMessages[0];
         var result = Matches(actual);
-        if (result)
+        if (result.Length == 0)
         {
             actualMessages.RemoveAt(0);
         }

@@ -4,8 +4,10 @@ using Microsoft.Extensions.Logging;
 using MQTTnet.Extensions.ManagedClient;
 using NoeticTools.Net2HassMqtt.Entities;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 
 namespace NoeticTools.Net2HassMqtt.Configuration.Building;
@@ -62,6 +64,7 @@ internal static class HassMqttBridgeBuilder
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true)
                                                                 .AddConsole()
                                                                 .SetMinimumLevel(LogLevel.Debug));
+            services.AddSingleton<IPropertyInfoReader>(x => new PropertyInfoReader(x.GetService<ILogger>()!));
         });
         return builder.Build().Services;
     }

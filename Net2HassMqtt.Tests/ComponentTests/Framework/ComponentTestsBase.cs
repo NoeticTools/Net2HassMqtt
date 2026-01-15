@@ -11,6 +11,7 @@ using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
 using System.Diagnostics;
 using Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching.TestProperties;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -54,7 +55,7 @@ public class ComponentTestsBase
         PublishedMessages = new MqttMessagesScope(_publishedMessages);
     }
 
-    protected DeviceMessageMatchers MessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
+    protected TestSensorsMessageMatchers MessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
 
     internal MqttMessagesScope PublishedMessages  { get; private set; } = null!;
 
@@ -118,5 +119,11 @@ public class ComponentTestsBase
     protected async Task<bool> Run()
     {
         return await Run(() => { }, 5);
+    }
+
+    protected void BaseTearDown()
+    {
+        Task.Delay(10.Milliseconds()).Wait();   // todo: code smell, required to avoid intermittency in number of messages received
+        // fix in separate issue
     }
 }

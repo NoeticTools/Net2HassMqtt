@@ -10,15 +10,14 @@ public class ClientConnectionTests : ComponentTestsBase
     [SetUp]
     public void Setup()
     {
-        base.BaseSetup();
+        BaseSetup();
         DeviceBuilder.SetupBatteryChargingBinarySensor(Model);
     }
 
     [TearDown]
     public void TearDown()
     {
-        Task.Delay(10.Milliseconds()).Wait();   // todo: code smell, required to avoid intermittency in number of messages received
-                                                // fix in separate issue
+        BaseTearDown();
     }
 
     [Test]
@@ -50,7 +49,7 @@ public class ClientConnectionTests : ComponentTestsBase
               .SubscriptionsCountIs(1);
 
         PublishedMessages.Verify
-                         .ValidateSequenceWas([
+                         .SequenceWas([
                              MessageMatchers.BridgeState.Online,
                              MessageMatchers.BatteryChargingEntity.Config,
                              MessageMatchers.Any() // todo - timing hack
@@ -70,7 +69,7 @@ public class ClientConnectionTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.ValidateSequenceWas([
+        PublishedMessages.Verify.SequenceWas([
             //MessageMatchers.BatteryChargingEntity.On, // todo: this looks odd (intermittent) - work on this separately
 
             MessageMatchers.BridgeState.Online,

@@ -17,8 +17,7 @@ public class BinarySensorTests : ComponentTestsBase
     [TearDown]
     public void TearDown()
     {
-        Task.Delay(10.Milliseconds()).Wait();   // todo: code smell, required to avoid intermittency in number of messages received
-                                                // fix in separate issue
+        BaseTearDown();
     }
 
     [Test]
@@ -32,7 +31,7 @@ public class BinarySensorTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.ValidateSequenceWas(
+        PublishedMessages.Verify.SequenceWas(
         [
             MessageMatchers.BridgeState.Online,
             MessageMatchers.DoorIsOpenEntity.Config,
@@ -59,7 +58,7 @@ public class BinarySensorTests : ComponentTestsBase
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
-        PublishedMessages.Verify.ValidateSequenceWas(
+        PublishedMessages.Verify.SequenceWas(
         [
             MessageMatchers.BridgeState.Online,
             MessageMatchers.BatteryChargingEntity.Config,

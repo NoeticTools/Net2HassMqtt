@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
@@ -18,14 +19,15 @@ internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqt
     where T : EntityConfigBase
 {
     protected StateEntityBase(T config, string entityUniqueId, string deviceNodeId,
-                              INet2HassMqttClient mqttClient, ILogger logger)
-        : base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
+                              INet2HassMqttClient mqttClient, IPropertyInfoReader propertyInfoReader, ILogger logger)
+        : base(config, entityUniqueId, deviceNodeId, mqttClient, propertyInfoReader, logger)
     {
         StatusPropertyReader = new StatusPropertyReader(config.Model!,
                                                         config.StatusPropertyName,
                                                         config.Domain.HassDomainName,
                                                         config.HassDeviceClassName,
                                                         config.UnitOfMeasurement!.HassUnitOfMeasurement,
+                                                        propertyInfoReader,
                                                         logger);
 
         CommandHandler = new EntityCommandHandler(config.Model!,

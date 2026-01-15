@@ -17,7 +17,7 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         return this;
     }
 
-    public MqttMessagesValidationScope ValidateSequenceWas(List<IMessageMatcher> expectedMessageSequence)
+    public MqttMessagesValidationScope SequenceWas(List<IMessageMatcher> expectedMessageSequence)
     {
         var expectedQueue = new Queue<IMessageMatcher>(expectedMessageSequence);
         var actualMessages = new List<MqttApplicationMessage>(messages);
@@ -34,17 +34,13 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
             }
 
             var expected = expectedQueue.Dequeue();
-            if (!expected.Match(actualMessages))
+            var errorMsg = expected.Match(actualMessages);
+            if (errorMsg.Length > 0)
             {
                 Assert.Fail( 
                     $"""
-                     Actual message {startingActualMessagesCount-actualMessages.Count+1} does not match expected matcher {startingMatchersCount-expectedQueue.Count}.
-                     
-                       Expected:
-                     {expected}
-                     
-                       Was:
-                     {MessageMatcher.ToString(actualMessages[0])}
+                     Actual message {startingActualMessagesCount-actualMessages.Count+1} does not match expected message {startingMatchersCount-expectedQueue.Count}.
+                     {errorMsg}
 
                      """);
             }

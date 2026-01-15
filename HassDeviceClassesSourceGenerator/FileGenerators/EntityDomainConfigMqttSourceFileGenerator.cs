@@ -71,7 +71,11 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
             /// </summary>
             [JsonPropertyName("{{option.MqttName}}")]
-            public {{option.ValueType}}{{ option.IsOptional ? "?" : "" }} {{option.Name}} { get; set; }
+            {{~ if option.IsOptional ~}}
+            public {{option.ValueType}}? {{option.Name}} { get; set; }
+            {{~ else ~}}
+            public {{option.ValueType}} {{option.Name}} { get; set; } = {{ option.DefaultValue }};
+            {{~ end ~}}
             {{~ end ~}}
             
             /// <summary>

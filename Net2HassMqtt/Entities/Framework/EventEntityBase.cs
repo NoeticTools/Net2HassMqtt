@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Exceptions;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.State;
 
@@ -16,8 +17,9 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     private readonly Delegate _eventHandlerDelegate;
     private readonly EventInfo _eventInfo;
 
-    protected EventEntityBase(T config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger)
-        : base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
+    protected EventEntityBase(T config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient,
+                              IPropertyInfoReader propertyInfoReader, ILogger logger)
+        : base(config, entityUniqueId, deviceNodeId, mqttClient, propertyInfoReader, logger)
     {
         _eventInfo = GetModelEventInfo();
         var type = _eventInfo.EventHandlerType!;

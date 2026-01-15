@@ -5,14 +5,14 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework.MessageMatching;
 
 public class AnyMessagesMatcher(int maximumNumberOfMessages) : IMessageMatcher
 {
-    public bool Match(List<MqttApplicationMessage> actualMessages)
+    public string Match(List<MqttApplicationMessage> actualMessages)
     {
         if (actualMessages.Count == 0)
         {
-            return true;
+            return "Expected any message but no message detected. Must be one or more messages.";
         }
         var removeCount = Math.Min(maximumNumberOfMessages, actualMessages.Count);
         actualMessages.RemoveRange(0, removeCount);
-        return true;
+        return "";
     }
 }

@@ -178,7 +178,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                              "domain_classes": [
                                                {
                                                  "name": "None",
-                                                 "description": "Generic button. This is the default and doesn’t need to be set.",
+                                                 "description": "Generic button. This is the default and does not need to be set.",
                                                  "units": []
                                                },
                                                {
@@ -682,8 +682,16 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                                    "mqtt_name": "suggested_display_precision",
                                                    "description": "The number of decimals which should be used in the sensor’s state after rounding.",
                                                    "type": "int",
-                                                   "default": "0",
+                                                   "default": "\"None\"",
                                                    "is_optional": true
+                                                 },
+                                                 {
+                                                   "name": "Options",
+                                                   "mqtt_name": "options",
+                                                   "description": "In case this sensor provides a textual state, this property can be used to provide a list of possible states. Requires the enum device class to be set. Cannot be combined with state_class or native_unit_of_measurement.",
+                                                   "type": "string",
+                                                   "default": "\"None\"",
+                                                   "is_optional": false
                                                  },
                                                  {
                                                    "name": "StateClass",
@@ -696,13 +704,11 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                               ],
                                              "domain_classes": [
                                                {
-                                       
                                                  "name": "None",
                                                  "description": "Generic sensor. This is the default.",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "apparent_power",
                                                  "description": "Apparent power|",
                                                  "units": [ "VA." ]
@@ -714,61 +720,51 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "atmospheric_pressure",
                                                  "description": "Atmospheric pressure|",
                                                  "units": [ "cbar", "bar", "hPa", "mmHg", "inHg", "kPa", "mbar", "Pa or psi" ]
                                                },
                                                {
-                                       
                                                  "name": "battery",
                                                  "description": "Percentage of battery that is left|",
                                                  "units": [ "%" ]
                                                },
                                                {
-                                       
                                                  "name": "carbon_dioxide",
                                                  "description": "Carbon Dioxide in CO2 (Smoke)|",
                                                  "units": [ "ppm" ]
                                                },
                                                {
-                                       
                                                  "name": "carbon_monoxide",
                                                  "description": "Carbon Monoxide in CO (Gas CNG/LPG)|",
                                                  "units": [ "ppm" ]
                                                },
                                                {
-                                       
                                                  "name": "current",
                                                  "description": "Current|",
                                                  "units": [ "A", "mA" ]
                                                },
                                                {
-                                       
                                                  "name": "data_rate",
                                                  "description": "Data rate|",
                                                  "units": [ "bit/s", "kbit/s", "Mbit/s", "Gbit/s", "B/s", "kB/s", "MB/s", "GB/s", "KiB/s", "MiB/s or GiB/s" ]
                                                },
                                                {
-                                       
                                                  "name": "data_size",
                                                  "description": "Data size|",
                                                  "units": [ "bit", "kbit", "Mbit", "Gbit", "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB or YiB" ]
                                                },
                                                {
-                                       
                                                  "name": "date",
                                                  "description": "Date string (ISO 8601)",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "distance",
                                                  "description": "Generic distance|",
                                                  "units": [ "km", "m", "cm", "mm", "mi", "yd", "in" ]
                                                },
                                                {
-                                       
                                                  "name": "duration",
                                                  "description": "Duration|",
                                                  "units": [ "d", "h", "min", "s" ]
@@ -780,229 +776,191 @@ namespace NoeticTools.Net2HassMqtt.Configuration.Building;
                                                  "units": [ "Wh", "kWh", "MWh", "MJ", "GJ" ]
                                                },
                                                {
-                                       
                                                  "name": "energy_storage",
                                                  "description": "Stored energy|",
                                                  "units": [ "Wh", "kWh", "MWh", "MJ", "GJ" ]
                                                },
                                                {
-                                       
                                                  "name": "enum",
                                                  "description": "Has a limited set of (non-numeric) states",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "frequency",
                                                  "description": "Frequency|",
                                                  "units": [ "Hz", "kHz", "MHz", "GHz" ]
                                                },
                                                {
-                                       
                                                  "name": "gas",
                                                  "description": "Gas volume|",
                                                  "units": [ "m³", "ft³", "CCF" ]
                                                },
                                                {
-                                       
                                                  "name": "humidity",
                                                  "description": "Percentage of humidity in the air|",
                                                  "units": [ "%" ]
                                                },
                                                {
-                                       
                                                  "name": "illuminance",
                                                  "description": "The current light level|",
                                                  "units": [ "lx" ]
                                                },
                                                {
-                                       
                                                  "name": "irradiance",
                                                  "description": "Irradiance|",
                                                  "units": [ "W/m²", "BTU/(h⋅ft²)" ]
                                                },
                                                {
-                                       
                                                  "name": "moisture",
                                                  "description": "Percentage of water in a substance|",
                                                  "units": [ "%" ]
                                                },
                                                {
-                                       
                                                  "name": "monetary",
                                                  "description": "The monetary value (ISO 4217)",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "nitrogen_dioxide",
                                                  "description": "Concentration of Nitrogen Dioxide|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "nitrogen_monoxide",
                                                  "description": "Concentration of Nitrogen Monoxide|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "nitrous_oxide",
                                                  "description": "Concentration of Nitrous Oxide|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "ozone",
                                                  "description": "Concentration of Ozone|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "ph",
                                                  "description": "Potential hydrogen (pH) value of a water solution",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "pm1",
                                                  "description": "Concentration of particulate matter less than 1 micrometer|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "pm25",
                                                  "description": "Concentration of particulate matter less than 2.5 micrometers|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "pm10",
                                                  "description": "Concentration of particulate matter less than 10 micrometers|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "power_factor",
                                                  "description": "Power factor (unitless), unit may be None or %",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "power",
                                                  "description": "Power|",
                                                  "units": [ "W", "kW" ]
                                                },
                                                {
-                                       
                                                  "name": "precipitation",
                                                  "description": "Accumulated precipitation|",
                                                  "units": [ "cm", "in", "mm" ]
                                                },
                                                {
-                                       
                                                  "name": "precipitation_intensity",
                                                  "description": "Precipitation intensity|",
                                                  "units": [ "in/d", "in/h", "mm/d or mm/h" ]
                                                },
                                                {
-                                       
                                                  "name": "pressure",
                                                  "description": "Pressure|",
                                                  "units": [ "Pa", "kPa", "hPa", "bar", "cbar", "mbar", "mmHg", "inHg or psi" ]
                                                },
                                                {
-                                       
                                                  "name": "reactive_power",
                                                  "description": "Reactive power|",
                                                  "units": [ "var" ]
                                                },
                                                {
-                                       
                                                  "name": "signal_strength",
                                                  "description": "Signal strength|",
                                                  "units": [ "dB", "dBm" ]
                                                },
                                                {
-                                       
                                                  "name": "sound_pressure",
                                                  "description": "Sound pressure|",
                                                  "units": [ "dB", "dBA" ]
                                                },
                                                {
-                                       
                                                  "name": "speed",
                                                  "description": "Generic speed|",
                                                  "units": [ "ft/s", "in/d", "in/h", "km/h", "kn", "m/s", "mph or mm/d" ]
                                                },
                                                {
-                                       
                                                  "name": "sulphur_dioxide",
                                                  "description": "Concentration of sulphur dioxide|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "temperature",
                                                  "description": "Temperature|",
                                                  "units": [ "°C", "°F", "K" ]
                                                },
                                                {
-                                       
                                                  "name": "timestamp",
                                                  "description": "Datetime object or timestamp string (ISO 8601)",
                                                  "units": []
                                                },
                                                {
-                                       
                                                  "name": "volatile_organic_compounds",
                                                  "description": "Concentration of volatile organic compounds|",
                                                  "units": [ "µg/m³" ]
                                                },
                                                {
-                                       
                                                  "name": "volatile_organic_compounds_parts",
                                                  "description": "Ratio of volatile organic compounds|",
                                                  "units": [ "ppm", "ppb" ]
                                                },
                                                {
-                                       
                                                  "name": "voltage",
                                                  "description": "Voltage|",
                                                  "units": [ "V", "mV" ]
                                                },
                                                {
-                                       
                                                  "name": "volume",
                                                  "description": "Generic volume|",
                                                  "units": [ "L", "mL", "gal", "fl. oz.", "m³", "ft³", "CCF" ]
                                                },
                                                {
-                                       
                                                  "name": "volume_flow_rate",
                                                  "description": "Volume flow rate|",
                                                  "units": [ "m³/h", "ft³/min", "L/min", "gal/min" ]
                                                },
                                                {
-                                       
                                                  "name": "volume_storage",
                                                  "description": "Generic stored volume|",
                                                  "units": [ "L", "mL", "gal", "fl. oz.", "m³", "ft³", "CCF" ]
                                                },
                                                {
-                                       
                                                  "name": "water",
                                                  "description": "Water consumption|",
                                                  "units": [ "L", "gal", "m³", "ft³", "CCF" ]
                                                },
                                                {
-                                       
                                                  "name": "weight",
                                                  "description": "Generic mass|",
                                                  "units": [ "kg", "g", "mg", "µg", "oz", "lb", "st" ]
                                                },
                                                {
-                                       
                                                  "name": "wind_speed",
                                                  "description": "Wind speed|",
                                                  "units": [ "Beaufort", "ft/s", "km/h", "kn", "m/s", "mph" ]
