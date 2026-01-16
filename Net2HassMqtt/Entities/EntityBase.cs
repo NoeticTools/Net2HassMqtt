@@ -11,7 +11,7 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 namespace NoeticTools.Net2HassMqtt.Entities;
 
 internal abstract class EntityBase<T> : IMqttEntity
-    where T : EntityConfigBase
+    where T : IEntityConfig
 {
     private readonly List<EntityAttribute> _attributes = [];
 

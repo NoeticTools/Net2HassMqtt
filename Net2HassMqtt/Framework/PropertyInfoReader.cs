@@ -6,7 +6,7 @@ using NoeticTools.Net2HassMqtt.Exceptions;
 
 namespace NoeticTools.Net2HassMqtt.Framework;
 
-internal sealed class PropertyInfoReader(ILogger logger) : IPropertyInfoReader
+internal sealed class PropertyInfoReader : IPropertyInfoReader
 {
     public PropertyInfo? GetPropertyGetterInfo(object model, string? statusPropertyName)
     {
@@ -20,7 +20,7 @@ internal sealed class PropertyInfoReader(ILogger logger) : IPropertyInfoReader
         {
             if (!propertyInfo.CanRead)
             {
-                logger.LogError("Model property '{0}' must have a getter (be readable).", statusPropertyName);
+                ThrowConfigError($"Model property '{statusPropertyName}' must have a getter (be readable).");
             }
 
             return propertyInfo;
@@ -31,9 +31,8 @@ internal sealed class PropertyInfoReader(ILogger logger) : IPropertyInfoReader
     }
 
     [DoesNotReturn]
-    private void ThrowConfigError(string message)
+    private static void ThrowConfigError(string message)
     {
-        logger.LogError(message);
         throw new Net2HassMqttConfigurationException(message);
     }
 }

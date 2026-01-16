@@ -29,7 +29,7 @@ internal sealed class HassDiscoveryClient(string mqttClientId, INet2HassMqttClie
     ///     Home Assistant (HASS) discovers and updates entities (and devices) when configuration published to the 'config'
     ///     topic.
     /// </summary>
-    public async Task PublishEntityConfigAsync<T>(string objectId, EntityConfigBase config, DeviceConfig device, T payload)
+    public async Task PublishEntityConfigAsync<T>(string objectId, IEntityConfig config, DeviceConfig device, T payload)
         where T : EntityConfigMqttJsonBase
     {
         payload.ObjectId = objectId;

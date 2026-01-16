@@ -6,14 +6,19 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 namespace NoeticTools.Net2HassMqtt.Configuration;
 
-public abstract class EntityConfigBase
+public abstract class EntityConfigBase : IEntityConfig
 {
     protected EntityConfigBase(HassDomains domain, string? hassDeviceClass)
     {
         Domain = domain;
         MqttTopicComponent = domain.HassDomainName;
         HassDeviceClassName = hassDeviceClass;
+        // ReSharper disable once VirtualMemberCallInConstructor
+        //CustomInit();
     }
+
+    protected virtual void CustomInit()
+    {}
 
     internal bool CommandHandlerIsRequired { get; init; } = false;
 
@@ -35,17 +40,41 @@ public abstract class EntityConfigBase
     /// </summary>
     public string? HassDeviceClassName { get; protected init; }
 
-    public EntityCategory EntityCategory { get; internal set; } = EntityCategory.None;
+    internal EntityCategory EntityCategory { get; set; } = EntityCategory.None;
+
+    EntityCategory IEntityConfig.EntityCategory
+    {
+        get => EntityCategory;
+        set => EntityCategory = value;
+    }
 
     /// <summary>
     ///     Name of the property on <a cref="Model"></a> to get the entity's status or attribute value.
     /// </summary>
-    public string? StatusPropertyName { get; protected internal set; }
+    protected internal string? StatusPropertyName { get; set; }
+
+    /// <summary>
+    ///     Name of the property on <a cref="Model"></a> to get the entity's status or attribute value.
+    /// </summary>
+    string? IEntityConfig.StatusPropertyName
+    {
+        get => StatusPropertyName;
+        set => StatusPropertyName = value;
+    }
 
     /// <summary>
     /// The name of the model's event member. Only applicable to event entities.
     /// </summary>
-    public string? EventMemberName { get; protected internal set; }
+    protected internal string? EventMemberName { get; set; }
+
+    /// <summary>
+    /// The name of the model's event member. Only applicable to event entities.
+    /// </summary>
+    string? IEntityConfig.EventMemberName
+    {
+        get => EventMemberName;
+        set => EventMemberName = value;
+    }
 
     /// <summary>
     ///     Optional HASS entity icon.
@@ -54,12 +83,34 @@ public abstract class EntityConfigBase
     ///     Home Assistant using material design icons listed <a href="https://pictogrammers.com/library/mdi/">here</a>.
     ///     Naming convention is "mdi:&lt;icon_name&gt;".
     /// </remarks>
-    public string? Icon { get; protected internal set; }
+    protected internal string? Icon { get; set; }
+
+    /// <summary>
+    ///     Optional HASS entity icon.
+    /// </summary>
+    /// <remarks>
+    ///     Home Assistant using material design icons listed <a href="https://pictogrammers.com/library/mdi/">here</a>.
+    ///     Naming convention is "mdi:&lt;icon_name&gt;".
+    /// </remarks>
+    string? IEntityConfig.Icon
+    {
+        get => Icon;
+        set => Icon = value;
+    }
 
     /// <summary>
     ///     The model that has the entity's <a cref="StatusPropertyName">StatusPropertyName</a> property.
     /// </summary>
-    public INotifyPropertyChanged? Model { get; internal set; }
+    internal INotifyPropertyChanged? Model { get; set; }
+
+    /// <summary>
+    ///     The model that has the entity's <a cref="StatusPropertyName">StatusPropertyName</a> property.
+    /// </summary>
+    INotifyPropertyChanged? IEntityConfig.Model
+    {
+        get => Model;
+        set => Model = value;
+    }
 
     /// <summary>
     ///     The entity's Home Assistant domain (and MQTT component topic) such as 'switch' or 'sensor'.
@@ -69,7 +120,16 @@ public abstract class EntityConfigBase
     /// <summary>
     ///     Human friendly name for entity name in HASS.
     /// </summary>
-    public string EntityFriendlyName { get; protected internal set; } = "";
+    protected internal string EntityFriendlyName { get; set; } = "";
+
+    /// <summary>
+    ///     Human friendly name for entity name in HASS.
+    /// </summary>
+    string IEntityConfig.EntityFriendlyName
+    {
+        get => EntityFriendlyName;
+        set => EntityFriendlyName = value;
+    }
 
     /// <summary>
     ///     <para>
@@ -84,11 +144,11 @@ public abstract class EntityConfigBase
     /// </summary>
     public string EntityNodeId { get; private set; } = "";
 
-    public UnitOfMeasurement? UnitOfMeasurement { get; internal set; }
+    public UnitOfMeasurement? UnitOfMeasurement { get; set; }
 
-    internal List<AttributeConfiguration> Attributes { get; } = [];
+    List<AttributeConfiguration> IEntityConfig.Attributes { get; } = [];
 
-    internal void SetEntityId(string entityId)
+    void IEntityConfig.SetEntityId(string entityId)
     {
         EntityNodeId = entityId.ToMqttTopicSnakeCase();
     }
@@ -99,6 +159,8 @@ public abstract class EntityConfigBase
         {
             throw new Net2HassMqttConfigurationException($"An entity model is required. Type: {GetType().Name}");
         }
+
+        CustomInit();
 
         var hasGetter = !string.IsNullOrWhiteSpace(StatusPropertyName);
         var hasSetter = !string.IsNullOrWhiteSpace(CommandMethodName);
@@ -115,12 +177,7 @@ public abstract class EntityConfigBase
 
         if (string.IsNullOrEmpty(EntityFriendlyName))
         {
-            throw new Net2HassMqttConfigurationException($"Name is required. Type: {GetType().Name}");
-        }
-
-        if (UnitOfMeasurement == null)
-        {
-            throw new Net2HassMqttConfigurationException($"A UnitOfMeasurement is required. Type: {GetType().Name}");
+            throw new Net2HassMqttConfigurationException($"A friendly name is required. Type: {GetType().Name}");
         }
 
         if (CommandHandlerIsRequired && string.IsNullOrWhiteSpace(CommandMethodName))

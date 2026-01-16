@@ -44,7 +44,7 @@ public class ComponentTestsBase
             CurrentState = ComponentTestModel.TestStates.StateOne
         };
 
-        _appConfig = new ConfigurationBuilder().AddUserSecrets<ClientConnectionTests>().Build();
+        _appConfig = new ConfigurationBuilder().AddUserSecrets<ClientConnectionComponentTests>().Build();
         DeviceBuilder = CreateDeviceBuilder();
 
         _publishedMessages = [];

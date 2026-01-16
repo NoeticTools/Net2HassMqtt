@@ -6,7 +6,7 @@ using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 namespace Net2HassMqtt.Tests.ComponentTests;
 
 [TestFixture]
-public class SensorTests : ComponentTestsBase
+public class SensorComponentTests : ComponentTestsBase
 {
     [SetUp]
     public void Setup()

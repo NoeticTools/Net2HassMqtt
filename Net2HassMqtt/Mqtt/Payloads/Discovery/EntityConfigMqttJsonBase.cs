@@ -10,9 +10,9 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 namespace NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
-public abstract class EntityConfigMqttJsonBase
+public abstract class EntityConfigMqttJsonBase : IEntityConfigMqttJson
 {
-    protected internal EntityConfigMqttJsonBase(EntityConfigBase config, string entityUniqueId, DeviceConfig deviceConfig, string mqttClientId)
+    protected internal EntityConfigMqttJsonBase(IEntityConfig config, string entityUniqueId, DeviceConfig deviceConfig, string mqttClientId)
     {
         Device = new DeviceMqttJson(deviceConfig);
         var uniqueId = entityUniqueId.ToMqttTopicSnakeCase();

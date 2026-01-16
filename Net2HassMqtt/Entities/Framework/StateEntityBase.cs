@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Dynamic;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
@@ -16,23 +17,25 @@ namespace NoeticTools.Net2HassMqtt.Entities.Framework;
 ///     State entity base class.
 /// </summary>
 internal abstract class StateEntityBase<T> : EntityBase<T>, IMqttPublisher, IMqttSubscriber
-    where T : EntityConfigBase
+    where T : IEntityConfig
 {
     protected StateEntityBase(T config, string entityUniqueId, string deviceNodeId,
                               INet2HassMqttClient mqttClient, IPropertyInfoReader propertyInfoReader, ILogger logger)
         : base(config, entityUniqueId, deviceNodeId, mqttClient, propertyInfoReader, logger)
     {
+        var hassUnitOfMeasurement = config.UnitOfMeasurement?.HassUnitOfMeasurement;
+
         StatusPropertyReader = new StatusPropertyReader(config.Model!,
                                                         config.StatusPropertyName,
                                                         config.Domain.HassDomainName,
                                                         config.HassDeviceClassName,
-                                                        config.UnitOfMeasurement!.HassUnitOfMeasurement,
+                                                        hassUnitOfMeasurement,
                                                         propertyInfoReader,
                                                         logger);
 
         CommandHandler = new EntityCommandHandler(config.Model!,
                                                   config.CommandMethodName,
-                                                  config.UnitOfMeasurement!.HassUnitOfMeasurement,
+                                                  hassUnitOfMeasurement,
                                                   logger);
         CanCommand = CommandHandler.CanCommand;
     }

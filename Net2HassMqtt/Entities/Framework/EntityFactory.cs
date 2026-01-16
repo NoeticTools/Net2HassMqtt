@@ -24,7 +24,6 @@ internal sealed class EntityFactory(INet2HassMqttClient mqttClient, IPropertyInf
             { HassDomains.Update.HassDomainName, EntityNotSupported }, // todo
             { HassDomains.Valve.HassDomainName, CreateValveEntity }
         };
-        entityConfig.Validate();
         return lookup[entityConfig.Domain.HassDomainName](entityConfig, entityUniqueId, deviceConfig.DeviceId.ToMqttTopicSnakeCase());
     }
 

@@ -5,7 +5,7 @@ using Net2HassMqtt.Tests.ComponentTests.Framework;
 namespace Net2HassMqtt.Tests.ComponentTests;
 
 [TestFixture]
-public class ClientConnectionTests : ComponentTestsBase
+public class ClientConnectionComponentTests : ComponentTestsBase
 {
     [SetUp]
     public void Setup()

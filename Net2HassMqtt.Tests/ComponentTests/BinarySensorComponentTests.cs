@@ -5,7 +5,7 @@ using Net2HassMqtt.Tests.ComponentTests.Framework;
 namespace Net2HassMqtt.Tests.ComponentTests;
 
 [TestFixture]
-public class BinarySensorTests : ComponentTestsBase
+public class BinarySensorComponentTests : ComponentTestsBase
 {
     [SetUp]
     public void Setup()

@@ -47,7 +47,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
                                 string? statusPropertyName,
                                 string? hassDomainName, 
                                 string? hassDeviceClass,
-                                string hassUoM, 
+                                string? hassUoM, 
                                 IPropertyInfoReader propertyInfoReader,
                                 ILogger logger)
     {
@@ -117,7 +117,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
         return arg.ToString() ?? "null";
     }
 
-    private Func<object?, string> GetReader(string? hassDomainName, string? hassDeviceClass, string hassUoM)
+    private Func<object?, string> GetReader(string? hassDomainName, string? hassDeviceClass, string? hassUoM)
     {
         var propertyValueType = _getterPropertyInfo!.PropertyType;
 
@@ -130,7 +130,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
             hassDeviceClass == SensorDeviceClass.Duration.HassDeviceClassName &&
             propertyValueType == typeof(TimeSpan))
         {
-            if (TimeSpanReadersByUoM.TryGetValue(hassUoM, out var timespanReader))
+            if (TimeSpanReadersByUoM.TryGetValue(hassUoM!, out var timespanReader))
             {
                 return value =>
                 {

@@ -64,7 +64,7 @@ internal static class HassMqttBridgeBuilder
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true)
                                                                 .AddConsole()
                                                                 .SetMinimumLevel(LogLevel.Debug));
-            services.AddSingleton<IPropertyInfoReader>(x => new PropertyInfoReader(x.GetService<ILogger>()!));
+            services.AddSingleton<IPropertyInfoReader>(x => new PropertyInfoReader());
         });
         return builder.Build().Services;
     }
