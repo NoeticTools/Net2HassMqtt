@@ -18,6 +18,7 @@ public abstract class EntityConfigMqttJsonBase : IEntityConfigMqttJson
         var uniqueId = entityUniqueId.ToMqttTopicSnakeCase();
         UniqueId = uniqueId;
         ObjectId = uniqueId;
+        DefaultEntityId = $"{config.MqttTopicComponent}.{uniqueId}";
         Icon = config.Icon;
         Name = config.EntityFriendlyName;
         MqttTopicComponent = config.MqttTopicComponent;
@@ -64,6 +65,10 @@ public abstract class EntityConfigMqttJsonBase : IEntityConfigMqttJson
     /// </summary>
     /// <remarks>
     ///     <para>
+    ///         Home Assistant has deprecated object_id in favor of default_entity_id.
+    ///         It will cease to be used Home Assistant after 2024.6.
+    ///     </para>
+    ///     <para>
     ///         When the entity is created in Home Assistant this value is used to generate the entity's ID.
     ///         As a unique_id is also provided users can change the entity ID in Home Assistant.
     ///         Net2HassMqtt uses the same value for both object_id and unique_id.
@@ -77,7 +82,26 @@ public abstract class EntityConfigMqttJsonBase : IEntityConfigMqttJson
     ///     </para>
     /// </remarks>
     [JsonPropertyName("object_id")]
-    public string ObjectId { get; set; }
+    public string ObjectId { get; set; } // todo: HASS has depreciated use of object_id in favour of using default_entity_id. No longer used after 2026.4.
+
+    /// <summary>
+    ///     The entity ID seen in HASS when referencing this entity. Must be prefixed with the domain, e.g. sensor.foobar.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///         Use default_entity_id instead of name for automatic generation of the entity ID.
+    ///         For example, sensor.foobar. When used without a unique_id, the entity ID will update during restart or reload if the entity ID is available. If the entity ID already exists, the entity ID will be created with a number at the end. When used with a unique_id, the default_entity_id is only used when the entity is added for the first time. When set, this overrides a user-customized entity ID if the entity was deleted and added again.
+    ///     </para>
+    ///     <para>
+    ///         For more information see
+    ///         <a href="https://www.home-assistant.io/integrations/mqtt/#naming-of-mqtt-entities">
+    ///             Home Assistant Naming of Entities
+    ///         </a>
+    ///         .
+    ///     </para>
+    /// </remarks>
+    [JsonPropertyName("default_entity_id")]
+    public string DefaultEntityId { get; set; }
 
     /// <summary>
     ///     Required. Topic to subscribe to for sensor values.

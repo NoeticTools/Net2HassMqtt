@@ -1,7 +1,8 @@
-﻿using System.Text.Json;
-using NoeticTools.Net2HassMqtt.Configuration;
+﻿using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
+using System.Text.Json;
+using System.Xml;
 
 
 namespace NoeticTools.Net2HassMqtt.Mqtt;
@@ -32,7 +33,8 @@ internal sealed class HassDiscoveryClient(string mqttClientId, INet2HassMqttClie
     public async Task PublishEntityConfigAsync<T>(string objectId, IEntityConfig config, DeviceConfig device, T payload)
         where T : EntityConfigMqttJsonBase
     {
-        payload.ObjectId = objectId;
+        payload.ObjectId = objectId; // todo: HASS has depreciated use of object_id in favour of using default_entity_id. No longer used after 2026.4.
+        payload.DefaultEntityId = $"{config.MqttTopicComponent}.{objectId}";
 
         var topic = new TopicBuilder().WithBaseTopic(mqttClientId)
                                       .WithComponent(payload.MqttTopicComponent)

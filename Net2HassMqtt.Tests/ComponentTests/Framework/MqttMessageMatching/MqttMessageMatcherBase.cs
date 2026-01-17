@@ -49,6 +49,7 @@ public abstract class MqttMessageMatcherBase(
                                        "json_attributes_topic": "net2hassmqtt_test_start/{{{deviceId}}}/{{{nodeId}}}",
                                        "name": "{{{nodeName}}}",
                                        "object_id": "{{{deviceId}}}_{{{nodeId}}}",
+                                       "default_entity_id": "{{{domainName}}}.{{{deviceId}}}_{{{nodeId}}}",
                                        "state_topic": "net2hassmqtt_test_start/{{{deviceId}}}/{{{nodeId}}}",
                                        "unique_id": "{{{deviceId}}}_{{{nodeId}}}",
                                        "value_template": "{{ value_json.state }}"
