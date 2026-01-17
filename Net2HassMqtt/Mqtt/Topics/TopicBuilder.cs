@@ -77,10 +77,10 @@ internal sealed class TopicBuilder
     public MqttTopic NodeId { get; private set; } = "";
 
     /// <summary>
-    ///     In a Home Assistant discovery topic this is the entities `unique_id` or `object_id`
+    ///     In a Home Assistant discovery topic this is the entity's `unique_id` or `object_id`
     ///     In state update and set command message topics to the Net2HassMqtt client it is the entity's node ID.
     /// </summary>
-    public MqttTopic ObjectId { get; private set; } = "";
+    public MqttTopic ObjectId { get; private set; } = ""; // todo: HASS has depreciated use of object_id in favour of using default_entity_id. No longer used after 2026.4.
 
     public TopicAction TopicAction { get; private set; } = TopicAction.None;
 
@@ -227,7 +227,7 @@ internal sealed class TopicBuilder
         return this;
     }
 
-    public TopicBuilder WithObjectId(string objectId)
+    public TopicBuilder WithObjectId(string objectId)  // todo: HASS has depreciated use of object_id in favour of using default_entity_id. No longer used after 2026.4.
     {
         if (ObjectId.IsValid)
         {
