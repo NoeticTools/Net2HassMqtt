@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Exceptions;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
@@ -10,12 +11,12 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 namespace NoeticTools.Net2HassMqtt.Entities;
 
 internal abstract class EntityBase<T> : IMqttEntity
-    where T : EntityConfigBase
+    where T : IEntityConfig
 {
     private readonly List<EntityAttribute> _attributes = [];
 
     protected EntityBase(T config, string entityUniqueId, string deviceNodeId,
-                         INet2HassMqttClient mqttClient, ILogger logger)
+                         INet2HassMqttClient mqttClient, IPropertyInfoReader propertyInfoReader, ILogger logger)
     {
         config.Validate();
         Config = config;
@@ -23,9 +24,10 @@ internal abstract class EntityBase<T> : IMqttEntity
         EntityUniqueId = entityUniqueId;
         DeviceNodeId = deviceNodeId;
         MqttClient = mqttClient;
+        PropertyInfoReader = propertyInfoReader;
         foreach (var configuration in config.Attributes)
         {
-            _attributes.Add(new EntityAttribute(configuration, logger));
+            _attributes.Add(new EntityAttribute(configuration, propertyInfoReader, logger));
         }
     }
 
@@ -56,9 +58,11 @@ internal abstract class EntityBase<T> : IMqttEntity
 
     protected INet2HassMqttClient MqttClient { get; }
 
+    protected IPropertyInfoReader PropertyInfoReader { get; }
+
     public async Task PublishConfigAsync(DeviceConfig deviceConfig)
     {
-        var payloadJson = GetHasDiscoveryMqttPayload(deviceConfig);
+        var payloadJson = GetConfigurationMqttPayload(deviceConfig);
         await MqttClient.Discovery.PublishEntityConfigAsync(EntityUniqueId, Config, deviceConfig, payloadJson);
     }
 
@@ -77,7 +81,7 @@ internal abstract class EntityBase<T> : IMqttEntity
         return _attributes.ToDictionary(attribute => attribute.Name, attribute => attribute.StatusPropertyReader.Read());
     }
 
-    protected abstract EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig);
+    protected abstract EntityConfigMqttJsonBase GetConfigurationMqttPayload(DeviceConfig deviceConfig);
 
     [DoesNotReturn]
     protected void ThrowConfigError(string message)

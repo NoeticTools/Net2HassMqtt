@@ -25,7 +25,24 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             IsReadOnly = domain.IsReadOnly
             CommandHandlerIsRequired = domain.CommandHandlerIsRequired
         ~}}
-        public partial class {{DomainName}}Config : EntityConfigBase
+        public interface I{{DomainName}}Config : IEntityConfig
+        {
+            public string CommandTopic { get; set; }
+        
+            {{~ for option in domain.AdditionalOptions ~}}
+            
+            /// <summary>
+            ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
+            /// </summary>
+            {{~ if option.IsOptional ~}}
+            public {{option.ValueType}}? {{option.Name}} { get; set; }
+            {{~ else ~}}
+            public {{option.ValueType}} {{option.Name}} { get; set; }
+            {{~ end ~}}
+            {{~ end ~}}
+        }
+        
+        public partial class {{DomainName}}Config : EntityConfigBase, I{{DomainName}}Config
         {
             internal {{DomainName}}Config({{DomainName}}DeviceClass deviceClass)
                 : base(HassDomains.{{DomainName}}, deviceClass.HassDeviceClassName)
@@ -51,7 +68,11 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             /// <summary>
             ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
             /// </summary>
-            public {{option.ValueType}}{{ option.IsOptional ? "?" : "" }} {{option.Name}} { get; set; }
+            {{~ if option.IsOptional ~}}
+            public {{option.ValueType}}? {{option.Name}} { get; set; }
+            {{~ else ~}}
+            public {{option.ValueType}} {{option.Name}} { get; set; } = {{ option.DefaultValue }};
+            {{~ end ~}}
             {{~ end ~}}
         }
 
@@ -61,10 +82,10 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             UoMClass = deviceClass.UoMClassName
             DomainDeviceConfigClass = ( DeviceClass | string.append DomainName | string.append "Config" )
         }}
-        public sealed partial class {{DomainDeviceConfigClass}} : EntityConfigBase
+        public sealed partial class {{DomainDeviceConfigClass}} : {{DomainName}}Config
         {
             internal {{DomainDeviceConfigClass}}({{DomainName}}DeviceClass deviceClass)
-                : base(HassDomains.{{DomainName}}, deviceClass.HassDeviceClassName)
+                : base(deviceClass)
             {
             }
         }

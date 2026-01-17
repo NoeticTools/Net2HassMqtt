@@ -25,10 +25,11 @@ internal sealed class EntityBuildersSourceFileGenerator : ISourceFileGenerator<D
             EntityConfigClass = ( DomainName | string.append "Config" )
             IsReadOnly = domain.IsReadOnly
         ~}}
-        public abstract partial class {{DomainName}}EntityBuilder<T> : EntityBuilderBase<T, {{EntityConfigClass}}>
-            where T : EntityBuilderBase<T, {{EntityConfigClass}}>
+        public abstract partial class {{DomainName}}EntityBuilder<T,TC> : EntityBuilderBase<T, TC>
+            where T : EntityBuilderBase<T, TC>
+            where TC : {{EntityConfigClass}}
         {
-            internal {{DomainName}}EntityBuilder({{EntityConfigClass}} entityConfig)
+            internal {{DomainName}}EntityBuilder(TC entityConfig)
                 : base(entityConfig)
             {
             }
@@ -62,8 +63,9 @@ internal sealed class EntityBuildersSourceFileGenerator : ISourceFileGenerator<D
             DeviceClass = deviceClass.DeviceClass
             UoMClass = deviceClass.UoMClassName
             EntityBuilderClass = ( DeviceClass | string.append DomainName | string.append "EntityBuilder" )
+            EntityConfigClass = ( DeviceClass | string.append DomainName | string.append "Config" )
         }}
-        public sealed partial class {{EntityBuilderClass}} : {{DomainName}}EntityBuilder<{{EntityBuilderClass}}>
+        public sealed partial class {{EntityBuilderClass}} : {{DomainName}}EntityBuilder<{{EntityBuilderClass}}, {{EntityConfigClass}}>
         {
             internal {{EntityBuilderClass}}({{EntityConfigClass}} entityConfig)
                 : base(entityConfig)

@@ -25,6 +25,40 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             AdditionalOptions = domain.AdditionalOptions
             HasRetainOption = domain.HasRetainOption
         ~}}
+        internal interface I{{DomainName}}ConfigMqttJson : IEntityConfigMqttJson
+        {
+            /// <summary>
+            ///     Home Assistant sensor entity <a href="https://www.home-assistant.io/integrations/{{HassDomainName}}/#device-class">device class</a>.
+            /// </summary>
+            [JsonPropertyName("device_class")]
+            public string DeviceClass { get; set; }
+            {{~ for option in AdditionalOptions ~}}
+            
+            /// <summary>
+            ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
+            /// </summary>
+            [JsonPropertyName("{{option.MqttName}}")]
+            {{~ if option.IsOptional ~}}
+            public {{option.ValueType}}? {{option.Name}} { get; set; }
+            {{~ else ~}}
+            public {{option.ValueType}} {{option.Name}} { get; set; }
+            {{~ end ~}}
+            {{~ end ~}}
+            
+            /// <summary>
+            ///     Unit of measure dependent on the <a href="https://www.home-assistant.io/integrations/{{HassDomainName}}/#device-class">device class</a>.
+            /// </summary>
+            [JsonPropertyName("unit_of_measurement")]
+            public string? UnitOfMeasurement { get; set; }
+            
+            {{~ if HasRetainOption == true ~}}
+            [JsonPropertyName("retain")]
+            public bool Retain { get; set; }
+            
+            {{~ end ~}}
+            //internal void Build(TopicBuilder topic);
+        }
+        
         /// <summary>
         ///     Home Assistant {{DomainName}} entity discovery configuration.
         /// </summary>
@@ -40,13 +74,20 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
         ///         </item>
         ///     </list>
         /// </remarks>
-        internal class {{DomainName}}ConfigMqttJson : EntityConfigMqttJsonBase
+        internal class {{DomainName}}ConfigMqttJson : EntityConfigMqttJsonBase, I{{DomainName}}ConfigMqttJson
         {
-            public {{DomainName}}ConfigMqttJson(string entityUniqueId, {{DomainName}}Config config, DeviceConfig deviceConfig, string mqttClientId) :
+            public {{DomainName}}ConfigMqttJson(string entityUniqueId, I{{DomainName}}Config config, DeviceConfig deviceConfig, string mqttClientId) :
                 base(config, entityUniqueId, deviceConfig, mqttClientId)
             {
                 DeviceClass = config.HassDeviceClassName!;
-                UnitOfMeasurement = config.UnitOfMeasurement!.HassUnitOfMeasurement;
+                if (config.UnitOfMeasurement == null)
+                {
+                    UnitOfMeasurement = null;
+                }
+                else
+                {
+                    UnitOfMeasurement = config.UnitOfMeasurement.HassUnitOfMeasurement;
+                }
                 {{~ if IsReadOnly == false ~}}
                 CommandTopic = config.CommandTopic;
                 {{~ end ~}}
@@ -71,7 +112,11 @@ internal sealed class EntityDomainConfigMqttSourceFileGenerator : ISourceFileGen
             ///    {{option.Description}} ({{ option.IsOptional ? "Optional" : "Required" }}, default is '{{option.DefaultValue}}')
             /// </summary>
             [JsonPropertyName("{{option.MqttName}}")]
-            public {{option.ValueType}}{{ option.IsOptional ? "?" : "" }} {{option.Name}} { get; set; }
+            {{~ if option.IsOptional ~}}
+            public {{option.ValueType}}? {{option.Name}} { get; set; }
+            {{~ else ~}}
+            public {{option.ValueType}} {{option.Name}} { get; set; } = {{ option.DefaultValue }};
+            {{~ end ~}}
             {{~ end ~}}
             
             /// <summary>

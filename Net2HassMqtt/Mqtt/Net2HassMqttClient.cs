@@ -151,11 +151,11 @@ internal sealed partial class Net2HassMqttClient : ObservableObject, INet2HassMq
 
         if (IsConnected)
         {
-            _logger.LogInformation(LoggingEvents.MqttConnection, "Connected to the MQTT broker.");
+            _logger.LogInformation(LoggingEvents.MqttConnection, "Client is connected to the MQTT broker.");
             return true;
         }
 
-        _logger.LogWarning(LoggingEvents.MqttConnection, "Unable to connect to the MQTT broker.");
+        _logger.LogWarning(LoggingEvents.MqttConnection, "Client is Unable to connect to the MQTT broker.");
         return false;
     }
 

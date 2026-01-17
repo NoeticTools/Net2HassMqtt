@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
-using static NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels.QuickStartDemoModel;
 
 
 namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
@@ -8,6 +7,14 @@ namespace NoeticTools.Net2HassMqtt.QuickStartDemoApp.SampleEntityModels;
 public partial class QuickStartDemoModel : ObservableObject
 {
     [ObservableProperty] private bool _batteryCharging;
+    [ObservableProperty] private CurrentStates _currentState;
+
+    public enum CurrentStates
+    {
+        StateOne,
+        StateTwo,
+        StateThree,
+    }
 
     public enum Event3Types
     {

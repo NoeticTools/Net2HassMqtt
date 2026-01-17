@@ -7,11 +7,11 @@ namespace NoeticTools.Net2HassMqtt.Mqtt.Payloads;
 
 internal sealed class MqttCommandPayloadReader
 {
-    private readonly string _hassUoM;
+    private readonly string? _hassUoM;
     private readonly ILogger _logger;
     private readonly string _payload;
 
-    public MqttCommandPayloadReader(string payload, string hassUoM, ILogger logger)
+    public MqttCommandPayloadReader(string payload, string? hassUoM, ILogger logger)
     {
         _payload = payload;
         _hassUoM = hassUoM;
@@ -104,7 +104,7 @@ internal sealed class MqttCommandPayloadReader
                 { HassUoMs.Days, () => TimeSpan.FromHours(double.Parse(_payload)) }
             };
 
-            if (transformLookup.TryGetValue(_hassUoM, out var transform))
+            if (transformLookup.TryGetValue(_hassUoM!, out var transform))
             {
                 return transform();
             }

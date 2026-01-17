@@ -33,6 +33,7 @@ internal sealed class DeviceBuilderSourceFileGenerator : ISourceFileGenerator<De
             DomainDeviceClass = ( DomainName | string.append "DeviceClass." | string.append DeviceClass )
             DomainEntityConfigClass = ( DomainName | string.append "Config" )
             EntityBuilderClass = ( DeviceClass | string.append DomainName | string.append "EntityBuilder" )
+            EntityConfigClass = ( DeviceClass | string.append DomainName | string.append "Config" )
         
             if domain.IsReadOnly == true
                 readOnlyEntityText = $" {deviceClass.HassDomainName} is a read only domain. It does not support command methods."
@@ -73,7 +74,7 @@ internal sealed class DeviceBuilderSourceFileGenerator : ISourceFileGenerator<De
         {{methodDocumentationXml}}
             public DeviceBuilder {{methodName}}(Func<{{EntityBuilderClass}}, {{EntityBuilderClass}}> configureFunc)
             {
-                var entityConfig = new {{DomainEntityConfigClass}}({{DomainDeviceClass}});
+                var entityConfig = new {{EntityConfigClass}}({{DomainDeviceClass}});
                 var entityBuilder = new {{EntityBuilderClass}}(entityConfig);
                 entityConfig = configureFunc(entityBuilder).EntityConfig;
                 entityConfig.Validate();

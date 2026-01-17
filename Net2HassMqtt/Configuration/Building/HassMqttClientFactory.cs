@@ -56,9 +56,9 @@ public sealed class HassMqttClientFactory
                .Build();
     }
 
-    internal INet2HassMqttClient Create(ManagedMqttClientOptions config)
+    internal INet2HassMqttClient Create(ManagedMqttClientOptions config, IManagedMqttClient? client = null)
     {
-        var client = new MqttFactory().CreateManagedMqttClient();
+        client ??= new MqttFactory().CreateManagedMqttClient();
         return new Net2HassMqttClient(client, config, _loggerFactory.CreateLogger<Net2HassMqttClient>());
     }
 }

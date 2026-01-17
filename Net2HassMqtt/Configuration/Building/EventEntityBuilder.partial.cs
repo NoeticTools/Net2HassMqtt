@@ -1,6 +1,6 @@
 ﻿namespace NoeticTools.Net2HassMqtt.Configuration.Building;
 
-public partial class EventEntityBuilder<T>
+public partial class EventEntityBuilder<T,TC>
 {
     /// <summary>
     ///     Optional event type to publish immediately after any other event is published.

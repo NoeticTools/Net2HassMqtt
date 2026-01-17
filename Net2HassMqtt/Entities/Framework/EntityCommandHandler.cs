@@ -12,11 +12,11 @@ internal sealed class EntityCommandHandler
     private readonly MethodInfo? _commandMethodInfo;
     private readonly string? _commandMethodName;
     private readonly Type? _commandMethodParameterValueType;
-    private readonly string _hassUoM;
+    private readonly string? _hassUoM;
     private readonly ILogger _logger;
     private readonly INotifyPropertyChanged _model;
 
-    public EntityCommandHandler(INotifyPropertyChanged model, string? commandMethodName, string hassUoM, ILogger logger)
+    public EntityCommandHandler(INotifyPropertyChanged model, string? commandMethodName, string? hassUoM, ILogger logger)
     {
         _model = model;
         _commandMethodName = commandMethodName;

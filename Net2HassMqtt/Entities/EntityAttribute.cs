@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
+using NoeticTools.Net2HassMqtt.Framework;
 
 
 // ReSharper disable ConvertToPrimaryConstructor
@@ -12,12 +13,12 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 /// </summary>
 internal sealed class EntityAttribute
 {
-    public EntityAttribute(AttributeConfiguration config, ILogger logger)
+    public EntityAttribute(AttributeConfiguration config, IPropertyInfoReader propertyInfoReader, ILogger logger)
 
     {
         Name = config.Name;
         Logger = logger;
-        StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement, logger);
+        StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement, propertyInfoReader, logger);
     }
 
     /// <summary>

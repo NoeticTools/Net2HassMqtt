@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 using NoeticTools.Net2HassMqtt.Mqtt.Topics;
@@ -86,13 +87,15 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 ///         </item>
 ///     </list>
 /// </remarks>
-internal sealed class ValveEntity : StateEntityBase<ValveConfig>, IMqttSubscriber
+internal sealed class ValveEntity(
+    ValveConfig config,
+    string entityUniqueId,
+    string deviceNodeId,
+    INet2HassMqttClient mqttClient,
+    IPropertyInfoReader propertyInfoReader,
+    ILogger logger)
+    : StateEntityBase<ValveConfig>(config, entityUniqueId, deviceNodeId, mqttClient, propertyInfoReader, logger), IMqttSubscriber
 {
-    public ValveEntity(ValveConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
-        base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
-    {
-    }
-
     void IMqttSubscriber.OnReceived(ReceivedMqttMessage message)
     {
         // >>>> how? ... state is reported as open, opening, closed, closing. Command (received) is OPEN or CLOSE.
@@ -111,7 +114,7 @@ internal sealed class ValveEntity : StateEntityBase<ValveConfig>, IMqttSubscribe
         }
     }
 
-    protected override EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig)
+    protected override EntityConfigMqttJsonBase GetConfigurationMqttPayload(DeviceConfig deviceConfig)
     {
         return new ValveConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
     }

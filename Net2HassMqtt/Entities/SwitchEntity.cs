@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework;
+using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
@@ -86,14 +87,16 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 ///         </item>
 ///     </list>
 /// </remarks>
-internal sealed class SwitchEntity : StateEntityBase<SwitchConfig>
+internal sealed class SwitchEntity(
+    SwitchConfig config,
+    string entityUniqueId,
+    string deviceNodeId,
+    INet2HassMqttClient mqttClient,
+    IPropertyInfoReader propertyInfoReader,
+    ILogger logger)
+    : StateEntityBase<SwitchConfig>(config, entityUniqueId, deviceNodeId, mqttClient, propertyInfoReader, logger)
 {
-    public SwitchEntity(SwitchConfig config, string entityUniqueId, string deviceNodeId, INet2HassMqttClient mqttClient, ILogger logger) :
-        base(config, entityUniqueId, deviceNodeId, mqttClient, logger)
-    {
-    }
-
-    protected override EntityConfigMqttJsonBase GetHasDiscoveryMqttPayload(DeviceConfig deviceConfig)
+    protected override EntityConfigMqttJsonBase GetConfigurationMqttPayload(DeviceConfig deviceConfig)
     {
         return new SwitchConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId);
     }

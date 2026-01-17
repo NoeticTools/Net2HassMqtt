@@ -9,7 +9,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration;
 
 public abstract class EntityBuilderBase<T, TC>
     where T : EntityBuilderBase<T, TC>
-    where TC : EntityConfigBase
+    where TC : class, IEntityConfig
 {
     protected internal EntityBuilderBase(TC entityConfig)
     {
