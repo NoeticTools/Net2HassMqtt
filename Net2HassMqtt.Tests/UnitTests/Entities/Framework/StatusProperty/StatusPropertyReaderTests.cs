@@ -12,7 +12,7 @@ namespace Net2HassMqtt.Tests.UnitTests.Entities.Framework.StatusProperty;
 [TestFixture]
 public class StatusPropertyReaderTests
 {
-    private const string TimeSpanPropertyName = "TestProperty";
+    private const string PropertyName = "TestProperty";
     private Mock<ILogger> _logger;
     private TestModel _model;
     private Mock<IPropertyInfoReader> _propertyInfoReader;
@@ -23,8 +23,8 @@ public class StatusPropertyReaderTests
     {
         _model = new TestModel();
         _propertyInfoReader = new Mock<IPropertyInfoReader>();
-        _propertyInfoStub = new PropertyInfoStub(TimeSpanPropertyName, typeof(TimeSpan), true);
-        _propertyInfoReader.Setup(x => x.GetPropertyGetterInfo(_model, TimeSpanPropertyName))
+        _propertyInfoStub = new PropertyInfoStub(PropertyName, typeof(TimeSpan), true);
+        _propertyInfoReader.Setup(x => x.GetPropertyGetterInfo(_model, PropertyName))
                            .Returns(_propertyInfoStub);
         _logger = new Mock<ILogger>();
     }
@@ -34,9 +34,9 @@ public class StatusPropertyReaderTests
     [TestCase(7, "7")]
     [TestCase(5000, "5000")]
     [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInDays(double days, string expected)
+    public void CanReadTimeSpanPropertyWithUoMDays(double days, string expected)
     {
-        _propertyInfoStub.StubedValue = TimeSpan.FromDays(days);
+        _propertyInfoStub.StubbedValue = TimeSpan.FromDays(days);
         RunTest(expected, HassUoMs.Days);
     }
 
@@ -45,9 +45,9 @@ public class StatusPropertyReaderTests
     [TestCase(7, "7")]
     [TestCase(5000, "5000")]
     [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInHours(double hours, string expected)
+    public void CanReadTimeSpanPropertyWithUoMHours(double hours, string expected)
     {
-        _propertyInfoStub.StubedValue = TimeSpan.FromHours(hours);
+        _propertyInfoStub.StubbedValue = TimeSpan.FromHours(hours);
         RunTest(expected, HassUoMs.Hours);
     }
 
@@ -56,9 +56,9 @@ public class StatusPropertyReaderTests
     [TestCase(7, "7")]
     [TestCase(5000, "5000")]
     [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInMinutes(double minutes, string expected)
+    public void CanReadTimeSpanPropertyWithUoMMinutes(double minutes, string expected)
     {
-        _propertyInfoStub.StubedValue = TimeSpan.FromMinutes(minutes);
+        _propertyInfoStub.StubbedValue = TimeSpan.FromMinutes(minutes);
         RunTest(expected, HassUoMs.Minutes);
     }
 
@@ -67,9 +67,41 @@ public class StatusPropertyReaderTests
     [TestCase(7, "7")]
     [TestCase(5000, "5000")]
     [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInSeconds(double seconds, string expected)
+    public void CanReadTimeSpanPropertyWithUoMSeconds(double seconds, string expected)
     {
-        _propertyInfoStub.StubedValue = TimeSpan.FromSeconds(seconds);
+        _propertyInfoStub.StubbedValue = TimeSpan.FromSeconds(seconds);
+        var target = GetStatusPropertyReader(HassUoMs.Seconds);
+        Assert.That(target.CanRead, Is.True);
+
+        var result = target.Read();
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [TestCase(0, "0")]
+    [TestCase(7, "7")]
+    [TestCase(5000, "5000")]
+    [TestCase(-7, "-7")]
+    public void CanReadIntegerPropertyWithUoMSeconds(int seconds, string expected)
+    {
+        _propertyInfoStub.StubbedValue = seconds;
+        _propertyInfoStub.SetPropertyType(typeof(int));
+        var target = GetStatusPropertyReader(HassUoMs.Seconds);
+        Assert.That(target.CanRead, Is.True);
+
+        var result = target.Read();
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [TestCase(0, "0")]
+    [TestCase(7, "7")]
+    [TestCase(5000, "5000")]
+    [TestCase(-7, "-7")]
+    public void CanReadDoublePropertyWithUoMSeconds(double seconds, string expected)
+    {
+        _propertyInfoStub.StubbedValue = seconds;
+        _propertyInfoStub.SetPropertyType(typeof(double));
         var target = GetStatusPropertyReader(HassUoMs.Seconds);
         Assert.That(target.CanRead, Is.True);
 
@@ -81,7 +113,7 @@ public class StatusPropertyReaderTests
     private StatusPropertyReader GetStatusPropertyReader(string hassUoM)
     {
         var target = new StatusPropertyReader(_model,
-                                              TimeSpanPropertyName,
+                                              PropertyName,
                                               HassDomains.Sensor.HassDomainName,
                                               SensorDeviceClass.Duration.HassDeviceClassName,
                                               hassUoM,
