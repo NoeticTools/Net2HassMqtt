@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Net2HassMqtt.Tests.UnitTests.Framework;
@@ -21,7 +18,7 @@ public class StatusPropertyReaderTests
     private Mock<ILogger> _logger;
     private TestModel _model;
     private PropertyInfoStub _propertyInfoStub;
-    private const string TimeSpanPropertyName = nameof(TestModel.TimeSpanProperty);
+    private const string TimeSpanPropertyName = "TestProperty";
 
     [SetUp]
     public void Setup()
