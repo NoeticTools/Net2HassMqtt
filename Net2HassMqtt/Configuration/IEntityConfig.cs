@@ -17,7 +17,7 @@ public interface IEntityConfig
     ///     The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes).
     ///     Provides both the HomeAssistant/MQTT snake_case version and the dotnet UpperCamelCase version.
     /// </summary>
-    HassDomains Domain { get; }
+    HassDomain Domain { get; }
 
     /// <summary>
     ///     Home Assistant device class name.

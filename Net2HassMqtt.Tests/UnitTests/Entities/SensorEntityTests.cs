@@ -32,7 +32,7 @@ public class SensorEntityTests
         sensorConfig.SetupGet(x => x.Model).Returns(model);
         sensorConfig.SetupGet(x => x.StatusPropertyName).Returns(statusPropertyName);
         sensorConfig.SetupGet(x => x.Attributes).Returns([]);
-        sensorConfig.SetupGet(x => x.Domain).Returns(new HassDomains("hass_domain_name", "domain_name"));
+        sensorConfig.SetupGet(x => x.Domain).Returns(new HassDomain("hass_domain_name", "domain_name"));
         sensorConfig.SetupGet(x => x.UnitOfMeasurement).Returns(EnumSensorUoM.None);
         sensorConfig.SetupGet(x => x.HassDeviceClassName).Returns("enum");
 

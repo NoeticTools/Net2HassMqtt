@@ -16,35 +16,59 @@ internal sealed class HassDomainsSourceFileGenerator : ISourceFileGenerator<Devi
 
 
         namespace NoeticTools.Net2HassMqtt.Configuration;
-
+        
+        /// <summary>
+        ///   A Home Assistant domain.
+        /// </summary>
+        /// <seealso href="https://www.home-assistant.io/integrations/homeassistant/#device-class">Home Assistant Domains</seealso>
+        [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+        public sealed class HassDomain
+        {
+            internal HassDomain(string hassDomainName, string domainName)
+            {
+                HassDomainName = hassDomainName;
+                DomainName = domainName;
+            }
+            
+            /// <summary>
+            /// The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
+            /// </summary>
+            public string HassDomainName { get; }
+            
+            /// <summary>
+            /// The UpperCamel case version of the snake_case Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
+            /// </summary>
+            public string DomainName { get; }
+        }
+        
         /// <summary>
         ///   The Home Assistant <a href"https://www.home-assistant.io/integrations/homeassistant/#device-class">domains</a>.
         /// </summary>
         [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
         public sealed class HassDomains
         {
-            public HassDomains(string hassDomainName, string domainName)
-            {
-                HassDomainName = hassDomainName;
-                DomainName = domainName;
-            }
+            //public HassDomains(string hassDomainName, string domainName)
+            //{
+            //    HassDomainName = hassDomainName;
+            //    DomainName = domainName;
+            //}
         
-            /// <summary>
-            /// The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
-            /// </summary>
-            public string HassDomainName { get; }
+            ///// <summary>
+            ///// The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
+            ///// </summary>
+            //public string HassDomainName { get; }
         
-            /// <summary>
-            /// The UpperCamel case version of the snake_case Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
-            /// </summary>
-            public string DomainName { get; }
+            ///// <summary>
+            ///// The UpperCamel case version of the snake_case Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
+            ///// </summary>
+            //public string DomainName { get; }
 
         {{~ for domainInfo in Domains ~}}
-            public static HassDomains {{domainInfo.DomainName}} => new HassDomains("{{domainInfo.HassDomainName}}", "{{domainInfo.DomainName}}");
+            public static HassDomain {{domainInfo.DomainName}} => new HassDomain("{{domainInfo.HassDomainName}}", "{{domainInfo.DomainName}}");
 
         {{ end ~}}
         
-            public static HassDomains GetByHassDomainName(string domainName)
+            public static HassDomain GetByHassDomainName(string domainName)
             {
                 switch(domainName)
                 {
