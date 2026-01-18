@@ -43,6 +43,21 @@ internal sealed class HassDomainsSourceFileGenerator : ISourceFileGenerator<Devi
             public static HassDomains {{domainInfo.DomainName}} => new HassDomains("{{domainInfo.HassDomainName}}", "{{domainInfo.DomainName}}");
 
         {{ end ~}}
+        
+            public static HassDomains GetByHassDomainName(string domainName)
+            {
+                switch(domainName)
+                {
+        {{~ for domainInfo in Domains ~}}
+                    case "{{domainInfo.DomainName}}":
+                        return HassDomains.{{domainInfo.DomainName}};
+                        break;
+                    
+        {{ end ~}}
+                    default:
+                        throw new KeyNotFoundException($"HassDomain with DomainName '{{domainName}}' not found.");
+                }
+            }
         }
         """;
 
