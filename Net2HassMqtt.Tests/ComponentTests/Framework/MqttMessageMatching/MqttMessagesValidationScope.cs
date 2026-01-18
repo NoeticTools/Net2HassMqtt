@@ -6,17 +6,6 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
 {
-    public MqttMessagesValidationScope ValidateNonePublished()
-    {
-        if (messages.Count > 0)
-        {
-            var errorMessage = new StringBuilder($"Expected no messages but {messages.Count} messages detected.\n");
-            AppendDetectedMessages(errorMessage, messages);
-            Assert.Fail(errorMessage.ToString());
-        }
-        return this;
-    }
-
     public MqttMessagesValidationScope MatchSequence(List<IMessageMatcher> expectedMessageSequence)
     {
         var expectedQueue = new Queue<IMessageMatcher>(expectedMessageSequence);
@@ -37,12 +26,12 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
             var errorMsg = expected.Match(actualMessages);
             if (errorMsg.Length > 0)
             {
-                Assert.Fail( 
-                    $"""
-                     Actual message {startingActualMessagesCount-actualMessages.Count+1} does not match expected message {startingMatchersCount-expectedQueue.Count}.
-                     {errorMsg}
+                Assert.Fail(
+                            $"""
+                             Actual message {startingActualMessagesCount - actualMessages.Count + 1} does not match expected message {startingMatchersCount - expectedQueue.Count}.
+                             {errorMsg}
 
-                     """);
+                             """);
             }
 
             if (expectedQueue.Count > 0 && actualMessages.Count == 0)
@@ -56,6 +45,18 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         return this;
     }
 
+    public MqttMessagesValidationScope ValidateNonePublished()
+    {
+        if (messages.Count > 0)
+        {
+            var errorMessage = new StringBuilder($"Expected no messages but {messages.Count} messages detected.\n");
+            AppendDetectedMessages(errorMessage, messages);
+            Assert.Fail(errorMessage.ToString());
+        }
+
+        return this;
+    }
+
     private static void AppendDetectedMessages(StringBuilder message, List<MqttApplicationMessage> actualMessages)
     {
         message.Append("Detected messages:\n\n");
@@ -63,6 +64,7 @@ public class MqttMessagesValidationScope(List<MqttApplicationMessage> messages)
         {
             message.Append("  " + MessageMatcher.ToString(actual) + "\n\n");
         }
+
         message.AppendLine();
     }
 }

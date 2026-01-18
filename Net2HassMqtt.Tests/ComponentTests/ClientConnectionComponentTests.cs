@@ -1,5 +1,4 @@
-﻿using FluentDate;
-using Net2HassMqtt.Tests.ComponentTests.Framework;
+﻿using Net2HassMqtt.Tests.ComponentTests.Framework;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests;
@@ -32,7 +31,7 @@ public class ClientConnectionComponentTests : ComponentTestsBase
               .NoSubscriptionsMade();
 
         PublishedMqttMessages.Verify
-                         .ValidateNonePublished();
+                             .ValidateNonePublished();
 
         Assert.That(result, Is.False, "Expected run to fail.");
     }
@@ -43,17 +42,17 @@ public class ClientConnectionComponentTests : ComponentTestsBase
         Client.Setup.ConnectsAfterDelay();
 
         var result = await Run();
-        
+
         Client.Verify
               .WasStartedOnce()
               .SubscriptionsCountIs(1);
 
         PublishedMqttMessages.Verify
-                         .MatchSequence([
-                             MqttMessageMatchers.BridgeState.Online,
-                             MqttMessageMatchers.BatteryChargingEntity.Config,
-                             MqttMessageMatchers.Any() // todo - timing hack
-                         ]);
+                             .MatchSequence([
+                                 MqttMessageMatchers.BridgeState.Online,
+                                 MqttMessageMatchers.BatteryChargingEntity.Config,
+                                 MqttMessageMatchers.Any() // todo - timing hack
+                             ]);
 
         Assert.That(result, Is.True, "Expected run to pass.");
     }

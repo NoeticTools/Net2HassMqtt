@@ -8,22 +8,17 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 
 public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
 {
-    private int _connectedEventCalledCount = 0;
-    private int _disconnectedEventCalledCount = 0;
+    private int _connectedEventCalledCount;
+    private int _disconnectedEventCalledCount;
 
     public void ConnectsAfterDelay()
     {
-        IsConnected (false, false, false, true);
+        IsConnected(false, false, false, true);
     }
 
     public void ConnectsImmediately()
     {
-        IsConnected (true);
-    }
-
-    public void NeverConnects()
-    {
-        IsConnected (false);
+        IsConnected(true);
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
@@ -71,6 +66,11 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
         }
     }
 
+    public void NeverConnects()
+    {
+        IsConnected(false);
+    }
+
     private void OnIsConnected()
     {
         if (_connectedEventCalledCount++ != 1)
@@ -80,7 +80,7 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
 
         _connectedEventCalledCount = 10;
         Task.Run(() => managedMqttClient.RaiseAsync(c => c.ConnectedAsync += null,
-                                                    (new MqttClientConnectedEventArgs(new MqttClientConnectResult())))
+                                                    new MqttClientConnectedEventArgs(new MqttClientConnectResult()))
                 ).Wait(1.Seconds());
     }
 
@@ -90,12 +90,12 @@ public class ClientSetupScope(Mock<IManagedMqttClient> managedMqttClient)
         {
             _disconnectedEventCalledCount = 10;
             Task.Run(() => managedMqttClient.RaiseAsync(c => c.DisconnectedAsync += null,
-                                                        (new MqttClientDisconnectedEventArgs(true, 
-                                                                                             new MqttClientConnectResult(), 
-                                                                                             MqttClientDisconnectReason.UnspecifiedError,
-                                                                                             "Test disconnection", 
-                                                                                             [], 
-                                                                                             null)))
+                                                        new MqttClientDisconnectedEventArgs(true,
+                                                                                            new MqttClientConnectResult(),
+                                                                                            MqttClientDisconnectReason.UnspecifiedError,
+                                                                                            "Test disconnection",
+                                                                                            [],
+                                                                                            null))
                     ).Wait(1.Seconds());
         }
     }

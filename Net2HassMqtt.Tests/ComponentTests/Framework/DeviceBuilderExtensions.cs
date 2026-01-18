@@ -1,11 +1,5 @@
 ﻿using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -19,13 +13,6 @@ internal static class DeviceBuilderExtensions
                                                                      .WithFriendlyName("Battery Charging Status")
                                                                      .WithNodeId("batt1_charging"));
     }
-    public static void SetupDoorIsOpenBinarySensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
-    {
-        deviceBuilder.HasDoorBinarySensor(config => config.OnModel(model)
-                                                                     .WithStatusProperty(nameof(ComponentTestModel.DoorIsOpen))
-                                                                     .WithFriendlyName("Door Open Status")
-                                                                     .WithNodeId("door_is_open"));
-    }
 
     public static void SetupCurrentStateEnumSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
     {
@@ -33,5 +20,13 @@ internal static class DeviceBuilderExtensions
                                                     .WithStatusProperty(nameof(ComponentTestModel.CurrentState))
                                                     .WithFriendlyName("Current State")
                                                     .WithNodeId("current_state"));
+    }
+
+    public static void SetupDoorIsOpenBinarySensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
+    {
+        deviceBuilder.HasDoorBinarySensor(config => config.OnModel(model)
+                                                          .WithStatusProperty(nameof(ComponentTestModel.DoorIsOpen))
+                                                          .WithFriendlyName("Door Open Status")
+                                                          .WithNodeId("door_is_open"));
     }
 }

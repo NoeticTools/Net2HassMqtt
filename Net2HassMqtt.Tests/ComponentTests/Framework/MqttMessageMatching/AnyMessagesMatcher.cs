@@ -11,6 +11,7 @@ public class AnyMessagesMatcher(int maximumNumberOfMessages) : IMessageMatcher
         {
             return "Expected any message but no message detected. Must be one or more messages.";
         }
+
         var removeCount = Math.Min(maximumNumberOfMessages, actualMessages.Count);
         actualMessages.RemoveRange(0, removeCount);
         return "";

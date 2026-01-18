@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Reflection;
 
 
@@ -7,7 +6,26 @@ namespace Net2HassMqtt.Tests.UnitTests.Framework;
 
 internal class PropertyInfoStub(string name, Type propertyType, bool canRead) : PropertyInfo
 {
+    public override PropertyAttributes Attributes { get; }
+
+    public override bool CanRead { get; } = canRead;
+
+    public override bool CanWrite { get; }
+
+    public override Type? DeclaringType { get; }
+
+    public override string Name { get; } = name;
+
+    public override Type PropertyType { get; } = propertyType;
+
+    public override Type? ReflectedType { get; }
+
     public object? StubedValue { get; set; }
+
+    public override MethodInfo[] GetAccessors(bool nonPublic)
+    {
+        throw new NotImplementedException();
+    }
 
     public override object[] GetCustomAttributes(bool inherit)
     {
@@ -15,22 +33,6 @@ internal class PropertyInfoStub(string name, Type propertyType, bool canRead) : 
     }
 
     public override object[] GetCustomAttributes(Type attributeType, bool inherit)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override bool IsDefined(Type attributeType, bool inherit)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override Type? DeclaringType { get; }
-
-    public override string Name { get; } = name;
-
-    public override Type? ReflectedType { get; }
-
-    public override MethodInfo[] GetAccessors(bool nonPublic)
     {
         throw new NotImplementedException();
     }
@@ -55,16 +57,13 @@ internal class PropertyInfoStub(string name, Type propertyType, bool canRead) : 
         return StubedValue;
     }
 
+    public override bool IsDefined(Type attributeType, bool inherit)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void SetValue(object? obj, object? value, BindingFlags invokeAttr, Binder? binder, object?[]? index, CultureInfo? culture)
     {
         StubedValue = value;
     }
-
-    public override PropertyAttributes Attributes { get; }
-
-    public override bool CanRead { get; } = canRead;
-
-    public override bool CanWrite { get; }
-
-    public override Type PropertyType { get; } = propertyType;
 }

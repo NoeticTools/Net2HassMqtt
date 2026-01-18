@@ -20,7 +20,7 @@ public class EnumSensorConfigTests
         _target = new EnumSensorConfig(SensorDeviceClass.Enum)
         {
             Model = model,
-            StatusPropertyName = nameof(ComponentTestModel.CurrentState),
+            StatusPropertyName = nameof(ComponentTestModel.CurrentState)
         };
         ((IEntityConfig)_target).SetEntityId("entity_id");
         ((IEntityConfig)_target).EntityFriendlyName = "A friendly name";
@@ -31,7 +31,8 @@ public class EnumSensorConfigTests
     {
         _target.Validate();
 
-        Assert.That(_target.UnitOfMeasurement, Is.Null, "En enum sensor's MQTT unit_of_measurement must be null. See https://www.home-assistant.io/integrations/sensor.mqtt/");
+        Assert.That(_target.UnitOfMeasurement, Is.Null,
+                    "En enum sensor's MQTT unit_of_measurement must be null. See https://www.home-assistant.io/integrations/sensor.mqtt/");
         Assert.That(_target.Options, Has.Count.EqualTo(3));
         Assert.That(_target.Options[2], Is.EqualTo("StateThree"));
     }

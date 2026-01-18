@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using Net2HassMqtt.Tests.UnitTests.Framework;
 using NoeticTools.Net2HassMqtt.Configuration;
@@ -14,11 +12,11 @@ namespace Net2HassMqtt.Tests.UnitTests.Entities.Framework.StatusProperty;
 [TestFixture]
 public class StatusPropertyReaderTests
 {
-    private Mock<IPropertyInfoReader> _propertyInfoReader;
+    private const string TimeSpanPropertyName = "TestProperty";
     private Mock<ILogger> _logger;
     private TestModel _model;
+    private Mock<IPropertyInfoReader> _propertyInfoReader;
     private PropertyInfoStub _propertyInfoStub;
-    private const string TimeSpanPropertyName = "TestProperty";
 
     [SetUp]
     public void Setup()
@@ -32,30 +30,14 @@ public class StatusPropertyReaderTests
     }
 
     [TestCase(0, "0")]
-    [TestCase(0.123, "0.123")]
-    [TestCase(7, "7")]
-    [TestCase(5000, "5000")]
-    [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInSeconds(double seconds, string expected)
-    {
-        _propertyInfoStub.StubedValue = TimeSpan.FromSeconds(seconds);
-        var target = GetStatusPropertyReader(HassUoMs.Seconds);
-        Assert.That(target.CanRead, Is.True);
-
-        var result = target.Read();
-
-        Assert.That(result, Is.EqualTo(expected));
-    }
-
-    [TestCase(0, "0")]
     [TestCase(0.5, "0.5")]
     [TestCase(7, "7")]
     [TestCase(5000, "5000")]
     [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInMinutes(double minutes, string expected)
+    public void CanReadTimeSpanPropertyInDays(double days, string expected)
     {
-        _propertyInfoStub.StubedValue = TimeSpan.FromMinutes(minutes);
-        RunTest(expected, HassUoMs.Minutes);
+        _propertyInfoStub.StubedValue = TimeSpan.FromDays(days);
+        RunTest(expected, HassUoMs.Days);
     }
 
     [TestCase(0, "0")]
@@ -74,10 +56,38 @@ public class StatusPropertyReaderTests
     [TestCase(7, "7")]
     [TestCase(5000, "5000")]
     [TestCase(-7, "-7")]
-    public void CanReadTimeSpanPropertyInDays(double days, string expected)
+    public void CanReadTimeSpanPropertyInMinutes(double minutes, string expected)
     {
-        _propertyInfoStub.StubedValue = TimeSpan.FromDays(days);
-        RunTest(expected, HassUoMs.Days);
+        _propertyInfoStub.StubedValue = TimeSpan.FromMinutes(minutes);
+        RunTest(expected, HassUoMs.Minutes);
+    }
+
+    [TestCase(0, "0")]
+    [TestCase(0.123, "0.123")]
+    [TestCase(7, "7")]
+    [TestCase(5000, "5000")]
+    [TestCase(-7, "-7")]
+    public void CanReadTimeSpanPropertyInSeconds(double seconds, string expected)
+    {
+        _propertyInfoStub.StubedValue = TimeSpan.FromSeconds(seconds);
+        var target = GetStatusPropertyReader(HassUoMs.Seconds);
+        Assert.That(target.CanRead, Is.True);
+
+        var result = target.Read();
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    private StatusPropertyReader GetStatusPropertyReader(string hassUoM)
+    {
+        var target = new StatusPropertyReader(_model,
+                                              TimeSpanPropertyName,
+                                              HassDomains.Sensor.HassDomainName,
+                                              SensorDeviceClass.Duration.HassDeviceClassName,
+                                              hassUoM,
+                                              _propertyInfoReader.Object,
+                                              _logger.Object);
+        return target;
     }
 
     private void RunTest(string expected, string hassUoM)
@@ -88,17 +98,5 @@ public class StatusPropertyReaderTests
         var result = target.Read();
 
         Assert.That(result, Is.EqualTo(expected));
-    }
-
-    private StatusPropertyReader GetStatusPropertyReader(string hassUoM)
-    {
-        var target = new StatusPropertyReader(_model, 
-                                              TimeSpanPropertyName,
-                                              HassDomains.Sensor.HassDomainName,
-                                              SensorDeviceClass.Duration.HassDeviceClassName,
-                                              hassUoM,
-                                              _propertyInfoReader.Object,
-                                              _logger.Object);
-        return target;
     }
 }
