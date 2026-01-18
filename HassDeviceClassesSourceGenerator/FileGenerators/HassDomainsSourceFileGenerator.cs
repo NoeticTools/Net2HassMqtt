@@ -20,6 +20,9 @@ internal sealed class HassDomainsSourceFileGenerator : ISourceFileGenerator<Devi
         /// <summary>
         ///   A Home Assistant domain.
         /// </summary>
+        /// <remarks>
+        ///   Obtain a HassDomain instance from the <see cref="HassDomains"/> class.
+        /// </remarks>
         /// <seealso href="https://www.home-assistant.io/integrations/homeassistant/#device-class">Home Assistant Domains</seealso>
         [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
         public sealed class HassDomain
@@ -47,22 +50,6 @@ internal sealed class HassDomainsSourceFileGenerator : ISourceFileGenerator<Devi
         [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
         public sealed class HassDomains
         {
-            //public HassDomains(string hassDomainName, string domainName)
-            //{
-            //    HassDomainName = hassDomainName;
-            //    DomainName = domainName;
-            //}
-        
-            ///// <summary>
-            ///// The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
-            ///// </summary>
-            //public string HassDomainName { get; }
-        
-            ///// <summary>
-            ///// The UpperCamel case version of the snake_case Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes) and is in lizard_case.
-            ///// </summary>
-            //public string DomainName { get; }
-
         {{~ for domainInfo in Domains ~}}
             public static HassDomain {{domainInfo.DomainName}} => new HassDomain("{{domainInfo.HassDomainName}}", "{{domainInfo.DomainName}}");
 
