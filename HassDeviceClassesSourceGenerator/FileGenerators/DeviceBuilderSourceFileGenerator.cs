@@ -21,7 +21,7 @@ internal sealed class DeviceBuilderSourceFileGenerator : ISourceFileGenerator<De
 
         namespace NoeticTools.Net2HassMqtt.Configuration.Building;
 
-        [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+        [GeneratedCode("HassTypesSourceGenerator", "0.2.0")]
         public partial class DeviceBuilder
         {
         {{~ for domain in Domains ~}}
@@ -30,7 +30,6 @@ internal sealed class DeviceBuilderSourceFileGenerator : ISourceFileGenerator<De
         {{~
             DeviceClass = deviceClass.DeviceClass
             UoMClass = deviceClass.UoMClassName
-            DomainDeviceClass = ( DomainName | string.append "DeviceClass." | string.append DeviceClass )
             DomainEntityConfigClass = ( DomainName | string.append "Config" )
             EntityBuilderClass = ( DeviceClass | string.append DomainName | string.append "EntityBuilder" )
             EntityConfigClass = ( DeviceClass | string.append DomainName | string.append "Config" )
@@ -74,7 +73,7 @@ internal sealed class DeviceBuilderSourceFileGenerator : ISourceFileGenerator<De
         {{methodDocumentationXml}}
             public DeviceBuilder {{methodName}}(Func<{{EntityBuilderClass}}, {{EntityBuilderClass}}> configureFunc)
             {
-                var entityConfig = new {{EntityConfigClass}}({{DomainDeviceClass}});
+                var entityConfig = new {{EntityConfigClass}}();
                 var entityBuilder = new {{EntityBuilderClass}}(entityConfig);
                 entityConfig = configureFunc(entityBuilder).EntityConfig;
                 entityConfig.Validate();

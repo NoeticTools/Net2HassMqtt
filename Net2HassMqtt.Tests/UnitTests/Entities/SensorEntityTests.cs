@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
@@ -6,12 +7,6 @@ using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 using NoeticTools.Net2HassMqtt.Entities;
 using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Net2HassMqtt.Tests.UnitTests.Entities;
@@ -32,7 +27,7 @@ public class SensorEntityTests
         sensorConfig.SetupGet(x => x.Model).Returns(model);
         sensorConfig.SetupGet(x => x.StatusPropertyName).Returns(statusPropertyName);
         sensorConfig.SetupGet(x => x.Attributes).Returns([]);
-        sensorConfig.SetupGet(x => x.Domain).Returns(new HassDomains("hass_domain_name", "domain_name"));
+        sensorConfig.SetupGet(x => x.Domain).Returns(new HassDomain("hass_domain_name", "domain_name"));
         sensorConfig.SetupGet(x => x.UnitOfMeasurement).Returns(EnumSensorUoM.None);
         sensorConfig.SetupGet(x => x.HassDeviceClassName).Returns("enum");
 
@@ -42,11 +37,11 @@ public class SensorEntityTests
                           .Returns(model.GetType().GetProperty(statusPropertyName, BindingFlags.Instance | BindingFlags.Public));
         var logger = new Mock<ILogger>();
 
-        var entity = new SensorEntity(sensorConfig.Object, 
-                                      "entity_id", 
-                                      "node_id", 
-                                      client.Object, 
-                                      propertyInfoReader.Object, 
+        var entity = new SensorEntity(sensorConfig.Object,
+                                      "entity_id",
+                                      "node_id",
+                                      client.Object,
+                                      propertyInfoReader.Object,
                                       logger.Object);
 
         Assert.IsFalse(entity.CanCommand);

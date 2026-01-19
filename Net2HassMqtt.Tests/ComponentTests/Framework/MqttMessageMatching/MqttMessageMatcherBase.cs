@@ -9,22 +9,22 @@ public abstract class MqttMessageMatcherBase(
     string domainName,
     string deviceClass)
 {
-    protected string StateTopic => $"{clientId}/{deviceId}/{nodeId}";
-
     public virtual MessageMatcher Config =>
         GetConfigurationMessageWithoutOptions();
 
+    protected string StateTopic => $"{clientId}/{deviceId}/{nodeId}";
+
     protected MessageMatcher GetConfigurationMessageWithoutOptions(string? options = null)
     {
-        options = options == null ? 
-            """
-            
-              "unit_of_measurement": "None",
-            """ : 
-            $"""
-            
-              "options": {options},
-            """;
+        options = options == null
+            ? """
+
+                "unit_of_measurement": "None",
+              """
+            : $"""
+
+                 "options": {options},
+               """;
 
         return new MessageMatcher($"homeassistant/{domainName}/{deviceId}/{deviceId}_{nodeId}/config",
                                   $$$"""

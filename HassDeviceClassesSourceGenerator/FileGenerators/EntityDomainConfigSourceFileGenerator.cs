@@ -81,11 +81,12 @@ internal sealed class EntityDomainConfigSourceFileGenerator : ISourceFileGenerat
             DeviceClass = deviceClass.DeviceClass
             UoMClass = deviceClass.UoMClassName
             DomainDeviceConfigClass = ( DeviceClass | string.append DomainName | string.append "Config" )
+            DomainDeviceClass = ( DomainName | string.append "DeviceClass." | string.append DeviceClass )
         }}
         public sealed partial class {{DomainDeviceConfigClass}} : {{DomainName}}Config
         {
-            internal {{DomainDeviceConfigClass}}({{DomainName}}DeviceClass deviceClass)
-                : base(deviceClass)
+            internal {{DomainDeviceConfigClass}}()
+                : base({{DomainDeviceClass}})
             {
             }
         }

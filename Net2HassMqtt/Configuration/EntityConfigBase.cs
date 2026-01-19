@@ -8,7 +8,7 @@ namespace NoeticTools.Net2HassMqtt.Configuration;
 
 public abstract class EntityConfigBase : IEntityConfig
 {
-    protected EntityConfigBase(HassDomains domain, string? hassDeviceClass)
+    protected EntityConfigBase(HassDomain domain, string? hassDeviceClass)
     {
         Domain = domain;
         MqttTopicComponent = domain.HassDomainName;
@@ -33,7 +33,7 @@ public abstract class EntityConfigBase : IEntityConfig
     ///     The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes).
     ///     Provides both the HomeAssistant/MQTT snake_case version and the dotnet UpperCamelCase version.
     /// </summary>
-    public HassDomains Domain { get; }
+    public HassDomain Domain { get; }
 
     /// <summary>
     ///     Home Assistant device class name.

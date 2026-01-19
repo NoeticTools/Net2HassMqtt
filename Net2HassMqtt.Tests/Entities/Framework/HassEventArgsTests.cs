@@ -1,7 +1,4 @@
-﻿using NoeticTools.Net2HassMqtt.Entities.Framework;
-
-
-namespace Net2HassMqtt.Tests.Entities.Framework;
+﻿namespace Net2HassMqtt.Tests.Entities.Framework;
 
 public enum TestEventTypes1
 {

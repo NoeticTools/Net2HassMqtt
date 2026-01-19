@@ -21,7 +21,7 @@ internal sealed class HassDeviceClassSourceFileGenerator : ISourceFileGenerator<
                                            ///     The Home Assistant (HASS) "{{HassDomainName}}" plaform device class.
                                            /// </summary>
                                            /// <seealso cref="https://www.home-assistant.io/integrations/homeassistant/#device-class" />
-                                           [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+                                           [GeneratedCode("HassTypesSourceGenerator", "0.2.0")]
                                            public sealed class {{ClassName}}
                                            {
                                                public string HassDeviceClassName { get; }

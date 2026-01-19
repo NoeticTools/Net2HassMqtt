@@ -4,11 +4,11 @@ public class TestSensorsMessageMqttMatchers(string clientId, string deviceFriend
 {
     public BatteryChargingEntityMqttMessages BatteryChargingEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
 
-    public DoorIsOpenEntityMqttMessages DoorIsOpenEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
+    public BridgeStateMessages BridgeState { get; } = new();
 
     public CurrentStateEntityMqttMessages CurrentStateEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
 
-    public BridgeStateMessages BridgeState { get; } = new();
+    public DoorIsOpenEntityMqttMessages DoorIsOpenEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
 
     public IMessageMatcher Any(int maximumNumberOfMessages = int.MaxValue)
     {

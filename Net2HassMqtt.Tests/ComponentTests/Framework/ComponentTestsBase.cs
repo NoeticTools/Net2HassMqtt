@@ -1,4 +1,5 @@
-﻿using FluentDate;
+﻿using System.Diagnostics;
+using FluentDate;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using MQTTnet;
@@ -6,12 +7,11 @@ using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 using Net2HassMqtt.Tests.ComponentTests.Framework.Client;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
-using System.Diagnostics;
-using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
-using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -20,12 +20,12 @@ public class ComponentTestsBase
 {
     private const string DeviceFriendlyName = "Test Device 1";
     private const string DeviceId = "test_device_01";
-    private Mock<IManagedMqttClient> _managedMqttClient = null!;
-    protected ComponentTestModel Model = null!;
-    private Mock<IMqttClient> _mqttClient = null!;
-    protected DeviceBuilder DeviceBuilder = null!;
     private IConfigurationRoot _appConfig = null!;
+    private Mock<IManagedMqttClient> _managedMqttClient = null!;
+    private Mock<IMqttClient> _mqttClient = null!;
     private List<MqttApplicationMessage> _publishedMessages = null!;
+    protected ComponentTestModel Model = null!;
+    protected DeviceBuilder DeviceBuilder = null!;
 
     protected void BaseSetup()
     {
@@ -49,7 +49,7 @@ public class ComponentTestsBase
 
         _publishedMessages = [];
         _mqttClient.Setup(x => x.PublishAsync(It.IsAny<MqttApplicationMessage>(), It.IsAny<CancellationToken>()))
-                  .Callback<MqttApplicationMessage, CancellationToken>((message, _) => _publishedMessages.Add(message));
+                   .Callback<MqttApplicationMessage, CancellationToken>((message, _) => _publishedMessages.Add(message));
 
         Client = new ClientScope(_managedMqttClient);
         PublishedMqttMessages = new MqttMessagesScope(_publishedMessages);
@@ -57,7 +57,7 @@ public class ComponentTestsBase
 
     protected TestSensorsMessageMqttMatchers MqttMessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
 
-    internal MqttMessagesScope PublishedMqttMessages  { get; private set; } = null!;
+    internal MqttMessagesScope PublishedMqttMessages { get; private set; } = null!;
 
     internal ClientScope Client { get; private set; } = null!;
 
@@ -93,7 +93,7 @@ public class ComponentTestsBase
                      .WithMqttOptions(mqttOptions)
                      .HasDevice(DeviceBuilder)
                      .Build(_managedMqttClient.Object);
-        
+
         bool result;
         try
         {
@@ -101,6 +101,7 @@ public class ComponentTestsBase
             {
                 return false;
             }
+
             await Task.Delay(5.Milliseconds()); // todo - timing hack
 
             result = await RunApplication(runLoopCount, loopAction);
@@ -123,7 +124,7 @@ public class ComponentTestsBase
 
     protected void BaseTearDown()
     {
-        Task.Delay(10.Milliseconds()).Wait();   // todo: code smell, required to avoid intermittency in number of messages received
+        Task.Delay(10.Milliseconds()).Wait(); // todo: code smell, required to avoid intermittency in number of messages received
         // fix in separate issue
     }
 }
