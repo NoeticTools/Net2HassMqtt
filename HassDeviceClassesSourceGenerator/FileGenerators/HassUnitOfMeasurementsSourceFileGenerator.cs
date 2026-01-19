@@ -21,7 +21,7 @@ internal sealed class HassUnitOfMeasurementsSourceFileGenerator : ISourceFileGen
                                            /// <summary>
                                            ///     Home Assitant units of measurement.
                                            /// </summary>
-                                           [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+                                           [GeneratedCode("HassTypesSourceGenerator", "0.2.0")]
                                            public partial class HassUoMs
                                            {
                                            {{~ for unitOfMeasurement in HassUnitsOfMeasurement ~}}

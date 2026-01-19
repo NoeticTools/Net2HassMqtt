@@ -24,7 +24,7 @@ internal sealed class HassDomainsSourceFileGenerator : ISourceFileGenerator<Devi
         ///   Obtain a HassDomain instance from the <see cref="HassDomains"/> class.
         /// </remarks>
         /// <seealso href="https://www.home-assistant.io/integrations/homeassistant/#device-class">Home Assistant Domains</seealso>
-        [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+        [GeneratedCode("HassTypesSourceGenerator", "0.2.0")]
         public sealed class HassDomain
         {
             internal HassDomain(string hassDomainName, string domainName)
@@ -47,7 +47,7 @@ internal sealed class HassDomainsSourceFileGenerator : ISourceFileGenerator<Devi
         /// <summary>
         ///   The Home Assistant <a href"https://www.home-assistant.io/integrations/homeassistant/#device-class">domains</a>.
         /// </summary>
-        [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+        [GeneratedCode("HassTypesSourceGenerator", "0.2.0")]
         public sealed class HassDomains
         {
         {{~ for domainInfo in Domains ~}}

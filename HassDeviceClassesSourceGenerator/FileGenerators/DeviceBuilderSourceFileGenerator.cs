@@ -21,7 +21,7 @@ internal sealed class DeviceBuilderSourceFileGenerator : ISourceFileGenerator<De
 
         namespace NoeticTools.Net2HassMqtt.Configuration.Building;
 
-        [GeneratedCode("HassTypesSourceGenerator", "0.1.0")]
+        [GeneratedCode("HassTypesSourceGenerator", "0.2.0")]
         public partial class DeviceBuilder
         {
         {{~ for domain in Domains ~}}
