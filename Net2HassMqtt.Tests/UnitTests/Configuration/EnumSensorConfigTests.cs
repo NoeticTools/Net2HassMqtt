@@ -17,7 +17,7 @@ public class EnumSensorConfigTests
         {
             CurrentState = ComponentTestModel.TestStates.StateTwo
         };
-        _target = new EnumSensorConfig(SensorDeviceClass.Enum)
+        _target = new EnumSensorConfig
         {
             Model = model,
             StatusPropertyName = nameof(ComponentTestModel.CurrentState)
