@@ -6,7 +6,7 @@ public class TestSensorsMessageMqttMatchers(string clientId, string deviceFriend
 
     public BridgeStateMessages BridgeState { get; } = new();
 
-    public CurrentStateEntityMqttMessages CurrentStateEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
+    public EnumEntityMqttMessages EnumEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
 
     public DoorIsOpenEntityMqttMessages DoorIsOpenEntity { get; } = new(clientId, deviceId, deviceFriendlyName);
 
