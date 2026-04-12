@@ -37,7 +37,7 @@
         <WarningsAsErrors>$(WarningsAsErrors);NU1504</WarningsAsErrors>
       </PropertyGroup>
       <ItemGroup>
-        <PackageReference Include="NoeticTools.Git2SemVer.MSBuild" Version="1.*" Condition="'$(Git2SemVer_NuGetLoad_Disable)' != 'true'" PrivateAssets="all" />
+        <PackageReference Include="NoeticTools.Git2SemVer.MSBuild" Version="3.*" Condition="'$(Git2SemVer_NuGetLoad_Disable)' != 'true'" PrivateAssets="all" />
       </ItemGroup>
     </When>
   </Choose>
