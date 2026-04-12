@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Net2HassMqtt\Net2HassMqtt.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="1.0.0" />
-  </ItemGroup>
-
 </Project>
