@@ -6,16 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;NU1803</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;NU1803</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Update="NoeticTools.Git2SemVer.MSBuild" Version="1.0.0" />
-  </ItemGroup>
-
 </Project>
