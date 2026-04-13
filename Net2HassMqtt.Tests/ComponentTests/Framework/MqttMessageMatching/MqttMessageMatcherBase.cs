@@ -7,9 +7,10 @@ public abstract class MqttMessageMatcherBase(
     string nodeId,
     string nodeName,
     string domainName,
-    string deviceClass)
+    string deviceClass,
+    string? unitOfMeasurementOrNone = "None")
 {
-    public virtual MessageMatcher Config => GetConfigurationMessage(null, "None");
+    public virtual MessageMatcher Config => GetConfigurationMessage(null, unitOfMeasurementOrNone);
 
     protected string StateTopic => $"{clientId}/{deviceId}/{nodeId}";
 
@@ -22,11 +23,11 @@ public abstract class MqttMessageMatcherBase(
                  "options": {options},
                """;
 
-        unitOfMeasurement = unitOfMeasurement == null
+        unitOfMeasurement = string.IsNullOrEmpty(unitOfMeasurementOrNone)
             ? ""
             : $"""
                
-                 "unit_of_measurement": "{unitOfMeasurement}",
+                 "unit_of_measurement": "{unitOfMeasurementOrNone}",
                """;
         //options = options == null
         //    ? """

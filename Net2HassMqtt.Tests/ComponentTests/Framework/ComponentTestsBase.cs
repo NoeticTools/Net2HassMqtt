@@ -8,7 +8,6 @@ using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 using Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
-using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;

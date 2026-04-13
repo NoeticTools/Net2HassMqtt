@@ -6,16 +6,10 @@ using NoeticTools.Net2HassMqtt.Mqtt.Topics;
 
 namespace NoeticTools.Net2HassMqtt.Configuration;
 
-public abstract class EntityConfigBase : IEntityConfig
+public abstract class EntityConfigBase(HassDomain domain, string? hassDeviceClass) : IEntityConfig
 {
-    protected EntityConfigBase(HassDomain domain, string? hassDeviceClass)
-    {
-        Domain = domain;
-        MqttTopicComponent = domain.HassDomainName;
-        HassDeviceClassName = hassDeviceClass;
-        // ReSharper disable once VirtualMemberCallInConstructor
-        //CustomInit();
-    }
+    // ReSharper disable once VirtualMemberCallInConstructor
+    //CustomInit();
 
     protected virtual void CustomInit()
     {}
@@ -33,12 +27,12 @@ public abstract class EntityConfigBase : IEntityConfig
     ///     The Home Assistant entity domain (e.g: switch). This is only used for entities (not used by attributes).
     ///     Provides both the HomeAssistant/MQTT snake_case version and the dotnet UpperCamelCase version.
     /// </summary>
-    public HassDomain Domain { get; }
+    public HassDomain Domain { get; } = domain;
 
     /// <summary>
     ///     Home Assistant device class name.
     /// </summary>
-    public string? HassDeviceClassName { get; protected init; }
+    public string? HassDeviceClassName { get; protected init; } = hassDeviceClass;
 
     internal EntityCategory EntityCategory { get; set; } = EntityCategory.None;
 
@@ -115,7 +109,7 @@ public abstract class EntityConfigBase : IEntityConfig
     /// <summary>
     ///     The entity's Home Assistant domain (and MQTT component topic) such as 'switch' or 'sensor'.
     /// </summary>
-    public string MqttTopicComponent { get; internal set; }
+    public string MqttTopicComponent { get; internal set; } = domain.HassDomainName;
 
     /// <summary>
     ///     Human friendly name for entity name in HASS.

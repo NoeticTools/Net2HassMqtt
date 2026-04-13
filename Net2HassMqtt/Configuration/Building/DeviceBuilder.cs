@@ -1,4 +1,7 @@
-﻿namespace NoeticTools.Net2HassMqtt.Configuration.Building;
+﻿using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
+
+
+namespace NoeticTools.Net2HassMqtt.Configuration.Building;
 
 public sealed partial class DeviceBuilder : IEntityUniqueIdBuilder
 {

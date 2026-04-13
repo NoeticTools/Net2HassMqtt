@@ -71,7 +71,7 @@ public sealed class MessageMatcher(string topic, string expectedPayload) : IMess
         return -1; // Strings are identical
     }
 
-    private static (string fragment, int diffFromLeft) GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft = 30, int charactersToRight = 30)
+    private static (string fragment, int diffFromLeft) GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft = 30, int charactersToRight = 40)
     {
         charactersToLeft = Math.Min(charactersToLeft, firstDifferenceIndex);
         charactersToRight = Math.Min(charactersToRight, payload.Length - firstDifferenceIndex);

@@ -1,4 +1,4 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
+﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.EntityMessages;
 
 public sealed class DoorIsOpenEntityMqttMessages(string clientId, string deviceId, string deviceFriendlyName)
     : BinarySensorEntityMessagesBase(clientId, deviceId, deviceFriendlyName,

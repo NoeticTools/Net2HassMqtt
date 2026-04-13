@@ -1,18 +1,21 @@
 ﻿using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
+using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Framework;
 
 
-namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.EntityMessages;
 
-public sealed class TimestampEntityMqttMessages(string clientId, 
-                                                string deviceId,
-                                                string deviceFriendlyName,
-                                                string nodeId,
-                                                string nodeName,
-                                                string domainName,
-                                                string deviceClass)
+public sealed class SensorEntityMqttMessages(
+    string clientId,
+    string deviceId,
+    string deviceFriendlyName,
+    string nodeId,
+    string nodeName,
+    string deviceClass,
+    string unitOfMeasurementOrNone)
     : MqttMessageMatcherBase(clientId, deviceId, deviceFriendlyName, 
-                             nodeId, nodeName, domainName, deviceClass)
+                             nodeId, nodeName, HassDomains.Sensor.HassDomainName, 
+                             deviceClass, unitOfMeasurementOrNone)
 {
     public override MessageMatcher Config =>
         GetConfigurationMessage();
@@ -29,13 +32,24 @@ public sealed class TimestampEntityMqttMessages(string clientId,
                                     """);
     }
 
-    public IMessageMatcher SendsState(int timestamp)
+    public IMessageMatcher SendsState(TimeSpan timespan)
     {
         return new MessageMatcher($"{StateTopic}",
                                   $$"""
                                     {
                                       "attributes": {},
-                                      "state": "{{timestamp}}"
+                                      "state": "{{timespan:o}}"
+                                    }
+                                    """);
+    }
+
+    public IMessageMatcher SendsState(int timespan)
+    {
+        return new MessageMatcher($"{StateTopic}",
+                                  $$"""
+                                    {
+                                      "attributes": {},
+                                      "state": "{{timespan}}"
                                     }
                                     """);
     }

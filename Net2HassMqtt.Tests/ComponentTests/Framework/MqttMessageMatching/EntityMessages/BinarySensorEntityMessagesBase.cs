@@ -1,4 +1,4 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
+﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.EntityMessages;
 
 public abstract class BinarySensorEntityMessagesBase(
     string clientId,

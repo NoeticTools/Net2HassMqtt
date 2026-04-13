@@ -1,4 +1,7 @@
-﻿namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
+﻿using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.EntityMessages;
+
+
+namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
 
 public class TestSensorsMessageMqttMatchers(string clientId, string deviceFriendlyName, string deviceId)
 {

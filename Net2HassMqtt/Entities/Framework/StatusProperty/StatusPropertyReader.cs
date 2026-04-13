@@ -141,6 +141,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
 
             return value =>
             {
+                // todo - this assumes that an int duration is always in minutes. Drop this in next major revision.
                 var result = ((TimeSpan)value!).TotalMinutes.ToString(CultureInfo.CurrentCulture);
                 return DefaultReader(result);
             };
@@ -148,7 +149,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
 
         if (ValueHassDomains.Contains(hassDomainName))
         {
-            if (hassDeviceClass == "timestamp")
+            if (hassDeviceClass == SensorDeviceClass.Timestamp.HassDeviceClassName)
             {
                 if (propertyValueType == typeof(int) || propertyValueType == typeof(double))
                 {
@@ -165,7 +166,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
                     };
                 }
             }
-            else if (hassDeviceClass == "enum")
+            else if (hassDeviceClass == SensorDeviceClass.Enum.HassDeviceClassName)
             {
                 if (!propertyValueType.IsEnum)
                 {

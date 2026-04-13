@@ -9,19 +9,12 @@ using Scriban;
 
 namespace HomeAssistantTypesSourceGenerator.Framework;
 
-internal sealed class FileSourceGeneratorContext
+internal sealed class FileSourceGeneratorContext(SourceProductionContext context)
 {
-    private readonly SourceProductionContext _context;
-
-    public FileSourceGeneratorContext(SourceProductionContext context)
-    {
-        _context = context;
-    }
-
     public void AddSource(string filename, string content)
     {
         var sourceFile = new SourceFile(filename, content);
-        _context.AddSource(sourceFile.Filename, SourceText.From(sourceFile.Content, Encoding.UTF8));
+        context.AddSource(sourceFile.Filename, SourceText.From(sourceFile.Content, Encoding.UTF8));
     }
 
     public static string? GetResourceFileContent(string resourceFilename)
@@ -45,7 +38,7 @@ internal sealed class FileSourceGeneratorContext
     {
         var message = $"Generating: {filename}";
         Console.WriteLine(message);
-        _context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.InfoMessage, null, message));
+        context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.InfoMessage, null, message));
 
         var template = Template.Parse(contentTemplate);
         if (template.HasErrors)
@@ -53,7 +46,7 @@ internal sealed class FileSourceGeneratorContext
             foreach (var error in template.Messages)
             {
                 Console.Error.WriteLine("Error generating {0}: {1}", filename, error);
-                _context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.ScribanParsingError, null, filename, error));
+                context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.ScribanParsingError, null, filename, error));
             }
 
             return;
