@@ -32,7 +32,7 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 'Debug' option is available in the context menu for the task.
 */
 
-version = "2025.03"
+version = "2025.11"
 
 project {
 
@@ -64,13 +64,13 @@ project {
 
     cleanup {
         baseRule {
-            artifacts(builds = 20, days = 5)
+            artifacts(builds = 20, days = 5, artifactPatterns = "+:**/*")
         }
     }
 }
 
 object Build : BuildType({
-    name = "Build (uses local nuget repo)"
+    name = "Build"
 
     artifactRules = "+:Output/*.nupkg"
     publishArtifacts = PublishMode.SUCCESSFUL
@@ -122,5 +122,9 @@ object Build : BuildType({
     features {
         perfmon {
         }
+    }
+
+    requirements {
+        exists("DotNetCoreSDK10.0_Path")
     }
 })
