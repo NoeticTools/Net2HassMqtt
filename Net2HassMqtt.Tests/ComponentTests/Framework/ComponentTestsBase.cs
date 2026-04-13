@@ -18,8 +18,9 @@ namespace Net2HassMqtt.Tests.ComponentTests.Framework;
 
 public class ComponentTestsBase
 {
-    private const string DeviceFriendlyName = "Test Device 1";
-    private const string DeviceId = "test_device_01";
+    protected const string DeviceFriendlyName = "Test Device 1";
+    protected const string DeviceId = "test_device_01";
+    protected const string ClientId = "net2hassmqtt_test_start";
     private IConfigurationRoot _appConfig = null!;
     private Mock<IManagedMqttClient> _managedMqttClient = null!;
     private Mock<IMqttClient> _mqttClient = null!;
@@ -53,9 +54,10 @@ public class ComponentTestsBase
 
         Client = new ClientScope(_managedMqttClient);
         PublishedMqttMessages = new MqttMessagesScope(_publishedMessages);
+        MqttMessageMatchers = new TestSensorsMessageMqttMatchers(ClientId, DeviceFriendlyName, DeviceId);
     }
 
-    protected TestSensorsMessageMqttMatchers MqttMessageMatchers { get; } = new("net2hassmqtt_test_start", DeviceFriendlyName, DeviceId);
+    protected TestSensorsMessageMqttMatchers MqttMessageMatchers { get; set; } = null!;
 
     internal MqttMessagesScope PublishedMqttMessages { get; private set; } = null!;
 
@@ -67,7 +69,7 @@ public class ComponentTestsBase
                                   .WithId(DeviceId);
     }
 
-    private async Task<bool> RunApplication(int runLoopCount, Action loopAction)
+    private async Task<bool> RunApplication(Action loopAction, int runLoopCount)
     {
         var runTimeLimit = 2.Seconds();
         var stopwatch = Stopwatch.StartNew();
@@ -104,7 +106,7 @@ public class ComponentTestsBase
 
             await Task.Delay(5.Milliseconds()); // todo - timing hack
 
-            result = await RunApplication(runLoopCount, loopAction);
+            result = await RunApplication(loopAction, runLoopCount);
 
             await bridge.StopAsync();
         }

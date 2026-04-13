@@ -148,7 +148,24 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
 
         if (ValueHassDomains.Contains(hassDomainName))
         {
-            if (hassDeviceClass == "enum")
+            if (hassDeviceClass == "timestamp")
+            {
+                if (propertyValueType == typeof(int) || propertyValueType == typeof(double))
+                {
+                    return DefaultReader;
+                }
+
+                if (propertyValueType == typeof(DateTime))
+                {
+                    return value =>
+                    {
+                        var dateTimeOffset = ((DateTime)value!).ToDateTimeOffset();
+                        var result = dateTimeOffset.ToString("o"); // ISO 8601 format
+                        return DefaultReader(result);
+                    };
+                }
+            }
+            else if (hassDeviceClass == "enum")
             {
                 if (!propertyValueType.IsEnum)
                 {

@@ -20,6 +20,9 @@ internal partial class SensorTestModel : ObservableObject
     [ObservableProperty]
     private double _temperature = 42.0;
 
+    [ObservableProperty] 
+    private DateTime _dateTimeTimestamp = new(2026, 12, 31, 3, 59, 30);
+
     public void Level1CommandHandler(int value)
     {
         Console.WriteLine($"Level 1 commanded to: {value}");

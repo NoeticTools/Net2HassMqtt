@@ -29,7 +29,7 @@ internal class Program
         var device2 = ConfigureDevice2(sensorTestModel);
         var device3 = ConfigureDevice3(sensorTestModel);
         var device4 = ConfigureDevice4(switchTestModel);
-        //var device5 = ConfigureDevice5(sensorTestModel); // humidifier
+        var device5 = ConfigureDevice5(sensorTestModel);
         var device6 = ConfigureDevice6(binarySensorTestModel);
 
         // todo cover, humidifier, & number ?
@@ -41,7 +41,7 @@ internal class Program
                      .HasDevice(device2)
                      .HasDevice(device3)
                      .HasDevice(device4)
-                     //.HasDevice(device5)
+                     .HasDevice(device5)
                      .HasDevice(device6)
                      .Build();
 
@@ -100,8 +100,11 @@ internal class Program
 
     private static DeviceBuilder ConfigureDevice5(SensorTestModel model)
     {
-        var device = new DeviceBuilder().WithFriendlyName("Net2HassMqtt Humidifier Test Device")
+        var device = new DeviceBuilder().WithFriendlyName("Net2HassMqtt Timestamp Test Device")
                                         .WithId("net2hassmqtt_test_device_05");
+
+        /*
+         todo - humidifier is not yet implemented
 
         device.HasHumidifier(config => config.OnModel(model)
                                              .WithStatusProperty(nameof(SensorTestModel.Level1))
@@ -111,6 +114,13 @@ internal class Program
                                                          .WithStatusProperty(nameof(SensorTestModel.Level2))
                                                          .WithFriendlyName("Dehumidifier")
                                                          .WithNodeId("level_2"));
+        */
+
+        device.HasTimestampSensor(config => config.OnModel(model)
+                                                  .WithStatusProperty(nameof(SensorTestModel.DateTimeTimestamp))
+                                                  .WithFriendlyName("Timestamp (DateTime)")
+                                                  .WithNodeId("timestamp_date_time"));
+
         return device;
     }
 

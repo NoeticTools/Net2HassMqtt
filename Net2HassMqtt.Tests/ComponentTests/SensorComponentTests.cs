@@ -34,12 +34,12 @@ public class SensorComponentTests : ComponentTestsBase
         PublishedMqttMessages.Verify.MatchSequence(
         [
             MqttMessageMatchers.BridgeState.Online,
-            MqttMessageMatchers.CurrentStateEntity.Config,
+            MqttMessageMatchers.EnumEntity.Config,
 
-            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateTwo),
-            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateThree),
-            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateOne),
-            MqttMessageMatchers.CurrentStateEntity.Is(ComponentTestModel.TestStates.StateTwo),
+            MqttMessageMatchers.EnumEntity.Is(ComponentTestModel.TestStates.StateTwo),
+            MqttMessageMatchers.EnumEntity.Is(ComponentTestModel.TestStates.StateThree),
+            MqttMessageMatchers.EnumEntity.Is(ComponentTestModel.TestStates.StateOne),
+            MqttMessageMatchers.EnumEntity.Is(ComponentTestModel.TestStates.StateTwo),
 
             MqttMessageMatchers.Any(9)
         ]);

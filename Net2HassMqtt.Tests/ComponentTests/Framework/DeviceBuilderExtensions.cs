@@ -14,6 +14,22 @@ internal static class DeviceBuilderExtensions
                                                                      .WithNodeId("batt1_charging"));
     }
 
+    public static void SetupIntTimestampSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
+    {
+        deviceBuilder.HasTimestampSensor(config => config.OnModel(model)
+                                                         .WithStatusProperty(nameof(ComponentTestModel.IntTimestamp))
+                                                         .WithFriendlyName("Timestamp (int)")
+                                                         .WithNodeId("timestamp_int"));
+    }
+
+    public static void SetupDateTimeTimestampSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
+    {
+        deviceBuilder.HasTimestampSensor(config => config.OnModel(model)
+                                                    .WithStatusProperty(nameof(ComponentTestModel.DateTimeTimestamp))
+                                                    .WithFriendlyName("Timestamp (DateTime)")
+                                                    .WithNodeId("timestamp_date_time"));
+    }
+
     public static void SetupCurrentStateEnumSensor(this DeviceBuilder deviceBuilder, ComponentTestModel model)
     {
         deviceBuilder.HasEnumSensor(config => config.OnModel(model)

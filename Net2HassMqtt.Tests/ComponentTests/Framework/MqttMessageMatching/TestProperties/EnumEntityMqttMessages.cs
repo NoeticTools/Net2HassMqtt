@@ -3,7 +3,7 @@
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.TestProperties;
 
-public sealed class CurrentStateEntityMqttMessages(string clientId, string deviceId, string deviceFriendlyName)
+public sealed class EnumEntityMqttMessages(string clientId, string deviceId, string deviceFriendlyName)
     : MqttMessageMatcherBase(clientId, deviceId, deviceFriendlyName,
                              "current_state",
                              "Current State",
@@ -11,7 +11,7 @@ public sealed class CurrentStateEntityMqttMessages(string clientId, string devic
                              "enum")
 {
     public override MessageMatcher Config =>
-        GetConfigurationMessageWithoutOptions("""
+        GetConfigurationMessage("""
                                               [
                                                   "StateOne",
                                                   "StateTwo",

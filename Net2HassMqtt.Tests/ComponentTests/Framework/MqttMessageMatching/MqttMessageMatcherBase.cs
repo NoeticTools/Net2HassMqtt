@@ -9,27 +9,39 @@ public abstract class MqttMessageMatcherBase(
     string domainName,
     string deviceClass)
 {
-    public virtual MessageMatcher Config =>
-        GetConfigurationMessageWithoutOptions();
+    public virtual MessageMatcher Config => GetConfigurationMessage(null, "None");
 
     protected string StateTopic => $"{clientId}/{deviceId}/{nodeId}";
 
-    protected MessageMatcher GetConfigurationMessageWithoutOptions(string? options = null)
+    protected MessageMatcher GetConfigurationMessage(string? options = null, string? unitOfMeasurement = null)
     {
         options = options == null
-            ? """
-
-                "unit_of_measurement": "None",
-              """
+            ? ""
             : $"""
-
+               
                  "options": {options},
                """;
+
+        unitOfMeasurement = unitOfMeasurement == null
+            ? ""
+            : $"""
+               
+                 "unit_of_measurement": "{unitOfMeasurement}",
+               """;
+        //options = options == null
+        //    ? """
+
+        //        "unit_of_measurement": "None",
+        //      """
+        //    : $"""
+
+        //         "options": {options},
+        //       """;
 
         return new MessageMatcher($"homeassistant/{domainName}/{deviceId}/{deviceId}_{nodeId}/config",
                                   $$$"""
                                      {
-                                       "device_class": "{{{deviceClass}}}",{{{options}}}
+                                       "device_class": "{{{deviceClass}}}",{{{unitOfMeasurement}}}{{{options}}}
                                        "retain": true,
                                        "availability": {
                                          "payload_available": "online",

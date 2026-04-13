@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using MQTTnet;
 using MQTTnet.Protocol;
+#pragma warning disable IDE0057
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
@@ -69,11 +71,13 @@ public sealed class MessageMatcher(string topic, string expectedPayload) : IMess
         return -1; // Strings are identical
     }
 
-    private static string GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft = 50, int charactersToRight = 50)
+    private static (string fragment, int diffFromLeft) GetFragment(string payload, int firstDifferenceIndex, int charactersToLeft = 30, int charactersToRight = 30)
     {
         charactersToLeft = Math.Min(charactersToLeft, firstDifferenceIndex);
-        var fragmentLength = Math.Min(firstDifferenceIndex + 1 + charactersToRight, payload.Length - firstDifferenceIndex);
-        return payload.Substring(firstDifferenceIndex - charactersToLeft, fragmentLength).Replace("\r", @"\r").Replace("\n", @"\n");
+        charactersToRight = Math.Min(charactersToRight, payload.Length - firstDifferenceIndex);
+        var fragment = payload.Substring(firstDifferenceIndex - charactersToLeft, charactersToLeft + charactersToRight).Replace("\r", @"\r").Replace("\n", @"\n");
+        var diffFromLeft = charactersToLeft +fragment.Substring(0, charactersToLeft).Count(x => x == '\\');
+        return (fragment, diffFromLeft);
     }
 
     /// <summary>
@@ -83,24 +87,24 @@ public sealed class MessageMatcher(string topic, string expectedPayload) : IMess
     /// <returns></returns>
     private string Matches(MqttApplicationMessage actual)
     {
-        var actualPayload = Encoding.UTF8.GetString(actual.PayloadSegment);
+        var actualPayload = Regex.Unescape(Encoding.UTF8.GetString(actual.PayloadSegment));
         var firstDifferenceIndex = FindFirstDifferenceIndex(actualPayload, expectedPayload);
         if (firstDifferenceIndex != -1)
         {
-            var expectedFragment = GetFragment(expectedPayload, firstDifferenceIndex);
-            var actualFragment = GetFragment(actualPayload, firstDifferenceIndex);
+            var expected = GetFragment(expectedPayload, firstDifferenceIndex);
+            var was = GetFragment(actualPayload, firstDifferenceIndex);
+            var marker = "^".PadLeft(expected.diffFromLeft);
             return $"""
                     The payloads does not match what was expected.
 
-                      Expected:  '...{expectedFragment}...'
-                      
-                      But was:   '...{actualFragment}...'
+                      Expected:  '...{expected.fragment}...'
+                                     {marker}
+                      But was:   '...{was.fragment}...'
                       
                     """;
         }
 
         var matches = actual.Topic.Equals(topic) &&
-                      Encoding.UTF8.GetString(actual.PayloadSegment).Equals(expectedPayload) &&
                       actual is
                       {
                           Retain: true,
@@ -112,6 +116,6 @@ public sealed class MessageMatcher(string topic, string expectedPayload) : IMess
                           ResponseTopic: null
                       };
 
-        return matches ? "" : "oops";
+        return matches ? "" : "The message payload matched but other properties did not.";
     }
 }
