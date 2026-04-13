@@ -70,7 +70,7 @@ project {
 }
 
 object Build : BuildType({
-    name = "Build (uses local nuget repo)"
+    name = "Build"
 
     artifactRules = "+:Output/*.nupkg"
     publishArtifacts = PublishMode.SUCCESSFUL
