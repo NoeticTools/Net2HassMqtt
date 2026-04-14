@@ -1,14 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NoeticTools.Net2HassMqtt.Configuration;
-using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Framework;
-using NoeticTools.Net2HassMqtt.Mqtt;
 
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
@@ -19,12 +15,10 @@ namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
 /// </summary>
 internal sealed class StatusPropertyReader : IStatusPropertyReader
 {
-    private static List<IModelValueConverter> ModelValueConverters { get; set; } = [];
-
     private readonly PropertyInfo? _getterPropertyInfo;
-    private readonly string? _getterPropertyName;
     private readonly ILogger _logger;
     private readonly INotifyPropertyChanged _model;
+    private readonly string? _propertyName;
     private readonly Func<object?, string> _reader;
 
     public StatusPropertyReader(INotifyPropertyChanged model,
@@ -36,7 +30,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
                                 ILogger logger)
     {
         _model = model;
-        _getterPropertyName = statusPropertyName;
+        _propertyName = statusPropertyName;
         _logger = logger;
         if (ModelValueConverters.Count == 0)
         {
@@ -65,7 +59,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
         }
         else
         {
-            _reader = DefaultReader;
+            _reader = ModelValueConverterBase.DefaultReader;
         }
     }
 
@@ -79,25 +73,16 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
     /// </summary>
     public string Read()
     {
-        if (string.IsNullOrWhiteSpace(_getterPropertyName))
+        if (string.IsNullOrWhiteSpace(_propertyName))
         {
             throw new InvalidOperationException("Entity is not configured to read model state.");
         }
 
         var value = _getterPropertyInfo!.GetValue(_model);
-
         return _reader(value);
     }
 
-    private static string DefaultReader(object? arg)
-    {
-        if (arg == null)
-        {
-            return "null";
-        }
-
-        return arg.ToString() ?? "null";
-    }
+    private static List<IModelValueConverter> ModelValueConverters { get; set; } = [];
 
     private Func<object?, string> GetReader(string? hassDomainName, string? hassDeviceClass, string? hassUoM)
     {
@@ -105,10 +90,11 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
 
         if (string.IsNullOrWhiteSpace(hassDomainName))
         {
-            return DefaultReader;
+            return ModelValueConverterBase.DefaultReader;
         }
 
-        var valueDescriptor = new ModelValueDescriptor(propertyValueType, hassDomainName, hassDeviceClass, hassUoM, _getterPropertyName!, propertyValueType);
+        var valueDescriptor =
+            new ModelValueDescriptor(propertyValueType, hassDomainName, hassDeviceClass, hassUoM, _propertyName!, propertyValueType);
         foreach (var provider in ModelValueConverters)
         {
             if (provider.CanConvert(valueDescriptor))
@@ -118,7 +104,7 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
         }
 
         // should never get here
-        return DefaultReader;
+        return ModelValueConverterBase.DefaultReader;
     }
 
     [DoesNotReturn]

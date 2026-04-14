@@ -31,34 +31,11 @@ internal abstract class EntityBase<T> : IMqttEntity
         }
     }
 
-    protected async Task PublishStatusAsync<TP>(TP payload)
-    {
-        var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
-                                      .WithNodeId(DeviceNodeId)
-                                      .WithObjectId(Config.EntityNodeId);
-        await MqttClient.PublishStatusAsync(topic, payload);
-    }
-
     /// <summary>
     ///     Can write received MQTT entity values to the model.
     ///     Always false for entity attributes.
     /// </summary>
     public bool CanCommand { get; protected init; }
-
-    /// <summary>
-    ///     The entity's configuration.
-    /// </summary>
-    protected T Config { get; }
-
-    protected string DeviceNodeId { get; }
-
-    protected string EntityUniqueId { get; }
-
-    protected ILogger Logger { get; }
-
-    protected INet2HassMqttClient MqttClient { get; }
-
-    protected IPropertyInfoReader PropertyInfoReader { get; }
 
     public async Task PublishConfigAsync(DeviceConfig deviceConfig)
     {
@@ -75,6 +52,29 @@ internal abstract class EntityBase<T> : IMqttEntity
     {
         return Task.CompletedTask;
     }
+
+    protected async Task PublishStatusAsync<TP>(TP payload)
+    {
+        var topic = new TopicBuilder().WithComponent(Config.MqttTopicComponent)
+                                      .WithNodeId(DeviceNodeId)
+                                      .WithObjectId(Config.EntityNodeId);
+        await MqttClient.PublishStatusAsync(topic, payload);
+    }
+
+    /// <summary>
+    ///     The entity's configuration.
+    /// </summary>
+    protected T Config { get; }
+
+    protected string DeviceNodeId { get; }
+
+    protected string EntityUniqueId { get; }
+
+    protected ILogger Logger { get; }
+
+    protected INet2HassMqttClient MqttClient { get; }
+
+    protected IPropertyInfoReader PropertyInfoReader { get; }
 
     protected Dictionary<string, string> GetAttributeValuesDictionary()
     {

@@ -7,7 +7,7 @@ namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConver
 
 internal abstract class ModelValueConverterBase(ILogger logger)
 {
-    protected static string DefaultReader(object? arg)
+    public static string DefaultReader(object? arg)
     {
         if (arg == null)
         {

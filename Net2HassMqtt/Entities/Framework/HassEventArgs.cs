@@ -1,18 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework;
 
 public class HassEventArgs : EventArgs
 {
-    [Required]
-    public string EventType { get; }
-
-    [Required]
-    public Dictionary<string, string> Attributes { get; }
-
-    public HassEventArgs(string eventType) : this(eventType,  new Dictionary<string, string>())
+    public HassEventArgs(string eventType) : this(eventType, new Dictionary<string, string>())
     {
     }
 
@@ -21,6 +14,13 @@ public class HassEventArgs : EventArgs
         EventType = eventType;
         Attributes = new Dictionary<string, string>(attributes);
     }
+
+    [Required]
+    public Dictionary<string, string> Attributes { get; }
+
+    [Required]
+    public string EventType { get; }
+
     public static HassEventArgs From<T>(T eventTypeId)
         where T : Enum
     {

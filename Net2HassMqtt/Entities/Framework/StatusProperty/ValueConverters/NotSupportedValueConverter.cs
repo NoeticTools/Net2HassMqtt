@@ -1,5 +1,4 @@
-﻿using NoeticTools.Net2HassMqtt.Exceptions;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;

@@ -5,6 +5,7 @@ using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
+
 namespace NoeticTools.Net2HassMqtt.Entities;
 
 internal sealed class EventEntity : EventEntityBase<EventConfig>
@@ -26,6 +27,7 @@ internal sealed class EventEntity : EventEntityBase<EventConfig>
                 Config.EventTypes = list.ToArray();
             }
         }
+
         var mqtt = new EventConfigMqttJson(EntityUniqueId, Config, deviceConfig, MqttClient.ClientMqttId)
         {
             ValueTemplate = "{{ value_json.event | tojson }}"

@@ -5,6 +5,7 @@ using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
 using NoeticTools.Net2HassMqtt.Mqtt.Payloads.Discovery;
 
+
 namespace NoeticTools.Net2HassMqtt.Entities;
 
 internal sealed class ButtonEntity(

@@ -2,6 +2,7 @@
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Mqtt;
 
+
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
 
 internal class BoolModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter

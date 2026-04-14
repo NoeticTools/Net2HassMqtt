@@ -17,9 +17,11 @@ internal sealed class EntityAttribute
     {
         Name = config.Name;
         Logger = logger;
-        StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement, 
+        StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement,
                                                         propertyInfoReader, logger);
     }
+
+    public ILogger Logger { get; }
 
     /// <summary>
     ///     The attribute's name. This name is used in Home Assistant to view and access the attribute.
@@ -27,6 +29,4 @@ internal sealed class EntityAttribute
     public string Name { get; }
 
     public IStatusPropertyReader StatusPropertyReader { get; }
-
-    public ILogger Logger { get; }
 }

@@ -22,21 +22,6 @@ internal sealed class Device : IMqttSubscriber
         _logger = logger;
     }
 
-    void IMqttSubscriber.OnReceived(ReceivedMqttMessage mqttMessage)
-    {
-        _logger.LogDebug(LoggingEvents.MqttReceived, "Device '{DeviceName}'.", _config.Name);
-
-        var entityNodeId = mqttMessage.ObjectId;
-        if (_mqttSubscribersByEntityNodeId.TryGetValue(entityNodeId, out var listener))
-        {
-            listener.OnReceived(mqttMessage);
-        }
-        else
-        {
-            _logger.LogWarning(LoggingEvents.MqttReceived, "Device '{DeviceName}' does not have any listeners. Message ignored", _config.Name);
-        }
-    }
-
     public async Task PublishConfigAsync()
     {
         foreach (var (_, entity) in _mqttEntitiesByEntityNodeId)
@@ -74,6 +59,26 @@ internal sealed class Device : IMqttSubscriber
         }
     }
 
+    private void AddMqttSubscriber(IMqttSubscriber listener, string entityNodeId)
+    {
+        _mqttSubscribersByEntityNodeId.Add(entityNodeId, listener);
+    }
+
+    void IMqttSubscriber.OnReceived(ReceivedMqttMessage mqttMessage)
+    {
+        _logger.LogDebug(LoggingEvents.MqttReceived, "Device '{DeviceName}'.", _config.Name);
+
+        var entityNodeId = mqttMessage.ObjectId;
+        if (_mqttSubscribersByEntityNodeId.TryGetValue(entityNodeId, out var listener))
+        {
+            listener.OnReceived(mqttMessage);
+        }
+        else
+        {
+            _logger.LogWarning(LoggingEvents.MqttReceived, "Device '{DeviceName}' does not have any listeners. Message ignored", _config.Name);
+        }
+    }
+
     internal void AddEntity(string entityNodeId, IMqttEntity entity)
     {
         if (entity is IMqttPublisher { CanCommand: true })
@@ -82,10 +87,5 @@ internal sealed class Device : IMqttSubscriber
         }
 
         _mqttEntitiesByEntityNodeId[entityNodeId] = entity;
-    }
-
-    private void AddMqttSubscriber(IMqttSubscriber listener, string entityNodeId)
-    {
-        _mqttSubscribersByEntityNodeId.Add(entityNodeId, listener);
     }
 }

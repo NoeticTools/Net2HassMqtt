@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.Eventing.Reader;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Exceptions;
@@ -30,12 +28,43 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
     {
         _eventInfo.AddEventHandler(Config.Model, _eventHandlerDelegate);
         return Task.CompletedTask;
-    }   
+    }
 
     public override Task StopAsync()
     {
         _eventInfo.RemoveEventHandler(Config.Model, _eventHandlerDelegate);
         return Task.CompletedTask;
+    }
+
+    private EventInfo GetModelEventInfo()
+    {
+        if (Config.Model == null)
+        {
+            ThrowConfigError("An event requires a model.");
+        }
+
+        if (string.IsNullOrWhiteSpace(Config.EventMemberName))
+        {
+            ThrowConfigError("An event requires a model's HaEvent member name.");
+        }
+
+        var model = Config.Model;
+
+        var eventInfo = model.GetType().GetEvent(Config.EventMemberName, BindingFlags.Instance | BindingFlags.Public);
+        if (eventInfo == null)
+        {
+            var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
+            Logger.LogError(message);
+            throw new Net2HassMqttConfigurationException(message);
+        }
+
+        return eventInfo;
+    }
+
+    private void PublishEvent(string eventType, Dictionary<string, string> attributes)
+    {
+        var payload = new EventWithAttributeDataMqttJson(eventType, attributes);
+        var _ = PublishStatusAsync(payload);
     }
 
     internal void OnEvent(object sender, HassEventArgs eventArgs)
@@ -68,37 +97,6 @@ internal abstract class EventEntityBase<T> : EntityBase<T>
             return;
         }
 
-        PublishEvent(Config.EventTypeToSendAfterEachEvent, new());
-    }
-
-    private void PublishEvent(string eventType, Dictionary<string, string> attributes)
-    {
-        var payload = new EventWithAttributeDataMqttJson(eventType, attributes);
-        var _ = PublishStatusAsync(payload);
-    }
-
-    private EventInfo GetModelEventInfo()
-    {
-        if (Config.Model == null)
-        {
-            ThrowConfigError("An event requires a model.");
-        }
-
-        if (string.IsNullOrWhiteSpace(Config.EventMemberName))
-        {
-            ThrowConfigError("An event requires a model's HaEvent member name.");
-        }
-
-        var model = Config.Model;
-        
-        var eventInfo = model.GetType().GetEvent(Config.EventMemberName, BindingFlags.Instance | BindingFlags.Public);
-        if (eventInfo == null)
-        {
-            var message = $"Could not find public event '{Config.EventMemberName}.Event' on model of type '{model.GetType()}'";
-            Logger.LogError(message);
-            throw new Net2HassMqttConfigurationException(message);
-        }
-
-        return eventInfo;
+        PublishEvent(Config.EventTypeToSendAfterEachEvent, new Dictionary<string, string>());
     }
 }

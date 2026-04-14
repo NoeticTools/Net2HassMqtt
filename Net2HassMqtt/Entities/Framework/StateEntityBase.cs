@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Dynamic;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;

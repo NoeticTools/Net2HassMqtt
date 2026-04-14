@@ -2,7 +2,6 @@
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 using NoeticTools.Net2HassMqtt.Framework;
-using System.Diagnostics.CodeAnalysis;
 
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
