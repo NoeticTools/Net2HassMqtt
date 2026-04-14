@@ -4,13 +4,15 @@ using Net2HassMqtt.Tests.UnitTests.Framework;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
+using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Framework;
 
 
 namespace Net2HassMqtt.Tests.UnitTests.Entities.Framework.StatusProperty;
 
 [TestFixture]
-public class StatusPropertyReaderTests
+// ReSharper disable once InconsistentNaming
+public class StatusPropertyReader_SensorDuration_Tests
 {
     private const string PropertyName = "TestProperty";
     private Mock<ILogger> _logger;
@@ -27,6 +29,17 @@ public class StatusPropertyReaderTests
         _propertyInfoReader.Setup(x => x.GetPropertyGetterInfo(_model, PropertyName))
                            .Returns(_propertyInfoStub);
         _logger = new Mock<ILogger>();
+    }
+
+    [TestCase("System.Char")]
+    [TestCase("System.Boolean")]
+    public void ThrowsExpectIfValueTypeNotSupported(string propertyTypeName)
+    {
+        _propertyInfoStub.StubbedValue = TimeSpan.FromHours(7);
+        var type = Type.GetType(propertyTypeName);
+        _propertyInfoStub.SetPropertyType(type!);
+
+        Assert.Throws<Net2HassMqttConfigurationException>(() => GetStatusPropertyReader(HassUoMs.Days));
     }
 
     [TestCase(0, "0")]
@@ -110,7 +123,7 @@ public class StatusPropertyReaderTests
         Assert.That(result, Is.EqualTo(expected));
     }
 
-    private StatusPropertyReader GetStatusPropertyReader(string hassUoM)
+    private StatusPropertyReader GetStatusPropertyReader(string? hassUoM)
     {
         var target = new StatusPropertyReader(_model,
                                               PropertyName,

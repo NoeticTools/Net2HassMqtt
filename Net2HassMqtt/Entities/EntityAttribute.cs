@@ -14,11 +14,11 @@ namespace NoeticTools.Net2HassMqtt.Entities;
 internal sealed class EntityAttribute
 {
     public EntityAttribute(AttributeConfiguration config, IPropertyInfoReader propertyInfoReader, ILogger logger)
-
     {
         Name = config.Name;
         Logger = logger;
-        StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement, propertyInfoReader, logger);
+        StatusPropertyReader = new StatusPropertyReader(config.Model, config.PropertyName, null, null, config.HassUnitOfMeasurement, 
+                                                        propertyInfoReader, logger);
     }
 
     /// <summary>

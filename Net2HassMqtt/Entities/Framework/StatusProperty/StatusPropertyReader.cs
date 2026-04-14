@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
+using NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
 using NoeticTools.Net2HassMqtt.Exceptions;
 using NoeticTools.Net2HassMqtt.Framework;
 using NoeticTools.Net2HassMqtt.Mqtt;
@@ -12,30 +13,13 @@ using NoeticTools.Net2HassMqtt.Mqtt;
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty;
 
+/// <summary>
+///     Reader to read a status property value from the model and convert it to an appropriate MQTT state value
+///     based on the entity's HASS domain, device class, and unit of measurement.
+/// </summary>
 internal sealed class StatusPropertyReader : IStatusPropertyReader
 {
-    private static readonly HashSet<string> ValueHassDomains =
-    [
-        HassDomains.Humidifier.HassDomainName,
-        HassDomains.Sensor.HassDomainName,
-        HassDomains.Number.HassDomainName
-    ];
-
-    private static readonly Dictionary<string, Func<object?, string>> BooleanReadersByHassDomains = new()
-    {
-        { HassDomains.BinarySensor.HassDomainName, ToOnOffValue },
-        { HassDomains.Switch.HassDomainName, ToOnOffValue },
-        { HassDomains.Valve.HassDomainName, ToOpenClosedValue },
-        { HassDomains.Cover.HassDomainName, ToOpenClosedCover }
-    };
-
-    private static readonly Dictionary<string, Func<TimeSpan, double>> TimeSpanReadersByUoM = new()
-    {
-        { HassUoMs.Seconds, span => span.TotalSeconds },
-        { HassUoMs.Minutes, span => span.TotalMinutes },
-        { HassUoMs.Hours, span => span.TotalHours },
-        { HassUoMs.Days, span => span.TotalDays }
-    };
+    private static List<IModelValueConverter> ModelValueConverters { get; set; } = [];
 
     private readonly PropertyInfo? _getterPropertyInfo;
     private readonly string? _getterPropertyName;
@@ -43,17 +27,30 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
     private readonly INotifyPropertyChanged _model;
     private readonly Func<object?, string> _reader;
 
-    public StatusPropertyReader(INotifyPropertyChanged model, 
+    public StatusPropertyReader(INotifyPropertyChanged model,
                                 string? statusPropertyName,
-                                string? hassDomainName, 
+                                string? hassDomainName,
                                 string? hassDeviceClass,
-                                string? hassUoM, 
+                                string? hassUoM,
                                 IPropertyInfoReader propertyInfoReader,
                                 ILogger logger)
     {
         _model = model;
         _getterPropertyName = statusPropertyName;
         _logger = logger;
+        if (ModelValueConverters.Count == 0)
+        {
+            ModelValueConverters =
+            [
+                new SensorDurationModelValueConverter(logger),
+                new SensorTimestampModelValueConverter(logger),
+                new SensorEnumModelValueConverter(logger),
+                new NumericValueConverter(logger),
+                new BoolModelValueConverter(logger),
+                new NotSupportedValueConverter(logger)
+            ];
+        }
+
         CanRead = !string.IsNullOrWhiteSpace(statusPropertyName);
         if (CanRead)
         {
@@ -92,21 +89,6 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
         return _reader(value);
     }
 
-    private static string ToOnOffValue(object? value)
-    {
-        return (bool)value! ? MqttConstants.EntityOnState : MqttConstants.EntityOffState;
-    }
-
-    private static string ToOpenClosedCover(object? cover)
-    {
-        return (bool)cover! ? MqttConstants.EntityOpenState : MqttConstants.EntityClosedState;
-    }
-
-    private static string ToOpenClosedValue(object? value)
-    {
-        return (bool)value! ? MqttConstants.EntityOpenState : MqttConstants.EntityClosedState;
-    }
-
     private static string DefaultReader(object? arg)
     {
         if (arg == null)
@@ -126,78 +108,16 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
             return DefaultReader;
         }
 
-        if (hassDomainName == HassDomains.Sensor.HassDomainName &&
-            hassDeviceClass == SensorDeviceClass.Duration.HassDeviceClassName &&
-            propertyValueType == typeof(TimeSpan))
+        var valueDescriptor = new ModelValueDescriptor(propertyValueType, hassDomainName, hassDeviceClass, hassUoM, _getterPropertyName!, propertyValueType);
+        foreach (var provider in ModelValueConverters)
         {
-            if (TimeSpanReadersByUoM.TryGetValue(hassUoM!, out var timespanReader))
+            if (provider.CanConvert(valueDescriptor))
             {
-                return value =>
-                {
-                    var result = timespanReader((TimeSpan)value!);
-                    return DefaultReader(result);
-                };
+                return provider.GetConverter(valueDescriptor);
             }
-
-            return value =>
-            {
-                // todo - this assumes that an int duration is always in minutes. Drop this in next major revision.
-                var result = ((TimeSpan)value!).TotalMinutes.ToString(CultureInfo.CurrentCulture);
-                return DefaultReader(result);
-            };
         }
 
-        if (ValueHassDomains.Contains(hassDomainName))
-        {
-            if (hassDeviceClass == SensorDeviceClass.Timestamp.HassDeviceClassName)
-            {
-                if (propertyValueType == typeof(int) || propertyValueType == typeof(double))
-                {
-                    return DefaultReader;
-                }
-
-                if (propertyValueType == typeof(DateTime))
-                {
-                    return value =>
-                    {
-                        var dateTimeOffset = ((DateTime)value!).ToDateTimeOffset();
-                        var result = dateTimeOffset.ToString("o"); // ISO 8601 format
-                        return DefaultReader(result);
-                    };
-                }
-            }
-            else if (hassDeviceClass == SensorDeviceClass.Enum.HassDeviceClassName)
-            {
-                if (!propertyValueType.IsEnum)
-                {
-                    ThrowConfigError($"An enum entity requires an enum property. {_getterPropertyName}'s type is {propertyValueType}.");
-                }
-
-                return DefaultReader;
-            }
-            else if (propertyValueType == typeof(int) || propertyValueType == typeof(double))
-            {
-                return DefaultReader;
-            }
-
-            ThrowConfigError($"A {hassDomainName} entity requires an int or double status property. {_getterPropertyName}'s type is {propertyValueType}.");
-        }
-
-        if (BooleanReadersByHassDomains.TryGetValue(hassDomainName, out var reader))
-        {
-            if (propertyValueType != typeof(bool))
-            {
-                ThrowConfigError($"A {hassDomainName} entity requires a bool status property. {_getterPropertyName}'s type is {propertyValueType}.");
-            }
-
-            return reader;
-        }
-
-        _logger.LogWarning($"""
-                            Unable to find status property reader for property {_getterPropertyName} on model of type {_model.GetType()}.
-                            No match for entity domain {hassDomainName}, device class {hassDeviceClass}, and status property type {propertyValueType}.");
-                            """);
-
+        // should never get here
         return DefaultReader;
     }
 
