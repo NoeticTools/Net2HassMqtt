@@ -94,6 +94,11 @@ object Build : BuildType({
                 dotnet nuget locals --clear all
             """.trimIndent()
         }
+        script {
+            name = "Build 2"
+            id = "Build_2"
+            scriptContent = "dotnet build --configuration Release --no-restore"
+        }
         dotnetBuild {
             name = "Build"
             id = "Build"
@@ -112,11 +117,6 @@ object Build : BuildType({
             skipBuild = true
             args = "--no-restore"
             logging = DotnetPackStep.Verbosity.Normal
-        }
-        script {
-            name = "Build 2"
-            id = "Build_2"
-            scriptContent = "dotnet build --configuration Release --no-restore"
         }
     }
 
