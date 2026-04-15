@@ -113,6 +113,11 @@ object Build : BuildType({
             args = "--no-restore"
             logging = DotnetPackStep.Verbosity.Normal
         }
+        script {
+            name = "Build 2"
+            id = "Build_2"
+            scriptContent = "dotnet build --configuration Release --no-restore"
+        }
     }
 
     triggers {
