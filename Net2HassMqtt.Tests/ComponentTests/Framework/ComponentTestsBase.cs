@@ -8,9 +8,11 @@ using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Packets;
 using Net2HassMqtt.Tests.ComponentTests.Framework.Client;
 using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching;
+using Net2HassMqtt.Tests.ComponentTests.Framework.MqttMessageMatching.EntityMessages;
 using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 using NoeticTools.Net2HassMqtt.Configuration;
 using NoeticTools.Net2HassMqtt.Configuration.Building;
+using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 
 
 namespace Net2HassMqtt.Tests.ComponentTests.Framework;
@@ -127,5 +129,46 @@ public class ComponentTestsBase
     {
         Task.Delay(10.Milliseconds()).Wait(); // todo: code smell, required to avoid intermittency in number of messages received
         // fix in separate issue
+    }
+
+    protected async Task RunMqttMessaging<T>(string entityFriendlyName, 
+                                           string nodeId, 
+                                           string deviceClassName, 
+                                           string hassUnitOfMeasurement,
+                                           Action loopAction, Func<int, T> getExpectedValue)
+    {
+        var result = await Run(loopAction, 2);
+
+        Client.Verify
+              .WasStartedOnce()
+              .SubscriptionsCountIs(1);
+
+        var mqttMsgMatcher = new SensorEntityMqttMessages(ClientId, DeviceId, DeviceFriendlyName,
+                                                          nodeId,
+                                                          entityFriendlyName,
+                                                          deviceClassName,
+                                                          hassUnitOfMeasurement);
+
+        PublishedMqttMessages.Verify.MatchSequence(
+        [
+            MqttMessageMatchers.BridgeState.Online,
+            mqttMsgMatcher.Config,
+            mqttMsgMatcher.SendsState(getExpectedValue(1)),
+            mqttMsgMatcher.SendsState(getExpectedValue(2)),
+            MqttMessageMatchers.Any(9)
+        ]);
+
+        Assert.That(result, Is.True, "Expected run to pass.");
+    }
+
+    protected async Task RunMqttMessaging<T1,T2>(EntityMqttMessagesTestData<T1, T2> data, string hassDeviceClassName)
+        where T1 : UnitOfMeasurement
+    {
+        var hassUnitOfMeasurement = data.UnitOfMeasurement.HassUnitOfMeasurement == "none" ? "" : data.UnitOfMeasurement.HassUnitOfMeasurement;
+        await RunMqttMessaging<T2>(data.EntityFriendlyName, data.NodeId,
+                                   hassDeviceClassName,
+                                   hassUnitOfMeasurement,
+                                   data.LoopAction, 
+                                   data.GetExpectedValue);
     }
 }

@@ -6,12 +6,14 @@ using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
 
-internal sealed class SensorDurationModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter
+/// <summary>
+/// Converts TimeSpan model property values for duration sensors to a HASS MQTT value string using the the sensor's configured unit of measurement (seconds, minutes, hours, or days).
+/// If the unit of measurement is missing or invalid, it defaults to converting the TimeSpan to total minutes.
+/// This converter is specifically designed for HASS sensor entities with a device class of "duration" and a model property type of TimeSpan.
+/// </summary>
+/// <param name="logger">The logger instance.</param>
+internal sealed class DurationSensorModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter
 {
-    /// <summary>
-    ///     For duration sensors with a TimeSpan status property, convert to the appropriate unit of measurement based
-    ///     on the sensor's configured unit of measurement.
-    /// </summary>
     private static readonly Dictionary<string, Func<TimeSpan, double>> TimeSpanDurationReadersByUoM = new()
     {
         { HassUoMs.Seconds, span => span.TotalSeconds },
@@ -35,6 +37,7 @@ internal sealed class SensorDurationModelValueConverter(ILogger logger) : ModelV
         }
 
         // todo - throw exception if uom is missing or invalid. Drop this in next major revision.
+
         return value =>
         {
             // todo - this assumes that an int duration is always in minutes. Drop this in next major revision.

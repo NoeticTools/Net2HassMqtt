@@ -1,15 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-#pragma warning disable MVVMTK0042
 
+
+#pragma warning disable MVVMTK0042
 
 namespace Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 
 public partial class ComponentTestModel : ObservableObject
 {
-    [ObservableProperty]
-    private int _intDuration;
-
     public enum TestStates
     {
         StateOne,
@@ -24,10 +21,22 @@ public partial class ComponentTestModel : ObservableObject
     private TestStates _currentState;
 
     [ObservableProperty]
+    private DateOnly _dateOnlyDate = new(2026, 12, 29);
+
+    [ObservableProperty]
+    private DateTimeOffset _dateTimeOffsetTimestamp = new(2026, 12, 30, 9, 31, 42, TimeSpan.FromHours(1));
+
+    [ObservableProperty]
+    private DateTime _dateTimeTimestamp = new(2026, 12, 31, 9, 31, 42);
+
+    [ObservableProperty]
     private bool _doorIsOpen;
 
     [ObservableProperty]
-    private DateTime _dateTimeTimestamp = new DateTime(2026, 12, 31, 9, 31, 42);
+    private int _intDuration;
+
+    [ObservableProperty]
+    private double _doubleDuration;
 
     [ObservableProperty]
     private int _intTimestamp = 1234; // todo - should be unix timestamp? long?

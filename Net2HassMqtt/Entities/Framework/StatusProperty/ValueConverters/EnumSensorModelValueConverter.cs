@@ -5,7 +5,7 @@ using NoeticTools.Net2HassMqtt.Configuration.UnitsOfMeasurement;
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
 
-internal sealed class SensorEnumModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter
+internal sealed class EnumSensorModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter
 {
     public bool CanConvert(ModelValueDescriptor valueDescriptor)
     {

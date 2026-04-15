@@ -6,7 +6,7 @@ using NoeticTools.Net2HassMqtt.Framework;
 
 namespace NoeticTools.Net2HassMqtt.Entities.Framework.StatusProperty.ValueConverters;
 
-internal sealed class SensorTimestampModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter
+internal sealed class TimestampSensorModelValueConverter(ILogger logger) : ModelValueConverterBase(logger), IModelValueConverter
 {
     public bool CanConvert(ModelValueDescriptor valueDescriptor)
     {
@@ -27,7 +27,12 @@ internal sealed class SensorTimestampModelValueConverter(ILogger logger) : Model
             return value => DefaultReader(((DateTime)value!).ToIso8601String());
         }
 
-        ThrowUnableToFindReaderException(valueDescriptor);
+        if (valueDescriptor.ModelPropertyType == typeof(DateTimeOffset))
+        {
+            return value => DefaultReader(((DateTimeOffset)value!).ToIso8601String());
+        }
+
+        ThrowConfigError($"A timestamp sensor requires a DateTime or DateTimeOffset model property. Model property {valueDescriptor.ModelPropertyName} is of type {valueDescriptor.ModelPropertyType}.");
         return value => string.Empty; // never gets here
     }
 }

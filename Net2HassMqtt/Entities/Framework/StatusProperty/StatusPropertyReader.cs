@@ -36,10 +36,11 @@ internal sealed class StatusPropertyReader : IStatusPropertyReader
         {
             ModelValueConverters =
             [
-                new SensorDurationModelValueConverter(logger),
-                new SensorTimestampModelValueConverter(logger),
-                new SensorEnumModelValueConverter(logger),
-                new NumericValueConverter(logger),
+                new DurationSensorModelValueConverter(logger),
+                new TimestampSensorModelValueConverter(logger),
+                new DateSensorModelValueConverter(logger),
+                new EnumSensorModelValueConverter(logger),
+                new NumericModelValueConverter(logger),
                 new BoolModelValueConverter(logger),
                 new NotSupportedValueConverter(logger)
             ];

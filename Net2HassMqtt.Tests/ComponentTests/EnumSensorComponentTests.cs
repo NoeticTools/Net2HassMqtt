@@ -5,7 +5,7 @@ using Net2HassMqtt.Tests.Sensors.SampleEntityModels;
 namespace Net2HassMqtt.Tests.ComponentTests;
 
 [TestFixture]
-public class SensorEnumComponentTests : ComponentTestsBase
+public class EnumSensorComponentTests : ComponentTestsBase
 {
     [SetUp]
     public void Setup()
@@ -23,7 +23,10 @@ public class SensorEnumComponentTests : ComponentTestsBase
     [Test]
     public async Task EnumSensorTest()
     {
-        DeviceBuilder.SetupCurrentStateEnumSensor(Model);
+        DeviceBuilder.HasEnumSensor(config => config.OnModel(Model)
+                                                    .WithStatusProperty(nameof(ComponentTestModel.CurrentState))
+                                                    .WithFriendlyName("Current State")
+                                                    .WithNodeId("current_state"));
 
         var result = await Run(BumpCurrentState, 4);
 

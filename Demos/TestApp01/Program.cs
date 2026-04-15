@@ -29,7 +29,7 @@ internal class Program
         var device2 = ConfigureDevice2(sensorTestModel);
         var device3 = ConfigureDevice3(sensorTestModel);
         var device4 = ConfigureDevice4(switchTestModel);
-        var device5 = ConfigureDevice5(sensorTestModel);
+        var device5 = ConfigureTimestampTestDevice(sensorTestModel);
         var device6 = ConfigureDevice6(binarySensorTestModel);
 
         // todo cover, humidifier, & number ?
@@ -98,7 +98,7 @@ internal class Program
         return device;
     }
 
-    private static DeviceBuilder ConfigureDevice5(SensorTestModel model)
+    private static DeviceBuilder ConfigureTimestampTestDevice(SensorTestModel model)
     {
         var device = new DeviceBuilder().WithFriendlyName("Net2HassMqtt Timestamp Test Device")
                                         .WithId("net2hassmqtt_test_device_05");
@@ -116,10 +116,20 @@ internal class Program
                                                          .WithNodeId("level_2"));
         */
 
+        device.HasDateSensor(config => config.OnModel(model)
+                                                  .WithStatusProperty(nameof(SensorTestModel.DateOnlyDate))
+                                                  .WithFriendlyName("Date (DateOnly)")
+                                                  .WithNodeId("date_date_only"));
+
         device.HasTimestampSensor(config => config.OnModel(model)
                                                   .WithStatusProperty(nameof(SensorTestModel.DateTimeTimestamp))
                                                   .WithFriendlyName("Timestamp (DateTime)")
                                                   .WithNodeId("timestamp_date_time"));
+
+        device.HasTimestampSensor(config => config.OnModel(model)
+                                                  .WithStatusProperty(nameof(SensorTestModel.DateTimeOffsetTimestamp))
+                                                  .WithFriendlyName("Timestamp (DateTimeOffset)")
+                                                  .WithNodeId("timestamp_date_time_offset"));
 
         return device;
     }

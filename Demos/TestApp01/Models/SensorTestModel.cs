@@ -12,6 +12,15 @@ internal partial class SensorTestModel : ObservableObject
     private double _current = 11.1;
 
     [ObservableProperty]
+    private DateOnly _dateOnlyDate = new(2026, 12, 31);
+
+    [ObservableProperty]
+    private DateTimeOffset _dateTimeOffsetTimestamp = new(2026, 12, 31, 2, 59, 29, TimeSpan.FromHours(10));
+
+    [ObservableProperty]
+    private DateTime _dateTimeTimestamp = new(2026, 12, 31, 3, 59, 30);
+
+    [ObservableProperty]
     private int _level1 = 10;
 
     [ObservableProperty]
@@ -20,19 +29,16 @@ internal partial class SensorTestModel : ObservableObject
     [ObservableProperty]
     private double _temperature = 42.0;
 
-    [ObservableProperty] 
-    private DateTime _dateTimeTimestamp = new(2026, 12, 31, 3, 59, 30);
+    public void CurrentCommandHandler(double value)
+    {
+        Console.WriteLine($"Current commanded to: {value}");
+        Current = value;
+    }
 
     public void Level1CommandHandler(int value)
     {
         Console.WriteLine($"Level 1 commanded to: {value}");
         Level1 = value;
-    }
-
-    public void CurrentCommandHandler(double value)
-    {
-        Console.WriteLine($"Current commanded to: {value}");
-        Current = value;
     }
 
     public void TemperatureCommandHandler(double value)
