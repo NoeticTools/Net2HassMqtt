@@ -101,6 +101,7 @@ object Build : BuildType({
             configuration = "Release"
             args = "--property:Git2SemVer_UpdateHostBuildLabel=true --source:https://api.nuget.org/v3/index.json"
             logging = DotnetBuildStep.Verbosity.Normal
+            sdk = "10.0"
         }
         dotnetPack {
             name = "Pack Net2HassMqtt"
