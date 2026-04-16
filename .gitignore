@@ -2,6 +2,7 @@
 obj
 bin
 *.user
+*.g.cs
 /Net2HassMqtt/msbuild.binlog
 
 /SolutionVersioningProject/.git2semver/Git2SemVer.Generated.Properties.g.json
