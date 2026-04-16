@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Tunnel Vision Laboratories, LLC. All Rights Reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace LightJson.Serialization;
+namespace HassTypesSourceGenerator.LightJson.Serialization;
 
 /// <summary>
 ///     Represents a position within a plain text resource.

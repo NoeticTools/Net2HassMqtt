@@ -2,7 +2,7 @@
 using System.Linq;
 
 
-namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
+namespace HassTypesSourceGenerator.HomeAssistant;
 
 internal sealed class HassDeviceClassInfo
 {

@@ -6,7 +6,7 @@
 using System.IO;
 
 
-namespace LightJson.Serialization;
+namespace HassTypesSourceGenerator.LightJson.Serialization;
 
 using ErrorType = JsonParseException.ErrorType;
 

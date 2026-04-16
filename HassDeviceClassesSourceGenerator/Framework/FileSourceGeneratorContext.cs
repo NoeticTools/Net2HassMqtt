@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using HomeAssistantTypesSourceGenerator.Resources;
+using HassTypesSourceGenerator.Resources;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Scriban;
 
 
-namespace HomeAssistantTypesSourceGenerator.Framework;
+namespace HassTypesSourceGenerator.Framework;
 
 internal sealed class FileSourceGeneratorContext(SourceProductionContext context)
 {

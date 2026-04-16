@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 
 
-namespace HomeAssistantTypesSourceGenerator;
+namespace HassTypesSourceGenerator;
 
 public static class DiagnosticDescriptors
 {

@@ -1,4 +1,4 @@
-﻿namespace HomeAssistantTypesSourceGenerator.Framework;
+﻿namespace HassTypesSourceGenerator.Framework;
 
 internal interface IApiSourceFile
 {

@@ -10,7 +10,7 @@ using System.Globalization;
 using System.IO;
 
 
-namespace LightJson.Serialization;
+namespace HassTypesSourceGenerator.LightJson.Serialization;
 
 using ErrorType = JsonSerializationException.ErrorType;
 

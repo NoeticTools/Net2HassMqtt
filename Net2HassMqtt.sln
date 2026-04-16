@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net2HassMqtt", "Net2HassMqt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGenerators", "CodeGenerators", "{D86453FE-F50C-43FC-9DD1-930B261AA311}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeAssistantTypesSourceGenerator", "HassDeviceClassesSourceGenerator\HomeAssistantTypesSourceGenerator.csproj", "{F352A8DB-47F9-4236-BA88-F60F9051D830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HassTypesSourceGenerator", "HassDeviceClassesSourceGenerator\HassTypesSourceGenerator.csproj", "{F352A8DB-47F9-4236-BA88-F60F9051D830}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{166632D1-0E31-460A-9C67-9D336E802FB4}"
 	ProjectSection(SolutionItems) = preProject

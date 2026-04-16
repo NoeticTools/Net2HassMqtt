@@ -1,4 +1,4 @@
-﻿namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
+﻿namespace HassTypesSourceGenerator.HomeAssistant;
 
 internal struct DeviceClassModel
 {

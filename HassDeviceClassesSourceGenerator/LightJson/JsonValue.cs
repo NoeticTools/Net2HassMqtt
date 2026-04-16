@@ -7,10 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using LightJson.Serialization;
+using HassTypesSourceGenerator.LightJson.Serialization;
 
 
-namespace LightJson;
+namespace HassTypesSourceGenerator.LightJson;
 
 /// <summary>
 ///     A wrapper object that contains a valid JSON value.

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 
 
-namespace HomeAssistantTypesSourceGenerator.Framework;
+namespace HassTypesSourceGenerator.Framework;
 
 internal class PublishResourceFile : IApiSourceFile
 {

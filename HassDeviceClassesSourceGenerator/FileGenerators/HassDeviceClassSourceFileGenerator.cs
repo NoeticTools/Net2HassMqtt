@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using HomeAssistantTypesSourceGenerator.Framework;
-using HomeAssistantTypesSourceGenerator.HomeAssistant;
+using HassTypesSourceGenerator.Framework;
+using HassTypesSourceGenerator.HomeAssistant;
 using Microsoft.CodeAnalysis.CSharp;
 
 
-namespace HomeAssistantTypesSourceGenerator.FileGenerators;
+namespace HassTypesSourceGenerator.FileGenerators;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class HassDeviceClassSourceFileGenerator : ISourceFileGenerator<DeviceClassModel>

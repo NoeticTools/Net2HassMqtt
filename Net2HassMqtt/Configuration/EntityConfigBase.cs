@@ -8,9 +8,6 @@ namespace NoeticTools.Net2HassMqtt.Configuration;
 
 public abstract class EntityConfigBase(HassDomain domain, string? hassDeviceClass) : IEntityConfig
 {
-    // ReSharper disable once VirtualMemberCallInConstructor
-    //CustomInit();
-
     protected virtual void CustomInit()
     {}
 

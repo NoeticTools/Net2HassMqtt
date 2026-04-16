@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 
-namespace LightJson;
+namespace HassTypesSourceGenerator.LightJson;
 
 /// <summary>
 ///     Represents a key-value pair collection of JsonValue objects.

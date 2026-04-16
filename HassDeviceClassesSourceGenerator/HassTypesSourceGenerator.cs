@@ -2,9 +2,9 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
-using HomeAssistantTypesSourceGenerator.FileGenerators;
-using HomeAssistantTypesSourceGenerator.Framework;
-using HomeAssistantTypesSourceGenerator.HomeAssistant;
+using HassTypesSourceGenerator.FileGenerators;
+using HassTypesSourceGenerator.Framework;
+using HassTypesSourceGenerator.HomeAssistant;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Text;
 
 #pragma warning disable RS1036
 
-namespace HomeAssistantTypesSourceGenerator;
+namespace HassTypesSourceGenerator;
 
 [Generator]
 internal sealed class HassTypesSourceGenerator : SourceGeneratorBase, IIncrementalGenerator

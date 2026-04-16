@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HomeAssistantTypesSourceGenerator.HomeAssistant;
+using HassTypesSourceGenerator.HomeAssistant;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 
-namespace HomeAssistantTypesSourceGenerator.Framework;
+namespace HassTypesSourceGenerator.Framework;
 
 internal abstract class SourceGeneratorBase
 {

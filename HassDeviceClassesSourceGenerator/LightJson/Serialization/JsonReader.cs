@@ -9,7 +9,7 @@ using System.IO;
 using System.Text;
 
 
-namespace LightJson.Serialization;
+namespace HassTypesSourceGenerator.LightJson.Serialization;
 
 using ErrorType = JsonParseException.ErrorType;
 

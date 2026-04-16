@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
+namespace HassTypesSourceGenerator.HomeAssistant;
 
 internal static class UoMSnakeCaseTransformer
 {

@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 
-namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
+namespace HassTypesSourceGenerator.HomeAssistant;
 
 internal static class MqttTopicStringExtensions
 {

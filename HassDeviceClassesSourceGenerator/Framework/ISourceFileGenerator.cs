@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
-using HomeAssistantTypesSourceGenerator.HomeAssistant;
+using HassTypesSourceGenerator.HomeAssistant;
 
 
-namespace HomeAssistantTypesSourceGenerator.Framework;
+namespace HassTypesSourceGenerator.Framework;
 
 internal interface ISourceFileGenerator<T>
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 
 
-namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
+namespace HassTypesSourceGenerator.HomeAssistant;
 
 internal sealed class DomainsContext
 {

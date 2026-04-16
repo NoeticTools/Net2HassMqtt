@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 
-namespace LightJson;
+namespace HassTypesSourceGenerator.LightJson;
 
 /// <summary>
 ///     Represents an ordered collection of JsonValues.

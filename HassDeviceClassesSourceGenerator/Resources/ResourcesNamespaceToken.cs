@@ -1,4 +1,4 @@
-﻿namespace HomeAssistantTypesSourceGenerator.Resources;
+﻿namespace HassTypesSourceGenerator.Resources;
 
 internal class ResourcesNamespaceToken
 {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using LightJson;
-using LightJson.Serialization;
+using HassTypesSourceGenerator.LightJson;
+using HassTypesSourceGenerator.LightJson.Serialization;
 
 
-namespace HomeAssistantTypesSourceGenerator.HomeAssistant;
+namespace HassTypesSourceGenerator.HomeAssistant;
 
 internal static class DeviceClassInfoParser
 {

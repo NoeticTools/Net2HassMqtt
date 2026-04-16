@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using HomeAssistantTypesSourceGenerator.Framework;
-using HomeAssistantTypesSourceGenerator.HomeAssistant;
+using HassTypesSourceGenerator.Framework;
+using HassTypesSourceGenerator.HomeAssistant;
 
 
-namespace HomeAssistantTypesSourceGenerator.FileGenerators;
+namespace HassTypesSourceGenerator.FileGenerators;
 
 internal sealed class HassUnitOfMeasurementsSourceFileGenerator : ISourceFileGenerator<DeviceClassModel>
 {

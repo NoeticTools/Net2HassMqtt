@@ -6,7 +6,7 @@
 using System;
 
 
-namespace LightJson.Serialization;
+namespace HassTypesSourceGenerator.LightJson.Serialization;
 
 /// <summary>
 ///     The exception that is thrown when a JSON message cannot be parsed.
