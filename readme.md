@@ -430,7 +430,7 @@ Valid model property value .NET types:
         <tr>
             <td rowspan=3>Sensor</td>
             <td rowspan=1 align="center">Duration</td>
-            <td rowspan=1 align="center"><tt>TimeSpan</tt><br><tt>TimeSpanOffset</tt</td>
+            <td rowspan=1 align="center"><tt>TimeSpan</tt><br><tt>TimeSpanOffset</tt></td>
         </tr>
         </tr>
             <td rowspan=1 align="center">Date</i></td>
@@ -496,7 +496,7 @@ Valid command argument types and values are:
         <tr>
             <td rowspan=3>Sensor</td>
             <td rowspan=1 align="center">Duration</td>
-            <td rowspan=1 align="center"><tt>TimeSpan</tt><br><tt>TimeSpanOffset</tt</td>
+            <td rowspan=1 align="center"><tt>TimeSpan</tt><br><tt>TimeSpanOffset</tt></td>
         </tr>
         </tr>
             <td rowspan=1 align="center">Date</i></td>
