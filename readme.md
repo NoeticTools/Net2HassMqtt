@@ -429,14 +429,16 @@ Valid model property value .NET types:
     <tbody>
         <tr>
             <td rowspan=3>Sensor</td>
-            <td align="center" rowspan=2>Duration</td>
-            <td align="center" rowspan=1><tt>TimeSpan</tt></td>
+            <td rowspan=1 align="center">Duration</td>
+            <td rowspan=1 align="center"><tt>TimeSpan</tt><br><tt>TimeSpanOffset</tt</td>
         </tr>
         </tr>
-            <td align="center" rowspan=4><tt>int</tt><br/><tt>double</tt></td>
+            <td rowspan=1 align="center">Date</i></td>
+            <td rowspan=1 align="center"><tt>DateOnly</tt></td>
         </tr>
-        <tr>
-            <td align="center" rowspan=1><i>any other</i></td>
+        </tr>
+            <td rowspan=1 align="center"><i>any other</i></td>
+            <td rowspan=3 align="center"><tt>int</tt><br><tt>double</tt></td>
         </tr>
         <tr>
             <td rowspan=1>Humidifer</td>
@@ -492,13 +494,17 @@ Valid command argument types and values are:
     </thead>
     <tbody>
         <tr>
-            <td rowspan=2>Sensor</td>
+            <td rowspan=3>Sensor</td>
             <td rowspan=1 align="center">Duration</td>
-            <td rowspan=1 align="center"><tt>TimeSpan</tt></td>
+            <td rowspan=1 align="center"><tt>TimeSpan</tt><br><tt>TimeSpanOffset</tt</td>
+        </tr>
+        </tr>
+            <td rowspan=1 align="center">Date</i></td>
+            <td rowspan=1 align="center"><tt>DateOnly</tt></td>
         </tr>
         </tr>
             <td rowspan=1 align="center"><i>any other</i></td>
-            <td rowspan=3 align="center"><tt>double</tt><br><tt>string</tt></td>
+            <td rowspan=3 align="center"><tt>int</tt><br><tt>double</tt><br><tt>string</tt></td>
         </tr>
         <tr>
             <td rowspan=1>Humidifer</td>
